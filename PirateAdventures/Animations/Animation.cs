@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PirateAdventures.Animation
+namespace PirateAdventures.Animations
 {
     public class Animation
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 
-namespace PirateAdventures.Animation
+namespace PirateAdventures.Animations
 {
     public class AnimationFrame
     {
