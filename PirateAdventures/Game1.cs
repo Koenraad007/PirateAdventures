@@ -49,7 +49,7 @@ public class Game1 : Game
             Exit();
 
         // Add your update logic here
-        hero.Update();
+        hero.Update(gameTime);
 
         base.Update(gameTime);
     }
