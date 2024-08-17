@@ -12,6 +12,7 @@ public class Game1 : Game
 
     private Texture2D _texture;
     private Rectangle _deelRectangle;
+    private int _schuifOp_X = 0;
 
     public Game1()
     {
@@ -24,7 +25,7 @@ public class Game1 : Game
     protected override void Initialize()
     {
         // Add your initialization logic here
-        _deelRectangle = new Rectangle(0,0,58,58);
+        _deelRectangle = new Rectangle(_schuifOp_X,0,58,58);
 
         base.Initialize();
     }
@@ -42,7 +43,10 @@ public class Game1 : Game
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
 
-        // TODO: Add your update logic here
+        // Add your update logic here
+        _schuifOp_X += 58;
+        if (_schuifOp_X > 26*58) _schuifOp_X = 0;
+        _deelRectangle.X = _schuifOp_X;
 
         base.Update(gameTime);
     }
