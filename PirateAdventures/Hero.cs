@@ -13,7 +13,7 @@ namespace PirateAdventures
     {
         private Texture2D heroTexture;
         private Animation idle, running;
-        private Vector2 position, speed;
+        private Vector2 position, speed, acceleration;
         private SpriteEffects spriteFx = SpriteEffects.None;
 
 
@@ -34,6 +34,7 @@ namespace PirateAdventures
 
             position = new Vector2(10, 10);
             speed = new Vector2(1, 0);
+            acceleration = new Vector2(0.1f, 0f);
 
         }
 
@@ -47,7 +48,14 @@ namespace PirateAdventures
         {
             position += speed;
 
-            if (position.X > 600 || position.X < 0) speed *= -1;
+            if (Math.Abs(speed.X) < 5) speed += acceleration;
+
+            if (position.X > 600 || position.X < 0)
+            {
+                speed *= -1;
+                acceleration *= -1;
+            }
+
             spriteFx = (speed.X < 0) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
         }
 
