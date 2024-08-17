@@ -10,9 +10,8 @@ public class Game1 : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
 
-    private Texture2D _texture;
-    private Rectangle _deelRectangle;
-    private int _schuifOp_X = 0;
+    private Texture2D _heroTexture;
+    private Hero hero;
 
     public Game1()
     {
@@ -25,7 +24,6 @@ public class Game1 : Game
     protected override void Initialize()
     {
         // Add your initialization logic here
-        _deelRectangle = new Rectangle(_schuifOp_X,0,58,58);
 
         base.Initialize();
     }
@@ -35,7 +33,14 @@ public class Game1 : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
         // use this.Content to load your game content here
-        _texture = Content.Load<Texture2D>("hero");
+        _heroTexture = Content.Load<Texture2D>("hero");
+
+        InitializeGameObjects();
+    }
+
+    private void InitializeGameObjects()
+    {
+        hero = new Hero(_heroTexture);
     }
 
     protected override void Update(GameTime gameTime)
@@ -44,9 +49,7 @@ public class Game1 : Game
             Exit();
 
         // Add your update logic here
-        _schuifOp_X += 58;
-        if (_schuifOp_X > 26*58) _schuifOp_X = 0;
-        _deelRectangle.X = _schuifOp_X;
+        hero.Update();
 
         base.Update(gameTime);
     }
@@ -58,7 +61,7 @@ public class Game1 : Game
         // Add your drawing code here
         _spriteBatch.Begin();
 
-        _spriteBatch.Draw(_texture, new Vector2(0, 0), _deelRectangle, Color.White);
+        hero.Draw(_spriteBatch);
 
         _spriteBatch.End();
 
