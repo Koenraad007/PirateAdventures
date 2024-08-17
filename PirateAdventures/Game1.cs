@@ -25,7 +25,9 @@ public class Game1 : Game
     {
         // Add your initialization logic here
 
-        base.Initialize();
+        base.Initialize();  // bevat de LoadContent() method, dus na deze lijn zijn de textures geladen
+
+        InitializeGameObjects();
     }
 
     protected override void LoadContent()
@@ -34,8 +36,6 @@ public class Game1 : Game
 
         // use this.Content to load your game content here
         _heroTexture = Content.Load<Texture2D>("hero");
-
-        InitializeGameObjects();
     }
 
     private void InitializeGameObjects()
