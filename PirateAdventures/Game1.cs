@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
+
 namespace PirateAdventures;
 
 public class Game1 : Game
@@ -46,6 +47,7 @@ public class Game1 : Game
         _heroTexture = Content.Load<Texture2D>("hero");
 
         _tileset = Content.Load<Texture2D>("tileset64");
+
     }
 
     private void InitializeGameObjects()
