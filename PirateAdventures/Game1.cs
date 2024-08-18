@@ -106,6 +106,8 @@ public class Game1 : Game
         // Add your update logic here
         hero.Update(gameTime);
 
+
+
         base.Update(gameTime);
     }
 

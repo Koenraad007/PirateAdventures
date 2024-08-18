@@ -18,13 +18,13 @@ namespace PirateAdventures
 
         private Texture2D heroTexture;
         private Animation idle, running;
-        private Vector2 position = new Vector2(10, 10);
+        public Vector2 position = new Vector2(10, 10);
         private Vector2 speed = Vector2.Zero;
-        private Vector2 acceleration = new Vector2(0.1f, 0.2f);
+        private Vector2 acceleration = new Vector2(0.1f, 0.3f);
         private SpriteEffects spriteFx = SpriteEffects.None;
         private IInputReader input;
         private HeroState state;
-        private Boolean isGrounded = false;
+        private bool isGrounded = false;
 
 
         public Hero(Texture2D texture, IInputReader inputReader)
@@ -106,7 +106,7 @@ namespace PirateAdventures
             // if jump key is pressed
             if (direction.Y < 0 && isGrounded)
             {
-                speed.Y = -5;
+                speed.Y = -10;
                 isGrounded = false;
             }
 

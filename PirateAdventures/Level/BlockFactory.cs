@@ -34,6 +34,16 @@ namespace PirateAdventures.Level
                 case 'f': tile = (2, 3); break;
                 case 'g': tile = (2, 4); break;
                 case 'h': tile = (2, 5); break;
+                case 'i': tile = (3, 1); break;
+                case 'j': tile = (3, 2); break;
+                case 'k': tile = (3, 3); break;
+                case 'l': tile = (3, 4); break;
+                case 'm': tile = (3, 5); break;
+                case 'n': tile = (4, 1); break;
+                case 'o': tile = (4, 2); break;
+                case 'p': tile = (4, 3); break;
+                case 'q': tile = (4, 4); break;
+                case 'r': tile = (4, 5); break;
                 default:
                     break;
             }
