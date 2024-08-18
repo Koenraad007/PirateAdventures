@@ -47,7 +47,8 @@ namespace PirateAdventures
             var direction = input.ReadInput();
 
             // if the hero is not moving, the state is IDLE (0), else it's RUNNING (1)
-            state = (HeroState)Math.Abs(direction.X);
+            if (speed.X != 0) state = HeroState.RUNNING;
+            else state = HeroState.IDLE;
 
             Move(direction);
 
@@ -66,26 +67,45 @@ namespace PirateAdventures
                 default: break;
             }
 
+            System.Console.WriteLine($"Direction:\t{direction}");
+
         }
 
         private void Move(Vector2 direction)
         {
-            direction *= speed;
+            if (direction.X != 0)
+            {
+                // direction *= speed;
+                direction *= acceleration;
 
-            position += direction;
-
-            //if (Math.Abs(speed.X) < 5) speed += acceleration;
-
+                // check if speed is below max speed
+                if (Math.Abs(speed.X) < 5) speed += direction;
 
 
-            // if (position.X > 600 || position.X < 0)
-            // {
-            //     speed *= -1;
-            //     acceleration *= -1;
-            // }
+            }
+            else
+            {
+                if (speed.X < 0)
+                {
+                    speed.X += acceleration.X * 2;
+                    if (speed.X > 0) speed.X = 0;
+                }
+                else if (speed.X > 0)
+                {
+                    speed.X -= acceleration.X * 2;
+                    if (speed.X < 0) speed.X = 0;
+                }
+            }
 
-            if (direction.X < 0) spriteFx = SpriteEffects.FlipHorizontally;
-            if (direction.X > 0) spriteFx = SpriteEffects.None;
+            // check if sprite doesn't go past edges of screen
+            var futurePos = position + speed;
+            if (futurePos.X <= 600 && futurePos.X > 0)
+            {
+                position = futurePos;
+            }
+
+            if (speed.X < 0) spriteFx = SpriteEffects.FlipHorizontally;
+            if (speed.X > 0) spriteFx = SpriteEffects.None;
         }
 
         public void Draw(SpriteBatch spriteBatch)
