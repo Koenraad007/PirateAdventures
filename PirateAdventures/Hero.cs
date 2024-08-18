@@ -15,11 +15,14 @@ namespace PirateAdventures
         private Animation idle, running;
         private Vector2 position, speed, acceleration;
         private SpriteEffects spriteFx = SpriteEffects.None;
+        private IInputReader input;
 
 
-        public Hero(Texture2D texture)
+        public Hero(Texture2D texture, IInputReader inputReader)
         {
             heroTexture = texture;
+            input = inputReader;
+
             idle = new Animation();
             running = new Animation();
 
@@ -40,21 +43,27 @@ namespace PirateAdventures
 
         public void Update(GameTime gameTime)
         {
-            Move();
+            var direction = input.ReadInput();
+
+            Move(direction);
             running.Update(gameTime);
         }
 
-        private void Move()
+        private void Move(Vector2 direction)
         {
-            position += speed;
+            direction *= speed;
 
-            if (Math.Abs(speed.X) < 5) speed += acceleration;
+            position += direction;
 
-            if (position.X > 600 || position.X < 0)
-            {
-                speed *= -1;
-                acceleration *= -1;
-            }
+            //if (Math.Abs(speed.X) < 5) speed += acceleration;
+
+
+
+            // if (position.X > 600 || position.X < 0)
+            // {
+            //     speed *= -1;
+            //     acceleration *= -1;
+            // }
 
             spriteFx = (speed.X < 0) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
         }

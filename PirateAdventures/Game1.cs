@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using PirateAdventures.Input;
 using System;
 
 namespace PirateAdventures;
@@ -40,7 +41,7 @@ public class Game1 : Game
 
     private void InitializeGameObjects()
     {
-        hero = new Hero(_heroTexture);
+        hero = new Hero(_heroTexture, new KeyboardInputReader());
     }
 
     protected override void Update(GameTime gameTime)
