@@ -24,6 +24,11 @@ namespace PirateAdventures.Animations
             CurrentFrame = frames[0];
         }
 
+        public void ResetAnimation()
+        {
+            CurrentFrame = frames[0];
+        }
+
         public void Update(GameTime gameTime)
         {
             CurrentFrame = frames[ctr];

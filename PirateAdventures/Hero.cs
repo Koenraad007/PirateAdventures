@@ -16,6 +16,7 @@ namespace PirateAdventures
         private Vector2 position, speed, acceleration;
         private SpriteEffects spriteFx = SpriteEffects.None;
         private IInputReader input;
+        private HeroState state;
 
 
         public Hero(Texture2D texture, IInputReader inputReader)
@@ -45,8 +46,26 @@ namespace PirateAdventures
         {
             var direction = input.ReadInput();
 
+            // if the hero is not moving, the state is IDLE (0), else it's RUNNING (1)
+            state = (HeroState)Math.Abs(direction.X);
+
             Move(direction);
-            running.Update(gameTime);
+
+            switch (state)
+            {
+                case HeroState.IDLE:
+                    running.ResetAnimation();
+                    idle.Update(gameTime);
+                    break;
+
+                case HeroState.RUNNING:
+                    running.Update(gameTime);
+                    idle.ResetAnimation();
+                    break;
+
+                default: break;
+            }
+
         }
 
         private void Move(Vector2 direction)
@@ -65,13 +84,31 @@ namespace PirateAdventures
             //     acceleration *= -1;
             // }
 
-            spriteFx = (speed.X < 0) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            if (direction.X < 0) spriteFx = SpriteEffects.FlipHorizontally;
+            if (direction.X > 0) spriteFx = SpriteEffects.None;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(heroTexture, position, running.CurrentFrame.SourceRect, Color.White, 0, new Vector2(0, 0), 1f, spriteFx, 0);
+            switch (state)
+            {
+                case HeroState.IDLE:
+                    spriteBatch.Draw(heroTexture, position, idle.CurrentFrame.SourceRect, Color.White, 0, new Vector2(0, 0), 1f, spriteFx, 0);
+                    break;
+
+                case HeroState.RUNNING:
+                    spriteBatch.Draw(heroTexture, position, running.CurrentFrame.SourceRect, Color.White, 0, new Vector2(0, 0), 1f, spriteFx, 0);
+                    break;
+
+                default: break;
+            }
         }
 
+    }
+
+    enum HeroState
+    {
+        IDLE,
+        RUNNING
     }
 }
