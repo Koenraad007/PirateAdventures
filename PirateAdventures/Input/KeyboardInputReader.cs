@@ -17,9 +17,11 @@ namespace PirateAdventures.Input
             KeyboardState state = Keyboard.GetState();
 
             if (state.IsKeyDown(Keys.Left))
-                direction = new Vector2(-1, 0);
+                direction.X = -1;
             if (state.IsKeyDown(Keys.Right))
-                direction = new Vector2(1, 0);
+                direction.X = 1;
+            if (state.IsKeyDown(Keys.Up))
+                direction.Y = -1;
 
             return direction;
         }

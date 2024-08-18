@@ -11,12 +11,20 @@ namespace PirateAdventures
 {
     public class Hero : IGameObject
     {
+        public const int SPRITE_WIDTH = 58;
+        public const int SPRITE_HEIGHT = 58;
+        public const int MAX_SPEED = 5;
+
+
         private Texture2D heroTexture;
         private Animation idle, running;
-        private Vector2 position, speed, acceleration;
+        private Vector2 position = new Vector2(10, 10);
+        private Vector2 speed = Vector2.Zero;
+        private Vector2 acceleration = new Vector2(0.1f, 0.2f);
         private SpriteEffects spriteFx = SpriteEffects.None;
         private IInputReader input;
         private HeroState state;
+        private Boolean isGrounded = false;
 
 
         public Hero(Texture2D texture, IInputReader inputReader)
@@ -29,28 +37,23 @@ namespace PirateAdventures
 
             for (int i = 0; i < 26; i++)
             {
-                idle.AddFrame(new AnimationFrame(new Rectangle(58 * i, 0, 58, 58)));
+                idle.AddFrame(new AnimationFrame(new Rectangle(SPRITE_WIDTH * i, 0, SPRITE_WIDTH, SPRITE_HEIGHT)));
             }
             for (int i = 0; i < 14; i++)
             {
-                running.AddFrame(new AnimationFrame(new Rectangle(58 * i + (26 * 58), 0, 58, 58)));
+                running.AddFrame(new AnimationFrame(new Rectangle(SPRITE_WIDTH * i + (26 * SPRITE_WIDTH), 0, SPRITE_WIDTH, SPRITE_HEIGHT)));
             }
-
-            position = new Vector2(10, 10);
-            speed = new Vector2(1, 0);
-            acceleration = new Vector2(0.1f, 0f);
-
         }
 
         public void Update(GameTime gameTime)
         {
             var direction = input.ReadInput();
 
+            Move(direction);
+
             // if the hero is not moving, the state is IDLE (0), else it's RUNNING (1)
             if (speed.X != 0) state = HeroState.RUNNING;
             else state = HeroState.IDLE;
-
-            Move(direction);
 
             switch (state)
             {
@@ -67,29 +70,32 @@ namespace PirateAdventures
                 default: break;
             }
 
-            System.Console.WriteLine($"Direction:\t{direction}");
+            // System.Console.WriteLine($"Position:\t{position}");
 
         }
 
         private void Move(Vector2 direction)
         {
+            // TODO: put movement logic in IMovable interface and MovementManager class
+
+            // if left/right keys are pressed
             if (direction.X != 0)
             {
-                // direction *= speed;
-                direction *= acceleration;
+                direction.X *= acceleration.X;
 
                 // check if speed is below max speed
-                if (Math.Abs(speed.X) < 5) speed += direction;
-
-
+                if (Math.Abs(speed.X) < MAX_SPEED) speed.X += direction.X;
             }
-            else
+            // if left/right keys aren't pressed
+            else if (direction.X == 0)
             {
+                // if hero is moving left
                 if (speed.X < 0)
                 {
                     speed.X += acceleration.X * 2;
                     if (speed.X > 0) speed.X = 0;
                 }
+                // if hero is moving right
                 else if (speed.X > 0)
                 {
                     speed.X -= acceleration.X * 2;
@@ -97,19 +103,52 @@ namespace PirateAdventures
                 }
             }
 
-            // check if sprite doesn't go past edges of screen
-            var futurePos = position + speed;
-            if (futurePos.X <= 600 && futurePos.X > 0)
+            // if jump key is pressed
+            if (direction.Y < 0 && isGrounded)
             {
-                position = futurePos;
+                speed.Y = -5;
+                isGrounded = false;
             }
 
-            if (speed.X < 0) spriteFx = SpriteEffects.FlipHorizontally;
-            if (speed.X > 0) spriteFx = SpriteEffects.None;
+            // if in the air, apply gravity/deceleration
+            if (!isGrounded)
+            {
+                speed.Y += acceleration.Y;
+            }
+
+            // update position
+            position += speed;
+
+            CheckGroundCollision();
+
+            if (position.X > 800 - SPRITE_WIDTH) position.X = 800 - SPRITE_WIDTH;
+            if (position.X < 0) position.X = 0;
+
+
+        }
+
+        private void CheckGroundCollision()
+        {
+            float groundLvl = 400;
+
+            if (position.Y >= groundLvl)
+            {
+                position.Y = groundLvl;
+                speed.Y = 0;
+                isGrounded = true;
+            }
+            else
+            {
+                isGrounded = false;
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            // face sprite in right direction
+            if (speed.X < 0) spriteFx = SpriteEffects.FlipHorizontally;
+            if (speed.X > 0) spriteFx = SpriteEffects.None;
+
             switch (state)
             {
                 case HeroState.IDLE:
