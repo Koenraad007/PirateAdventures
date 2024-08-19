@@ -18,19 +18,22 @@ namespace PirateAdventures
 
         private Texture2D heroTexture;
         private Animation idle, running;
-        public Vector2 position = new Vector2(10, 10);
+        public Vector2 position = new Vector2(100, 100);
         private Vector2 speed = Vector2.Zero;
         private Vector2 acceleration = new Vector2(0.1f, 0.3f);
         private SpriteEffects spriteFx = SpriteEffects.None;
         private IInputReader input;
         private HeroState state;
         private bool isGrounded = false;
+        private Vector2 collision = Vector2.One;
+        private Rectangle boundingBox;
 
 
         public Hero(Texture2D texture, IInputReader inputReader)
         {
             heroTexture = texture;
             input = inputReader;
+            boundingBox = new Rectangle((int)position.X, (int)position.Y, SPRITE_WIDTH, SPRITE_HEIGHT);
 
             idle = new Animation();
             running = new Animation();
@@ -45,11 +48,20 @@ namespace PirateAdventures
             }
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(List<IGameObject> objects, GameTime gameTime)
         {
+            System.Console.WriteLine($"position: {position}");
+
             var direction = input.ReadInput();
 
             Move(direction);
+            Vector2 nextPos = position + speed;
+
+            CheckCollision(nextPos, objects);
+
+            position += speed;
+            boundingBox.X = (int)position.X;
+            boundingBox.Y = (int)position.Y;
 
             // if the hero is not moving, the state is IDLE (0), else it's RUNNING (1)
             if (speed.X != 0) state = HeroState.RUNNING;
@@ -69,9 +81,6 @@ namespace PirateAdventures
 
                 default: break;
             }
-
-            // System.Console.WriteLine($"Position:\t{position}");
-
         }
 
         private void Move(Vector2 direction)
@@ -117,14 +126,60 @@ namespace PirateAdventures
             }
 
             // update position
-            position += speed;
+            // position += speed;
 
-            CheckGroundCollision();
+            // CheckGroundCollision();
 
             if (position.X > 800 - SPRITE_WIDTH) position.X = 800 - SPRITE_WIDTH;
             if (position.X < 0) position.X = 0;
 
 
+        }
+
+        private void CheckCollision(Vector2 position, List<IGameObject> objects)
+        {
+            Rectangle bb = new Rectangle((int)position.X, (int)position.Y, SPRITE_WIDTH, SPRITE_HEIGHT);
+
+            collision = Vector2.One;
+            isGrounded = false;
+            foreach (var block in objects)
+            {
+                if (block is ICollidable)
+                {
+                    var collisionObj = block as ICollidable;
+                    if (collisionObj.Passable) continue;
+
+                    if (collisionObj.BoundingBox.Intersects(bb))
+                    {
+                        if (bb.Left < collisionObj.BoundingBox.Right)
+                        {
+                            position.X = collisionObj.BoundingBox.Right;
+                            // speed.X = 0;
+                        }
+                        else if (bb.Right > collisionObj.BoundingBox.Left)
+                        {
+                            position.X = collisionObj.BoundingBox.Left + SPRITE_WIDTH;
+                            // speed.X = 0;
+                        }
+
+                        if (bb.Bottom > collisionObj.BoundingBox.Top)
+                        {
+                            position.Y = collisionObj.BoundingBox.Top - SPRITE_HEIGHT;
+                            speed.Y = 0;
+                            isGrounded = true;
+                        }
+
+                        // if (boundingBox.Top < collisionObj.BoundingBox.Bottom)
+                        // {
+                        //     position.Y = collisionObj.BoundingBox.Bottom;
+                        //     speed.Y = 0;
+                        //     isGrounded = false;
+                        // }
+                    }
+
+                    // if (boundingBox.Left < collisionObj.BoundingBox.Right || boundingBox.Right > collisionObj.BoundingBox.Left) collision.X = 0;
+                }
+            }
         }
 
         private void CheckGroundCollision()

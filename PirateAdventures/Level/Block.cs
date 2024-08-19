@@ -8,20 +8,22 @@ using PirateAdventures.Interfaces;
 
 namespace PirateAdventures.Level
 {
-    public class Block : IGameObject
+    public class Block : IGameObject, ICollidable
     {
         public Rectangle BoundingBox { get; set; }
+        public Rectangle SourceRect { get; set; }
         public Vector2 Position { get; set; }
         public bool Passable { get; set; }
         public Color Color { get; set; }
         public Texture2D Texture { get; set; }
         // public CollideWithEvent CollideWithEvent { get; set; }
 
-        public Block(Vector2 position, Texture2D tileset, Vector2 tile, int tileSize)
+        public Block(Vector2 position, Texture2D tileset, Vector2 tile, int tileSize, bool passable)
         {
-            BoundingBox = new Rectangle((int)tile.Y * tileSize, (int)tile.X * tileSize, tileSize, tileSize);
+            SourceRect = new Rectangle((int)tile.Y * tileSize, (int)tile.X * tileSize, tileSize, tileSize);
+            BoundingBox = new Rectangle((int)position.X, (int)position.Y, tileSize, tileSize);
             Position = position;
-            Passable = false;
+            Passable = passable;
             Color = Color.White;
             Texture = tileset;
         }
@@ -29,10 +31,10 @@ namespace PirateAdventures.Level
         public void Draw(SpriteBatch spriteBatch)
         {
             int scale = 1;
-            spriteBatch.Draw(Texture, Position * scale, BoundingBox, Color, 0f, new Vector2(0, 0), new Vector2(scale, scale), SpriteEffects.None, 0f);
+            spriteBatch.Draw(Texture, Position * scale, SourceRect, Color, 0f, new Vector2(0, 0), new Vector2(scale, scale), SpriteEffects.None, 0f);
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(List<IGameObject> collidables, GameTime gameTime)
         {
             throw new NotImplementedException();
         }

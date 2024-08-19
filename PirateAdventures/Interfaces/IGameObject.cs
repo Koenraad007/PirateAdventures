@@ -9,7 +9,7 @@ namespace PirateAdventures.Interfaces
 {
     public interface IGameObject
     {
-        void Update(GameTime gameTime);
+        void Update(List<IGameObject> collisionObjects, GameTime gameTime);
 
         void Draw(SpriteBatch spriteBatch);
     }

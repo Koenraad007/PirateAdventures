@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using PirateAdventures.Input;
+using PirateAdventures.Interfaces;
 using PirateAdventures.Level;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ public class Game1 : Game
 
     private Texture2D _heroTexture, _tileset;
     private Hero hero;
-    private List<Block> _blocks;
+    private List<IGameObject> _blocks;
     private char[,] gameboard;
 
     public Game1()
@@ -34,7 +35,7 @@ public class Game1 : Game
 
         base.Initialize();  // bevat de LoadContent() method, dus na deze lijn zijn de textures geladen
 
-        _blocks = new List<Block>();
+        _blocks = new List<IGameObject>();
 
         InitializeGameObjects();
     }
@@ -104,7 +105,7 @@ public class Game1 : Game
             Exit();
 
         // Add your update logic here
-        hero.Update(gameTime);
+        hero.Update(_blocks, gameTime);
 
 
 
