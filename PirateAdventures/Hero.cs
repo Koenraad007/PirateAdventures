@@ -25,7 +25,7 @@ namespace PirateAdventures
         private IInputReader input;
         private HeroState state;
         private bool isGrounded = false;
-        private Vector2 collision = Vector2.One;
+        private Vector2 collision = Vector2.Zero;
         private Rectangle boundingBox;
 
 
@@ -50,18 +50,23 @@ namespace PirateAdventures
 
         public void Update(List<IGameObject> objects, GameTime gameTime)
         {
-            System.Console.WriteLine($"position: {position}");
+
 
             var direction = input.ReadInput();
 
+            // change speed according to direction input
             Move(direction);
-            Vector2 nextPos = position + speed;
 
-            CheckCollision(nextPos, objects);
+            Vector2 nextPos = position + speed;
+            CheckCollision(nextPos, objects);   // check if next position doesn't collide
 
             position += speed;
             boundingBox.X = (int)position.X;
             boundingBox.Y = (int)position.Y;
+
+            if (position.X > 800 - SPRITE_WIDTH) position.X = 800 - SPRITE_WIDTH;
+            if (position.X < 0) position.X = 0;
+            if (position.Y > 460 - SPRITE_HEIGHT) position.Y = 460 - SPRITE_HEIGHT;
 
             // if the hero is not moving, the state is IDLE (0), else it's RUNNING (1)
             if (speed.X != 0) state = HeroState.RUNNING;
@@ -86,6 +91,7 @@ namespace PirateAdventures
         private void Move(Vector2 direction)
         {
             // TODO: put movement logic in IMovable interface and MovementManager class
+
 
             // if left/right keys are pressed
             if (direction.X != 0)
@@ -125,23 +131,15 @@ namespace PirateAdventures
                 speed.Y += acceleration.Y;
             }
 
-            // update position
-            // position += speed;
-
-            // CheckGroundCollision();
-
-            if (position.X > 800 - SPRITE_WIDTH) position.X = 800 - SPRITE_WIDTH;
-            if (position.X < 0) position.X = 0;
-
-
         }
 
-        private void CheckCollision(Vector2 position, List<IGameObject> objects)
+        private void CheckCollision(Vector2 nextPos, List<IGameObject> objects)
         {
-            Rectangle bb = new Rectangle((int)position.X, (int)position.Y, SPRITE_WIDTH, SPRITE_HEIGHT);
+            Rectangle bb = new Rectangle((int)nextPos.X, (int)nextPos.Y, SPRITE_WIDTH, SPRITE_HEIGHT);
 
-            collision = Vector2.One;
-            isGrounded = false;
+            System.Console.WriteLine($"collision:\t{collision};\tpos:\t{position};\tspeed:\t{speed}");
+
+            Vector2 newCollision = Vector2.Zero;
             foreach (var block in objects)
             {
                 if (block is ICollidable)
@@ -151,52 +149,48 @@ namespace PirateAdventures
 
                     if (collisionObj.BoundingBox.Intersects(bb))
                     {
-                        if (bb.Left < collisionObj.BoundingBox.Right)
+                        if (bb.Left < collisionObj.BoundingBox.Right && speed.X < 0)
                         {
                             position.X = collisionObj.BoundingBox.Right;
-                            // speed.X = 0;
+                            speed.X = 0;
+                            newCollision.X = -1;
+                            continue;
+                            // break;
                         }
-                        else if (bb.Right > collisionObj.BoundingBox.Left)
+                        else if (bb.Right > collisionObj.BoundingBox.Left && speed.X > 0)
                         {
-                            position.X = collisionObj.BoundingBox.Left + SPRITE_WIDTH;
-                            // speed.X = 0;
+                            position.X = collisionObj.BoundingBox.Left - SPRITE_WIDTH + 1;
+                            speed.X = 0;
+                            newCollision.X = 1;
+                            continue;
+                            // break;
                         }
 
-                        if (bb.Bottom > collisionObj.BoundingBox.Top)
+                        if (bb.Bottom > collisionObj.BoundingBox.Top && speed.Y > 0)
                         {
                             position.Y = collisionObj.BoundingBox.Top - SPRITE_HEIGHT;
                             speed.Y = 0;
                             isGrounded = true;
+                            newCollision.Y = 1;
+                            continue;
+                            // break;
                         }
-
-                        // if (boundingBox.Top < collisionObj.BoundingBox.Bottom)
-                        // {
-                        //     position.Y = collisionObj.BoundingBox.Bottom;
-                        //     speed.Y = 0;
-                        //     isGrounded = false;
-                        // }
+                        else if (bb.Top < collisionObj.BoundingBox.Bottom && speed.Y < 0)
+                        {
+                            position.Y = collisionObj.BoundingBox.Bottom;
+                            speed.Y = 0;
+                            newCollision.Y = -1;
+                            continue;
+                            // break;
+                        }
                     }
-
-                    // if (boundingBox.Left < collisionObj.BoundingBox.Right || boundingBox.Right > collisionObj.BoundingBox.Left) collision.X = 0;
                 }
             }
+
+            collision = newCollision;
+
         }
 
-        private void CheckGroundCollision()
-        {
-            float groundLvl = 400;
-
-            if (position.Y >= groundLvl)
-            {
-                position.Y = groundLvl;
-                speed.Y = 0;
-                isGrounded = true;
-            }
-            else
-            {
-                isGrounded = false;
-            }
-        }
 
         public void Draw(SpriteBatch spriteBatch)
         {

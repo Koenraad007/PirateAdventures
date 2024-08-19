@@ -9,6 +9,7 @@ namespace PirateAdventures.Interfaces
     public interface ICollidable
     {
         public bool Passable { get; set; }
+        public Vector2 Position { get; set; }
         public Rectangle BoundingBox { get; set; }
     }
 }
