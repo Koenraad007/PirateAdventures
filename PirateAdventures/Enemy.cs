@@ -51,7 +51,6 @@ namespace PirateAdventures
 
         public void Update(List<IGameObject> collisionObjects, GameTime gameTime)
         {
-            System.Console.WriteLine(collisionObjects[0]);
             foreach (var item in collisionObjects)
             {
                 if (item is ICollidable)
@@ -62,6 +61,19 @@ namespace PirateAdventures
                         state = 2;
                         if (collisionObj.Position.X < Position.X + SPRITE_WIDTH / 2) spriteEffects = SpriteEffects.FlipHorizontally;
                         else spriteEffects = SpriteEffects.None;
+                    }
+                    else if (Math.Abs(collisionObj.Position.X - Position.X) < 150)
+                    {
+                        state = 1;
+                        int speed = 2;
+                        if (collisionObj.Position.X < Position.X)
+                        {
+                            speed *= -1;
+                            spriteEffects = SpriteEffects.FlipHorizontally;
+                        }
+                        else spriteEffects = SpriteEffects.None;
+                        Position = new Vector2(Position.X + speed, Position.Y);
+                        BoundingBox = new Rectangle((int)Position.X, (int)Position.Y, SPRITE_WIDTH, SPRITE_HEIGHT);
                     }
                     else
                     {
