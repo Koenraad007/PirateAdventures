@@ -136,6 +136,8 @@ namespace PirateAdventures
 
         private void CheckCollision(Vector2 nextPos, List<IGameObject> objects)
         {
+            // TODO: Fix collision
+
             Rectangle bb = new Rectangle((int)nextPos.X, (int)nextPos.Y, SPRITE_WIDTH, SPRITE_HEIGHT);
 
             // System.Console.WriteLine($"collision:\t{collision};\tpos:\t{position};\tspeed:\t{speed}");
