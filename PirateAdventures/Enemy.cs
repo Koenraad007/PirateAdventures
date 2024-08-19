@@ -20,6 +20,7 @@ namespace PirateAdventures
         public bool Passable { get; set; } = false;
         public Vector2 Position { get; set; } = new Vector2(200, 7 * 64 - SPRITE_HEIGHT);
         public Rectangle BoundingBox { get; set; }
+        private SpriteEffects spriteEffects = SpriteEffects.None;
 
         public Enemy(Texture2D texture)
         {
@@ -45,7 +46,7 @@ namespace PirateAdventures
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture2D, Position, animations[state].CurrentFrame.SourceRect, Color.White, 0, new Vector2(0, 0), 1f, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture2D, Position, animations[state].CurrentFrame.SourceRect, Color.White, 0, new Vector2(0, 0), 1f, spriteEffects, 0);
         }
 
         public void Update(List<IGameObject> collisionObjects, GameTime gameTime)
@@ -59,6 +60,8 @@ namespace PirateAdventures
                     if (collisionObj.BoundingBox.Intersects(BoundingBox))
                     {
                         state = 2;
+                        if (collisionObj.Position.X < Position.X + SPRITE_WIDTH / 2) spriteEffects = SpriteEffects.FlipHorizontally;
+                        else spriteEffects = SpriteEffects.None;
                     }
                     else
                     {
