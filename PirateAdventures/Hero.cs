@@ -9,7 +9,7 @@ using PirateAdventures.Interfaces;
 
 namespace PirateAdventures
 {
-    public class Hero : IGameObject
+    public class Hero : IGameObject, ICollidable
     {
         public const int SPRITE_WIDTH = 58;
         public const int SPRITE_HEIGHT = 58;
@@ -18,7 +18,6 @@ namespace PirateAdventures
 
         private Texture2D heroTexture;
         private Animation idle, running;
-        public Vector2 position = new Vector2(100, 100);
         private Vector2 speed = Vector2.Zero;
         private Vector2 acceleration = new Vector2(0.1f, 0.3f);
         private SpriteEffects spriteFx = SpriteEffects.None;
@@ -26,14 +25,17 @@ namespace PirateAdventures
         private HeroState state;
         private bool isGrounded = false;
         private Vector2 collision = Vector2.Zero;
-        private Rectangle boundingBox;
 
+        public bool Passable { get; set; } = false;
+        public Vector2 Position { get; set; }
+        public Rectangle BoundingBox { get; set; }
 
         public Hero(Texture2D texture, IInputReader inputReader)
         {
             heroTexture = texture;
             input = inputReader;
-            boundingBox = new Rectangle((int)position.X, (int)position.Y, SPRITE_WIDTH, SPRITE_HEIGHT);
+            this.Position = new Vector2(100, 100);
+            this.BoundingBox = new Rectangle((int)Position.X, (int)Position.Y, SPRITE_WIDTH, SPRITE_HEIGHT);
 
             idle = new Animation();
             running = new Animation();
@@ -57,16 +59,15 @@ namespace PirateAdventures
             // change speed according to direction input
             Move(direction);
 
-            Vector2 nextPos = position + speed;
+            Vector2 nextPos = Position + speed;
             CheckCollision(nextPos, objects);   // check if next position doesn't collide
 
-            position += speed;
-            boundingBox.X = (int)position.X;
-            boundingBox.Y = (int)position.Y;
+            Position += speed;
+            BoundingBox = new Rectangle((int)Position.X, (int)Position.Y, SPRITE_WIDTH, SPRITE_HEIGHT);
 
-            if (position.X > 800 - SPRITE_WIDTH) position.X = 800 - SPRITE_WIDTH;
-            if (position.X < 0) position.X = 0;
-            if (position.Y > 460 - SPRITE_HEIGHT) position.Y = 460 - SPRITE_HEIGHT;
+            if (Position.X > 800 - SPRITE_WIDTH) Position = new Vector2(800 - SPRITE_WIDTH, Position.Y);
+            if (Position.X < 0) Position = new Vector2(0, Position.Y);
+            if (Position.Y > 460 - SPRITE_HEIGHT) Position = new Vector2(Position.X, 460 - SPRITE_HEIGHT);
 
             // if the hero is not moving, the state is IDLE (0), else it's RUNNING (1)
             if (speed.X != 0) state = HeroState.RUNNING;
@@ -137,7 +138,7 @@ namespace PirateAdventures
         {
             Rectangle bb = new Rectangle((int)nextPos.X, (int)nextPos.Y, SPRITE_WIDTH, SPRITE_HEIGHT);
 
-            System.Console.WriteLine($"collision:\t{collision};\tpos:\t{position};\tspeed:\t{speed}");
+            // System.Console.WriteLine($"collision:\t{collision};\tpos:\t{position};\tspeed:\t{speed}");
 
             Vector2 newCollision = Vector2.Zero;
             foreach (var block in objects)
@@ -151,7 +152,7 @@ namespace PirateAdventures
                     {
                         if (bb.Left < collisionObj.BoundingBox.Right && speed.X < 0)
                         {
-                            position.X = collisionObj.BoundingBox.Right;
+                            Position = new Vector2(collisionObj.BoundingBox.Right, Position.Y);
                             speed.X = 0;
                             newCollision.X = -1;
                             continue;
@@ -159,7 +160,7 @@ namespace PirateAdventures
                         }
                         else if (bb.Right > collisionObj.BoundingBox.Left && speed.X > 0)
                         {
-                            position.X = collisionObj.BoundingBox.Left - SPRITE_WIDTH + 1;
+                            Position = new Vector2(collisionObj.BoundingBox.Left - SPRITE_WIDTH + 1, Position.Y);
                             speed.X = 0;
                             newCollision.X = 1;
                             continue;
@@ -168,7 +169,7 @@ namespace PirateAdventures
 
                         if (bb.Bottom > collisionObj.BoundingBox.Top && speed.Y > 0)
                         {
-                            position.Y = collisionObj.BoundingBox.Top - SPRITE_HEIGHT;
+                            Position = new Vector2(Position.X, collisionObj.BoundingBox.Top - SPRITE_HEIGHT);
                             speed.Y = 0;
                             isGrounded = true;
                             newCollision.Y = 1;
@@ -177,7 +178,7 @@ namespace PirateAdventures
                         }
                         else if (bb.Top < collisionObj.BoundingBox.Bottom && speed.Y < 0)
                         {
-                            position.Y = collisionObj.BoundingBox.Bottom;
+                            Position = new Vector2(Position.X, collisionObj.BoundingBox.Bottom);
                             speed.Y = 0;
                             newCollision.Y = -1;
                             continue;
@@ -201,11 +202,11 @@ namespace PirateAdventures
             switch (state)
             {
                 case HeroState.IDLE:
-                    spriteBatch.Draw(heroTexture, position, idle.CurrentFrame.SourceRect, Color.White, 0, new Vector2(0, 0), 1f, spriteFx, 0);
+                    spriteBatch.Draw(heroTexture, Position, idle.CurrentFrame.SourceRect, Color.White, 0, new Vector2(0, 0), 1f, spriteFx, 0);
                     break;
 
                 case HeroState.RUNNING:
-                    spriteBatch.Draw(heroTexture, position, running.CurrentFrame.SourceRect, Color.White, 0, new Vector2(0, 0), 1f, spriteFx, 0);
+                    spriteBatch.Draw(heroTexture, Position, running.CurrentFrame.SourceRect, Color.White, 0, new Vector2(0, 0), 1f, spriteFx, 0);
                     break;
 
                 default: break;

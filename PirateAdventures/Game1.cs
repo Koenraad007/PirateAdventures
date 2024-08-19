@@ -109,7 +109,7 @@ public class Game1 : Game
 
         // Add your update logic here
         hero.Update(_blocks, gameTime);
-        enemy.Update(_blocks, gameTime);
+        enemy.Update(new List<IGameObject>() { hero }, gameTime);
 
 
 
