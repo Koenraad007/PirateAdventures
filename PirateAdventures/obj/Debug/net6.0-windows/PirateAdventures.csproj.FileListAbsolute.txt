@@ -37,3 +37,4 @@ C:\Users\Koenv\Mijn Drive\School\AP\Semester 3\Game Dev\Project\PirateAdventures
 C:\Users\Koenv\Mijn Drive\School\AP\Semester 3\Game Dev\Project\PirateAdventures\PirateAdventures\obj\Debug\net6.0-windows\PirateAdventures.genruntimeconfig.cache
 C:\Users\Koenv\Mijn Drive\School\AP\Semester 3\Game Dev\Project\PirateAdventures\PirateAdventures\obj\Debug\net6.0-windows\ref\PirateAdventures.dll
 C:\Users\Koenv\Mijn Drive\School\AP\Semester 3\Game Dev\Project\PirateAdventures\PirateAdventures\bin\Debug\net6.0-windows\Content\tileset64.xnb
+C:\Users\Koenv\Mijn Drive\School\AP\Semester 3\Game Dev\Project\PirateAdventures\PirateAdventures\bin\Debug\net6.0-windows\Content\enemy_bigguy.xnb

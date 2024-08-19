@@ -16,8 +16,9 @@ public class Game1 : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
 
-    private Texture2D _heroTexture, _tileset;
+    private Texture2D _heroTexture, _tileset, _enemyTexture;
     private Hero hero;
+    private Enemy enemy;
     private List<IGameObject> _blocks;
     private char[,] gameboard;
 
@@ -46,6 +47,7 @@ public class Game1 : Game
 
         // use this.Content to load your game content here
         _heroTexture = Content.Load<Texture2D>("hero");
+        _enemyTexture = Content.Load<Texture2D>("enemy_bigguy");
 
         _tileset = Content.Load<Texture2D>("tileset64");
 
@@ -54,6 +56,7 @@ public class Game1 : Game
     private void InitializeGameObjects()
     {
         hero = new Hero(_heroTexture, new KeyboardInputReader());
+        enemy = new Enemy(_enemyTexture);
 
         gameboard = readLevelFromFile("./../../../level1.txt");
         for (int i = 0; i < gameboard.GetLength(0); i++)
@@ -106,6 +109,7 @@ public class Game1 : Game
 
         // Add your update logic here
         hero.Update(_blocks, gameTime);
+        enemy.Update(_blocks, gameTime);
 
 
 
@@ -123,6 +127,8 @@ public class Game1 : Game
         {
             block!.Draw(_spriteBatch);
         }
+
+        enemy.Draw(_spriteBatch);
 
         hero.Draw(_spriteBatch);
 

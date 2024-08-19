@@ -4,10 +4,12 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
+    <File>c:/Users/Koenv/Mijn Drive/School/AP/Semester 3/Game Dev/Project/PirateAdventures/PirateAdventures/Content/enemy_bigguy.png</File>
     <File>c:/Users/Koenv/Mijn Drive/School/AP/Semester 3/Game Dev/Project/PirateAdventures/PirateAdventures/Content/hero.png</File>
     <File>c:/Users/Koenv/Mijn Drive/School/AP/Semester 3/Game Dev/Project/PirateAdventures/PirateAdventures/Content/Tile-Sets (64-64).png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File>tileset64.png</File>
   </DestFiles>
