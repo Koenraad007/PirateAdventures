@@ -38,3 +38,44 @@ C:\Users\Koenv\Mijn Drive\School\AP\Semester 3\Game Dev\Project\PirateAdventures
 C:\Users\Koenv\Mijn Drive\School\AP\Semester 3\Game Dev\Project\PirateAdventures\PirateAdventures\obj\Debug\net6.0-windows\ref\PirateAdventures.dll
 C:\Users\Koenv\Mijn Drive\School\AP\Semester 3\Game Dev\Project\PirateAdventures\PirateAdventures\bin\Debug\net6.0-windows\Content\tileset64.xnb
 C:\Users\Koenv\Mijn Drive\School\AP\Semester 3\Game Dev\Project\PirateAdventures\PirateAdventures\bin\Debug\net6.0-windows\Content\enemy_bigguy.xnb
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\bin\Debug\net6.0-windows\Content\enemy_bigguy.xnb
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\bin\Debug\net6.0-windows\Content\hero.xnb
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\bin\Debug\net6.0-windows\Content\tileset64.xnb
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\bin\Debug\net6.0-windows\PirateAdventures.exe
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\bin\Debug\net6.0-windows\PirateAdventures.deps.json
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\bin\Debug\net6.0-windows\PirateAdventures.runtimeconfig.json
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\bin\Debug\net6.0-windows\PirateAdventures.dll
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\bin\Debug\net6.0-windows\PirateAdventures.pdb
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\bin\Debug\net6.0-windows\Microsoft.CodeAnalysis.dll
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\bin\Debug\net6.0-windows\Microsoft.CodeAnalysis.CSharp.dll
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\bin\Debug\net6.0-windows\Microsoft.CodeAnalysis.VisualBasic.dll
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\bin\Debug\net6.0-windows\MonoGame.Framework.dll
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\bin\Debug\net6.0-windows\SharpDX.dll
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\bin\Debug\net6.0-windows\SharpDX.Direct2D1.dll
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\bin\Debug\net6.0-windows\SharpDX.Direct3D11.dll
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\bin\Debug\net6.0-windows\SharpDX.Direct3D9.dll
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\bin\Debug\net6.0-windows\SharpDX.DXGI.dll
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\bin\Debug\net6.0-windows\SharpDX.Mathematics.dll
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\bin\Debug\net6.0-windows\SharpDX.MediaFoundation.dll
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\bin\Debug\net6.0-windows\SharpDX.XAudio2.dll
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\bin\Debug\net6.0-windows\SharpDX.XInput.dll
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\bin\Debug\net6.0-windows\runtimes\debian-x64\native\libuv.so
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\bin\Debug\net6.0-windows\runtimes\fedora-x64\native\libuv.so
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\bin\Debug\net6.0-windows\runtimes\opensuse-x64\native\libuv.so
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\bin\Debug\net6.0-windows\runtimes\osx\native\libuv.dylib
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\bin\Debug\net6.0-windows\runtimes\rhel-x64\native\libuv.so
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\bin\Debug\net6.0-windows\runtimes\win7-arm\native\libuv.dll
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\bin\Debug\net6.0-windows\runtimes\win7-x64\native\libuv.dll
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\bin\Debug\net6.0-windows\runtimes\win7-x86\native\libuv.dll
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\obj\Debug\net6.0-windows\PirateAdventures.csproj.AssemblyReference.cache
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\obj\Debug\net6.0-windows\PirateAdventures.GeneratedMSBuildEditorConfig.editorconfig
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\obj\Debug\net6.0-windows\PirateAdventures.AssemblyInfoInputs.cache
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\obj\Debug\net6.0-windows\PirateAdventures.AssemblyInfo.cs
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\obj\Debug\net6.0-windows\PirateAdventures.csproj.CoreCompileInputs.cache
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\obj\Debug\net6.0-windows\PirateAdventures.sourcelink.json
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\obj\Debug\net6.0-windows\PirateAd.D77AFA49.Up2Date
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\obj\Debug\net6.0-windows\PirateAdventures.dll
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\obj\Debug\net6.0-windows\refint\PirateAdventures.dll
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\obj\Debug\net6.0-windows\PirateAdventures.pdb
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\obj\Debug\net6.0-windows\PirateAdventures.genruntimeconfig.cache
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\obj\Debug\net6.0-windows\ref\PirateAdventures.dll

@@ -7537,21 +7537,19 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Users\\Koenv\\Mijn Drive\\School\\AP\\Semester 3\\Game Dev\\Project\\PirateAdventures\\PirateAdventures\\PirateAdventures.csproj",
+      "projectUniqueName": "C:\\Users\\Koenv\\StudioProjects\\PirateAdventures\\PirateAdventures\\PirateAdventures.csproj",
       "projectName": "PirateAdventures",
-      "projectPath": "c:\\Users\\Koenv\\Mijn Drive\\School\\AP\\Semester 3\\Game Dev\\Project\\PirateAdventures\\PirateAdventures\\PirateAdventures.csproj",
+      "projectPath": "C:\\Users\\Koenv\\StudioProjects\\PirateAdventures\\PirateAdventures\\PirateAdventures.csproj",
       "packagesPath": "C:\\Users\\Koenv\\.nuget\\packages\\",
-      "outputPath": "c:\\Users\\Koenv\\Mijn Drive\\School\\AP\\Semester 3\\Game Dev\\Project\\PirateAdventures\\PirateAdventures\\obj\\",
+      "outputPath": "C:\\Users\\Koenv\\StudioProjects\\PirateAdventures\\PirateAdventures\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Koenv\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\Koenv\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net6.0-windows"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -7564,7 +7562,13 @@
         "warnAsError": [
           "NU1605"
         ]
-      }
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      },
+      "SdkAnalysisLevel": "9.0.100"
     },
     "frameworks": {
       "net6.0-windows7.0": {
@@ -7590,6 +7594,24 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[6.0.36, 6.0.36]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Host.win-x64",
+            "version": "[6.0.36, 6.0.36]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[6.0.36, 6.0.36]"
+          },
+          {
+            "name": "Microsoft.WindowsDesktop.App.Ref",
+            "version": "[6.0.36, 6.0.36]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
@@ -7598,7 +7620,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101\\RuntimeIdentifierGraph.json"
       }
     }
   }

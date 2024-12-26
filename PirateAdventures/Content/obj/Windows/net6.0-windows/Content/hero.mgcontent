@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>C:/Users/Koenv/Mijn Drive/School/AP/Semester 3/Game Dev/Project/PirateAdventures/PirateAdventures/Content/hero.png</SourceFile>
-  <SourceTime>2024-08-17T17:28:47.5308001+02:00</SourceTime>
-  <DestFile>C:/Users/Koenv/Mijn Drive/School/AP/Semester 3/Game Dev/Project/PirateAdventures/PirateAdventures/Content/bin/Windows/Content/hero.xnb</DestFile>
-  <DestTime>2024-08-19T16:11:31.7444323+02:00</DestTime>
+  <SourceFile>c:/Users/Koenv/StudioProjects/PirateAdventures/PirateAdventures/Content/hero.png</SourceFile>
+  <SourceTime>2024-12-26T18:57:36.5216058+01:00</SourceTime>
+  <DestFile>c:/Users/Koenv/StudioProjects/PirateAdventures/PirateAdventures/Content/bin/Windows/Content/hero.xnb</DestFile>
+  <DestTime>2024-12-26T19:13:14.7634861+01:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2022-07-26T13:44:56+02:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

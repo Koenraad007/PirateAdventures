@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "vk8TfO6Z6CITro48Mz71mIBIKgCv+pLbiNfR8/i8pM6EXrHX0TGLerGbFvbc4/xVSScTIbOXee5ceF6ItW/FeQ==",
+  "dgSpecHash": "NqYdUbJKDO8=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Koenv\\Mijn Drive\\School\\AP\\Semester 3\\Game Dev\\Project\\PirateAdventures\\PirateAdventures\\PirateAdventures.csproj",
+  "projectFilePath": "c:\\Users\\Koenv\\StudioProjects\\PirateAdventures\\PirateAdventures\\PirateAdventures.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Koenv\\.nuget\\packages\\libuv\\1.9.1\\libuv.1.9.1.nupkg.sha512",
     "C:\\Users\\Koenv\\.nuget\\packages\\microsoft.codeanalysis.analyzers\\1.1.0\\microsoft.codeanalysis.analyzers.1.1.0.nupkg.sha512",
@@ -124,7 +124,11 @@
     "C:\\Users\\Koenv\\.nuget\\packages\\system.xml.xdocument\\4.0.11\\system.xml.xdocument.4.0.11.nupkg.sha512",
     "C:\\Users\\Koenv\\.nuget\\packages\\system.xml.xmldocument\\4.0.1\\system.xml.xmldocument.4.0.1.nupkg.sha512",
     "C:\\Users\\Koenv\\.nuget\\packages\\system.xml.xpath\\4.0.1\\system.xml.xpath.4.0.1.nupkg.sha512",
-    "C:\\Users\\Koenv\\.nuget\\packages\\system.xml.xpath.xdocument\\4.0.1\\system.xml.xpath.xdocument.4.0.1.nupkg.sha512"
+    "C:\\Users\\Koenv\\.nuget\\packages\\system.xml.xpath.xdocument\\4.0.1\\system.xml.xpath.xdocument.4.0.1.nupkg.sha512",
+    "C:\\Users\\Koenv\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.36\\microsoft.netcore.app.ref.6.0.36.nupkg.sha512",
+    "C:\\Users\\Koenv\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.36\\microsoft.windowsdesktop.app.ref.6.0.36.nupkg.sha512",
+    "C:\\Users\\Koenv\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.36\\microsoft.aspnetcore.app.ref.6.0.36.nupkg.sha512",
+    "C:\\Users\\Koenv\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.36\\microsoft.netcore.app.host.win-x64.6.0.36.nupkg.sha512"
   ],
   "logs": []
 }

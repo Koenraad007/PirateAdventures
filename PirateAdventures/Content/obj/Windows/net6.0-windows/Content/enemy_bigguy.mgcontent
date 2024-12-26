@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>C:/Users/Koenv/Mijn Drive/School/AP/Semester 3/Game Dev/Project/PirateAdventures/PirateAdventures/Content/enemy_bigguy.png</SourceFile>
-  <SourceTime>2024-08-19T21:35:13.0339053+02:00</SourceTime>
-  <DestFile>C:/Users/Koenv/Mijn Drive/School/AP/Semester 3/Game Dev/Project/PirateAdventures/PirateAdventures/Content/bin/Windows/Content/enemy_bigguy.xnb</DestFile>
-  <DestTime>2024-08-19T21:50:27.0781639+02:00</DestTime>
+  <SourceFile>c:/Users/Koenv/StudioProjects/PirateAdventures/PirateAdventures/Content/enemy_bigguy.png</SourceFile>
+  <SourceTime>2024-12-26T18:57:36.5216058+01:00</SourceTime>
+  <DestFile>c:/Users/Koenv/StudioProjects/PirateAdventures/PirateAdventures/Content/bin/Windows/Content/enemy_bigguy.xnb</DestFile>
+  <DestTime>2024-12-26T19:13:14.7432683+01:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2022-07-26T13:44:56+02:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
