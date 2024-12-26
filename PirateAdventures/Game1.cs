@@ -14,6 +14,7 @@ namespace PirateAdventures;
 public class Game1 : Game
 {
     private GraphicsDeviceManager _graphics;
+    private GameStateManager _stateManager;
     private SpriteBatch _spriteBatch;
 
     private Texture2D _heroTexture, _tileset, _enemyTexture;
@@ -35,6 +36,9 @@ public class Game1 : Game
         // Add your initialization logic here
 
         base.Initialize();  // bevat de LoadContent() method, dus na deze lijn zijn de textures geladen
+
+        _stateManager = GameStateManager.Instance;
+        _stateManager.ChangeState(GameState.Start);
 
         _blocks = new List<IGameObject>();
 
@@ -107,11 +111,19 @@ public class Game1 : Game
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
 
-        // Add your update logic here
-        hero.Update(_blocks, gameTime);
-        bigGuy.Update(new List<IGameObject>() { hero }, gameTime);
-
-
+        switch (_stateManager.CurrentState)
+        {
+            case GameState.Start:
+                break;
+            case GameState.Playing:
+                hero.Update(_blocks, gameTime);
+                bigGuy.Update(new List<IGameObject>() { hero }, gameTime);
+                break;
+            case GameState.GameOver:
+                break;
+            default:
+                break;
+        }
 
         base.Update(gameTime);
     }
@@ -123,14 +135,28 @@ public class Game1 : Game
         // Add your drawing code here
         _spriteBatch.Begin();
 
-        foreach (var block in _blocks)
+        switch (_stateManager.CurrentState)
         {
-            block!.Draw(_spriteBatch);
+            case GameState.Start:
+                break;
+
+            case GameState.Playing:
+                foreach (var block in _blocks)
+                {
+                    block!.Draw(_spriteBatch);
+                }
+
+                bigGuy.Draw(_spriteBatch);
+
+                hero.Draw(_spriteBatch);
+                break;
+
+            case GameState.GameOver:
+                break;
+
+            default:
+                break;
         }
-
-        bigGuy.Draw(_spriteBatch);
-
-        hero.Draw(_spriteBatch);
 
         _spriteBatch.End();
 
