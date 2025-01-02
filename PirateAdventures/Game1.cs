@@ -50,7 +50,7 @@ public class Game1 : Game
 
     protected override void LoadContent()
     {
-        startscreen.LoadContent(Content);
+        startscreen.Initialize(Content, _graphics.GraphicsDevice);
 
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
