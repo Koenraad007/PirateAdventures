@@ -13,6 +13,7 @@ namespace PirateAdventures;
 
 public class Game1 : Game
 {
+    private Startscreen startscreen;
     private GraphicsDeviceManager _graphics;
     private GameStateManager _stateManager;
     private SpriteBatch _spriteBatch;
@@ -35,18 +36,22 @@ public class Game1 : Game
     {
         // Add your initialization logic here
 
-        base.Initialize();  // bevat de LoadContent() method, dus na deze lijn zijn de textures geladen
-
         _stateManager = GameStateManager.Instance;
-        _stateManager.ChangeState(GameState.Playing);
+        _stateManager.ChangeState(GameState.Start);
+
+        startscreen = new Startscreen();
 
         _blocks = new List<IGameObject>();
 
         InitializeGameObjects();
+
+        base.Initialize();  // bevat de LoadContent() method, dus na deze lijn zijn de textures geladen
     }
 
     protected override void LoadContent()
     {
+        startscreen.LoadContent(Content);
+
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
         // use this.Content to load your game content here
@@ -114,6 +119,7 @@ public class Game1 : Game
         switch (_stateManager.CurrentState)
         {
             case GameState.Start:
+                startscreen.Update(gameTime);
                 break;
             case GameState.Playing:
                 hero.Update(_blocks, gameTime);
@@ -138,6 +144,7 @@ public class Game1 : Game
         switch (_stateManager.CurrentState)
         {
             case GameState.Start:
+                startscreen.Draw(_spriteBatch);
                 break;
 
             case GameState.Playing:

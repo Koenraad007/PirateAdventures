@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Koenv\\StudioProjects\\PirateAdventures\\PirateAdventures\\PirateAdventures.csproj": {}
+    "c:\\Users\\Koenv\\StudioProjects\\PirateAdventures\\PirateAdventures\\PirateAdventures.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Koenv\\StudioProjects\\PirateAdventures\\PirateAdventures\\PirateAdventures.csproj": {
+    "c:\\Users\\Koenv\\StudioProjects\\PirateAdventures\\PirateAdventures\\PirateAdventures.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Koenv\\StudioProjects\\PirateAdventures\\PirateAdventures\\PirateAdventures.csproj",
+        "projectUniqueName": "c:\\Users\\Koenv\\StudioProjects\\PirateAdventures\\PirateAdventures\\PirateAdventures.csproj",
         "projectName": "PirateAdventures",
-        "projectPath": "C:\\Users\\Koenv\\StudioProjects\\PirateAdventures\\PirateAdventures\\PirateAdventures.csproj",
+        "projectPath": "c:\\Users\\Koenv\\StudioProjects\\PirateAdventures\\PirateAdventures\\PirateAdventures.csproj",
         "packagesPath": "C:\\Users\\Koenv\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Koenv\\StudioProjects\\PirateAdventures\\PirateAdventures\\obj\\",
+        "outputPath": "c:\\Users\\Koenv\\StudioProjects\\PirateAdventures\\PirateAdventures\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Koenv\\AppData\\Roaming\\NuGet\\NuGet.Config"

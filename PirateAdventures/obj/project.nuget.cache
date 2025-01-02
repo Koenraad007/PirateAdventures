@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "lqG3tTV6Ddo=",
+  "dgSpecHash": "NqYdUbJKDO8=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Koenv\\StudioProjects\\PirateAdventures\\PirateAdventures\\PirateAdventures.csproj",
+  "projectFilePath": "c:\\Users\\Koenv\\StudioProjects\\PirateAdventures\\PirateAdventures\\PirateAdventures.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Koenv\\.nuget\\packages\\libuv\\1.9.1\\libuv.1.9.1.nupkg.sha512",
     "C:\\Users\\Koenv\\.nuget\\packages\\microsoft.codeanalysis.analyzers\\1.1.0\\microsoft.codeanalysis.analyzers.1.1.0.nupkg.sha512",
