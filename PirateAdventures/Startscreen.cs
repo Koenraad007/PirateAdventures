@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,6 +13,8 @@ public class Startscreen
     private Texture2D titleAdventuresTexture;
     private Texture2D buttonsTexture;
     private Rectangle startButtonSrcRectangle, startButtonBounds;
+    private Color startBtnColor = Color.White;
+    private bool startBtnPressed = false;
 
     public void Initialize(ContentManager content, GraphicsDevice graphicsDevice)
     {
@@ -30,10 +33,25 @@ public class Startscreen
         MouseState mouseState = Mouse.GetState();
         if (startButtonBounds.Contains(mouseState.Position))
         {
-            startButtonSrcRectangle = new Rectangle(160, 48, 32, 16);
+            startBtnColor = Color.Yellow;
+
+            if (startBtnPressed)
+            {
+                // Start game
+                GameStateManager.Instance.ChangeState(GameState.Playing);
+                startBtnPressed = false;
+            }
+
+            if (mouseState.LeftButton == ButtonState.Pressed)
+            {
+                startButtonSrcRectangle = new Rectangle(160, 48, 32, 16);
+                startBtnPressed = true;
+            }
+
         }
         else
         {
+            startBtnColor = Color.White;
             startButtonSrcRectangle = new Rectangle(0, 48, 32, 16);
         }
     }
@@ -51,6 +69,6 @@ public class Startscreen
         spriteBatch.Draw(titlePirateTexture, new Vector2((viewport.Width / 2 - (titlePirateTexture.Width * pirateScale) / 2), 100 - (titlePirateTexture.Height * pirateScale)), null, Color.White, 0f, Vector2.Zero, pirateScale, SpriteEffects.None, 0f);
         spriteBatch.Draw(titleAdventuresTexture, new Vector2((viewport.Width / 2 - (titleAdventuresTexture.Width * adventuresScale) / 2), 150 - (titleAdventuresTexture.Height * adventuresScale)), null, Color.White, 0f, Vector2.Zero, adventuresScale, SpriteEffects.None, 0f);
 
-        spriteBatch.Draw(buttonsTexture, startButtonBounds, startButtonSrcRectangle, Color.White);
+        spriteBatch.Draw(buttonsTexture, startButtonBounds, startButtonSrcRectangle, startBtnColor);
     }
 }

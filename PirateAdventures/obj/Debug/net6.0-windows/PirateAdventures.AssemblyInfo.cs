@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PirateAdventures")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a7aa1cb46fb52b73909e1ada882e70481fe526e0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+715be44f9da01ad0a16c2bf96f23ef62f40aefcb")]
 [assembly: System.Reflection.AssemblyProductAttribute("PirateAdventures")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PirateAdventures")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

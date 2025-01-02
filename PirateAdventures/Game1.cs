@@ -34,8 +34,9 @@ public class Game1 : Game
 
     protected override void Initialize()
     {
+
+
         // Add your initialization logic here
-        GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
 
         _stateManager = GameStateManager.Instance;
         _stateManager.ChangeState(GameState.Start);
@@ -44,9 +45,11 @@ public class Game1 : Game
 
         _blocks = new List<IGameObject>();
 
+        base.Initialize();  // bevat de LoadContent() method, dus na deze lijn zijn de textures geladen
+
         InitializeGameObjects();
 
-        base.Initialize();  // bevat de LoadContent() method, dus na deze lijn zijn de textures geladen
+
     }
 
     protected override void LoadContent()
@@ -140,7 +143,7 @@ public class Game1 : Game
         GraphicsDevice.Clear(new Color(50, 52, 67));
 
         // Add your drawing code here
-        _spriteBatch.Begin();
+        _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
         switch (_stateManager.CurrentState)
         {
