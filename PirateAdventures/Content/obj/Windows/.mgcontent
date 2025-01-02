@@ -5,6 +5,7 @@
   <Config />
   <SourceFiles>
     <File>c:/Users/Koenv/StudioProjects/PirateAdventures/PirateAdventures/Content/Adventures-2-1-2025 (1).png</File>
+    <File>c:/Users/Koenv/StudioProjects/PirateAdventures/PirateAdventures/Content/Brown_Buttons_Pixel.png</File>
     <File>c:/Users/Koenv/StudioProjects/PirateAdventures/PirateAdventures/Content/enemy_bigguy.png</File>
     <File>c:/Users/Koenv/StudioProjects/PirateAdventures/PirateAdventures/Content/hero.png</File>
     <File>c:/Users/Koenv/StudioProjects/PirateAdventures/PirateAdventures/Content/Pirate-2-1-2025 (1).png</File>
@@ -13,6 +14,7 @@
   </SourceFiles>
   <DestFiles>
     <File>AdventuresText.png</File>
+    <File>BrownButtons.png</File>
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File>PirateText.png</File>

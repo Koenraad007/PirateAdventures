@@ -35,6 +35,7 @@ public class Game1 : Game
     protected override void Initialize()
     {
         // Add your initialization logic here
+        GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
 
         _stateManager = GameStateManager.Instance;
         _stateManager.ChangeState(GameState.Start);
@@ -50,7 +51,7 @@ public class Game1 : Game
 
     protected override void LoadContent()
     {
-        startscreen.Initialize(Content, _graphics.GraphicsDevice);
+        startscreen.Initialize(Content, GraphicsDevice);
 
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 

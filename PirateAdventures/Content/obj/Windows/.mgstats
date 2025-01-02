@@ -1,3 +1,2 @@
 Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
-"c:/Users/Koenv/StudioProjects/PirateAdventures/PirateAdventures/Content/Adventures-2-1-2025 (1).png","c:/Users/Koenv/StudioProjects/PirateAdventures/PirateAdventures/Content/bin/Windows/AdventuresText.xnb","TextureProcessor","Texture2DContent",104797,933973,0,0786072
-"c:/Users/Koenv/StudioProjects/PirateAdventures/PirateAdventures/Content/Pirate-2-1-2025 (1).png","c:/Users/Koenv/StudioProjects/PirateAdventures/PirateAdventures/Content/bin/Windows/PirateText.xnb","TextureProcessor","Texture2DContent",122744,1413205,0,0333407
+"c:/Users/Koenv/StudioProjects/PirateAdventures/PirateAdventures/Content/Brown_Buttons_Pixel.png","c:/Users/Koenv/StudioProjects/PirateAdventures/PirateAdventures/Content/bin/Windows/BrownButtons.xnb","TextureProcessor","Texture2DContent",4883,204885,0,0639007
