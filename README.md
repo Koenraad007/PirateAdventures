@@ -39,3 +39,7 @@ Optional requirements:
 ## Textures
 
 <https://pixelfrog-assets.itch.io/pirate-bomb>
+
+Start screen title: <https://www.textstudio.com/logo/831/pixel>
+Start screen buttons: <https://slyfox-studios.itch.io/buttons-pack>
+Start screen background: <https://www.behance.net/gallery/63406979/Pixel-Art-Pirates-Sea-of-Thieves>
