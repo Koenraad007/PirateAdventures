@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using PirateAdventures.Input;
 using PirateAdventures.Interfaces;
 using PirateAdventures.Level;
+using SharpDX.Direct2D1.Effects;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,6 +24,8 @@ public class Game1 : Game
     private BigGuy bigGuy;
     private List<IGameObject> _blocks;
     private char[,] gameboard;
+
+    private TiledMap tiledMap;
 
     public Game1()
     {
@@ -63,6 +66,10 @@ public class Game1 : Game
         _enemyTexture = Content.Load<Texture2D>("enemy_bigguy");
 
         _tileset = Content.Load<Texture2D>("tileset64");
+
+        tiledMap = new TiledMap();
+        // TODO: store level in different location
+        tiledMap.LoadContent(Content, "./../../../Content/naamloos.tmx");
 
     }
 
@@ -152,10 +159,12 @@ public class Game1 : Game
                 break;
 
             case GameState.Playing:
-                foreach (var block in _blocks)
-                {
-                    block!.Draw(_spriteBatch);
-                }
+                tiledMap.Draw(_spriteBatch);
+
+                // foreach (var block in _blocks)
+                // {
+                //     block!.Draw(_spriteBatch);
+                // }
 
                 bigGuy.Draw(_spriteBatch);
 
