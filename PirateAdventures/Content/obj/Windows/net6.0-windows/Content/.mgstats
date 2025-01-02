@@ -1,4 +1,1 @@
 Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
-"c:/Users/Koenv/StudioProjects/PirateAdventures/PirateAdventures/Content/enemy_bigguy.png","c:/Users/Koenv/StudioProjects/PirateAdventures/PirateAdventures/Content/bin/Windows/Content/enemy_bigguy.xnb","TextureProcessor","Texture2DContent",46993,2940253,0,0924099
-"c:/Users/Koenv/StudioProjects/PirateAdventures/PirateAdventures/Content/hero.png","c:/Users/Koenv/StudioProjects/PirateAdventures/PirateAdventures/Content/bin/Windows/Content/hero.xnb","TextureProcessor","Texture2DContent",30470,1345685,0,0160501
-"c:/Users/Koenv/StudioProjects/PirateAdventures/PirateAdventures/Content/Tile-Sets (64-64).png","c:/Users/Koenv/StudioProjects/PirateAdventures/PirateAdventures/Content/bin/Windows/Content/tileset64.xnb","TextureProcessor","Texture2DContent",13367,491605,0,0095058

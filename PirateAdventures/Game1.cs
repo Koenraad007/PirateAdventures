@@ -38,7 +38,7 @@ public class Game1 : Game
         base.Initialize();  // bevat de LoadContent() method, dus na deze lijn zijn de textures geladen
 
         _stateManager = GameStateManager.Instance;
-        _stateManager.ChangeState(GameState.Start);
+        _stateManager.ChangeState(GameState.Playing);
 
         _blocks = new List<IGameObject>();
 
