@@ -96,7 +96,6 @@ public class Game1 : Game
                 break;
             case GameState.Playing:
                 hero.Update(_blocks, gameTime);
-                //bigGuy.Update(new List<IGameObject>() { hero }, gameTime);
                 foreach (IGameObject enemy in _enemies)
                 {
                     enemy.Update(new List<IGameObject>() { hero }, gameTime);
@@ -152,7 +151,6 @@ public class Game1 : Game
             case GameState.Playing:
                 tiledMap.Draw(_spriteBatch);
 
-                //bigGuy.Draw(_spriteBatch);
                 foreach (IGameObject enemy in _enemies)
                 {
                     enemy.Draw(_spriteBatch);

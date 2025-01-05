@@ -52,18 +52,22 @@ namespace PirateAdventures
 
         public void Update(List<IGameObject> objects, GameTime gameTime)
         {
-
+            System.Console.WriteLine($"Hero Position: {Position}");
 
             var direction = input.ReadInput();
 
             // change speed according to direction input
             Move(direction);
 
-            Vector2 nextPos = Position + speed;
-            CheckCollision(nextPos, objects);   // check if next position doesn't collide
-
             Position += speed;
-            BoundingBox = new Rectangle((int)Position.X, (int)Position.Y, SPRITE_WIDTH, SPRITE_HEIGHT);
+            BoundingBox = new Rectangle(
+                (int)Position.X,
+                (int)Position.Y,
+                BoundingBox.Width,
+                BoundingBox.Height
+            );
+
+            CheckCollision(objects);   // check if next position doesn't collide
 
             // Make sure the hero doesn't go out of the screen
             // if (Position.X > 800 - SPRITE_WIDTH) Position = new Vector2(800 - SPRITE_WIDTH, Position.Y);
@@ -135,15 +139,8 @@ namespace PirateAdventures
 
         }
 
-        private void CheckCollision(Vector2 nextPos, List<IGameObject> objects)
+        private void CheckCollision(List<IGameObject> objects)
         {
-            // TODO: Fix collision
-
-            Rectangle bb = new Rectangle((int)nextPos.X, (int)nextPos.Y, SPRITE_WIDTH, SPRITE_HEIGHT);
-
-            // System.Console.WriteLine($"collision:\t{collision};\tpos:\t{position};\tspeed:\t{speed}");
-
-            Vector2 newCollision = Vector2.Zero;
             foreach (var block in objects)
             {
                 if (block is ICollidable)
@@ -151,48 +148,36 @@ namespace PirateAdventures
                     var collisionObj = block as ICollidable;
                     if (collisionObj.Passable) continue;
 
-                    if (collisionObj.BoundingBox.Intersects(bb))
+                    if (collisionObj.BoundingBox.Intersects(BoundingBox))
                     {
-                        if (bb.Left < collisionObj.BoundingBox.Right && speed.X < 0)
-                        {
-                            Position = new Vector2(collisionObj.BoundingBox.Right, Position.Y);
-                            speed.X = 0;
-                            newCollision.X = -1;
-                            continue;
-                            // break;
-                        }
-                        else if (bb.Right > collisionObj.BoundingBox.Left && speed.X > 0)
-                        {
-                            Position = new Vector2(collisionObj.BoundingBox.Left - SPRITE_WIDTH + 1, Position.Y);
-                            speed.X = 0;
-                            newCollision.X = 1;
-                            continue;
-                            // break;
-                        }
+                        Rectangle intersection = Rectangle.Intersect(BoundingBox, collisionObj.BoundingBox);
 
-                        if (bb.Bottom > collisionObj.BoundingBox.Top && speed.Y > 0)
+                        if (intersection.Width < intersection.Height)
                         {
-                            Position = new Vector2(Position.X, collisionObj.BoundingBox.Top - SPRITE_HEIGHT);
-                            speed.Y = 0;
-                            isGrounded = true;
-                            newCollision.Y = 1;
-                            continue;
-                            // break;
+                            if (BoundingBox.Center.X < collisionObj.BoundingBox.Center.X)
+                                Position = new Vector2(Position.X - intersection.Width, Position.Y);
+                            else
+                                Position = new Vector2(Position.X + intersection.Width, Position.Y);
+                            speed.X = 0;
                         }
-                        else if (bb.Top < collisionObj.BoundingBox.Bottom && speed.Y < 0)
+                        else
                         {
-                            Position = new Vector2(Position.X, collisionObj.BoundingBox.Bottom);
+                            if (BoundingBox.Center.Y < collisionObj.BoundingBox.Center.Y)
+                            {
+                                Position = new Vector2(Position.X, Position.Y - intersection.Height);
+                                isGrounded = true;
+                            }
+                            else
+                            {
+                                Position = new Vector2(Position.X, Position.Y + intersection.Height);
+                            }
+
                             speed.Y = 0;
-                            newCollision.Y = -1;
-                            continue;
-                            // break;
                         }
+                        BoundingBox = new Rectangle((int)Position.X, (int)Position.Y, BoundingBox.Width, BoundingBox.Height);
                     }
                 }
             }
-
-            collision = newCollision;
-
         }
 
 
