@@ -65,9 +65,10 @@ namespace PirateAdventures
             Position += speed;
             BoundingBox = new Rectangle((int)Position.X, (int)Position.Y, SPRITE_WIDTH, SPRITE_HEIGHT);
 
-            if (Position.X > 800 - SPRITE_WIDTH) Position = new Vector2(800 - SPRITE_WIDTH, Position.Y);
-            if (Position.X < 0) Position = new Vector2(0, Position.Y);
-            if (Position.Y > 460 - SPRITE_HEIGHT) Position = new Vector2(Position.X, 460 - SPRITE_HEIGHT);
+            // Make sure the hero doesn't go out of the screen
+            // if (Position.X > 800 - SPRITE_WIDTH) Position = new Vector2(800 - SPRITE_WIDTH, Position.Y);
+            // if (Position.X < 0) Position = new Vector2(0, Position.Y);
+            // if (Position.Y > 460 - SPRITE_HEIGHT) Position = new Vector2(Position.X, 460 - SPRITE_HEIGHT);
 
             // if the hero is not moving, the state is IDLE (0), else it's RUNNING (1)
             if (speed.X != 0) state = HeroState.RUNNING;

@@ -25,7 +25,7 @@ public class Game1 : Game
     private List<IGameObject> _blocks;
     private TiledMap tiledMap;
     private Vector2 cameraOffset = Vector2.Zero;
-    private const int CAMERA_MARGIN_X = 500, CAMERA_MARGIN_Y = 200;
+    private const int CAMERA_MARGIN_X = 400, CAMERA_MARGIN_Y = 200;
 
     public Game1()
     {
@@ -116,12 +116,12 @@ public class Game1 : Game
         float heroDisplayY = hero.Position.Y - cameraOffset.Y;
 
         // horizontal scrolling
-        if (heroDisplayX < CAMERA_MARGIN_X) cameraOffset.X = heroDisplayX - CAMERA_MARGIN_X;
-        else if (heroDisplayX > screenWidth - CAMERA_MARGIN_X) cameraOffset.X = heroDisplayX - (screenWidth - CAMERA_MARGIN_X);
+        if (heroDisplayX < CAMERA_MARGIN_X) cameraOffset.X = hero.Position.X - CAMERA_MARGIN_X;
+        else if (heroDisplayX > screenWidth - CAMERA_MARGIN_X) cameraOffset.X = hero.Position.X - (screenWidth - CAMERA_MARGIN_X);
 
         // vertical scrolling
-        if (heroDisplayY < CAMERA_MARGIN_Y) cameraOffset.Y = heroDisplayY - CAMERA_MARGIN_Y;
-        else if (heroDisplayY > screenHeight - CAMERA_MARGIN_Y) cameraOffset.Y = heroDisplayY - (screenHeight - CAMERA_MARGIN_Y);
+        if (heroDisplayY < CAMERA_MARGIN_Y) cameraOffset.Y = hero.Position.Y - CAMERA_MARGIN_Y;
+        else if (heroDisplayY > screenHeight - CAMERA_MARGIN_Y) cameraOffset.Y = hero.Position.Y - (screenHeight - CAMERA_MARGIN_Y);
 
         cameraOffset.X = MathHelper.Clamp(cameraOffset.X, 0, tiledMap.Width - screenWidth);
         cameraOffset.Y = MathHelper.Clamp(cameraOffset.Y, 0, tiledMap.Height - screenHeight);
