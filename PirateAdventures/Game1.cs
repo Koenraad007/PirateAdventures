@@ -24,6 +24,8 @@ public class Game1 : Game
     private BigGuy bigGuy;
     private List<IGameObject> _blocks;
     private TiledMap tiledMap;
+    private Vector2 cameraOffset = Vector2.Zero;
+    private const int CAMERA_MARGIN_X = 500, CAMERA_MARGIN_Y = 200;
 
     public Game1()
     {
@@ -93,6 +95,7 @@ public class Game1 : Game
             case GameState.Playing:
                 hero.Update(_blocks, gameTime);
                 bigGuy.Update(new List<IGameObject>() { hero }, gameTime);
+                UpdateCamera();
                 break;
             case GameState.GameOver:
                 break;
@@ -103,13 +106,35 @@ public class Game1 : Game
         base.Update(gameTime);
     }
 
+    private void UpdateCamera()
+    {
+        int screenWidth = GraphicsDevice.Viewport.Width;
+        int screenHeight = GraphicsDevice.Viewport.Height;
+
+        // calculate where the hero should be displayed on the screen
+        float heroDisplayX = hero.Position.X - cameraOffset.X;
+        float heroDisplayY = hero.Position.Y - cameraOffset.Y;
+
+        // horizontal scrolling
+        if (heroDisplayX < CAMERA_MARGIN_X) cameraOffset.X = heroDisplayX - CAMERA_MARGIN_X;
+        else if (heroDisplayX > screenWidth - CAMERA_MARGIN_X) cameraOffset.X = heroDisplayX - (screenWidth - CAMERA_MARGIN_X);
+
+        // vertical scrolling
+        if (heroDisplayY < CAMERA_MARGIN_Y) cameraOffset.Y = heroDisplayY - CAMERA_MARGIN_Y;
+        else if (heroDisplayY > screenHeight - CAMERA_MARGIN_Y) cameraOffset.Y = heroDisplayY - (screenHeight - CAMERA_MARGIN_Y);
+
+        cameraOffset.X = MathHelper.Clamp(cameraOffset.X, 0, tiledMap.Width - screenWidth);
+        cameraOffset.Y = MathHelper.Clamp(cameraOffset.Y, 0, tiledMap.Height - screenHeight);
+    }
+
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(new Color(50, 52, 67));
 
         // Add your drawing code here
         _spriteBatch.Begin(
-            samplerState: SamplerState.PointClamp
+            samplerState: SamplerState.PointClamp,
+            transformMatrix: Matrix.CreateTranslation(-cameraOffset.X, -cameraOffset.Y, 0)
             );
 
         switch (_stateManager.CurrentState)
