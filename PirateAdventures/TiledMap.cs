@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using PirateAdventures;
 using PirateAdventures.Interfaces;
 using PirateAdventures.Level;
 using TiledSharp;
@@ -11,7 +12,7 @@ using TiledSharp;
 public class TiledMap
 {
     private TmxMap _map;
-    private Texture2D _tilesetTexture;
+    private Texture2D _tilesetTexture, _bigGuyTexture;
     public List<IGameObject> CollisionObjects { get; private set; } = new List<IGameObject>();
     public int Width { get; private set; }
     public int Height { get; private set; }
@@ -27,6 +28,7 @@ public class TiledMap
     public void LoadContent(ContentManager contentManager)
     {
         _tilesetTexture = contentManager.Load<Texture2D>("tileset64");
+        _bigGuyTexture = contentManager.Load<Texture2D>("enemy_bigguy");
     }
 
     private void CreateCollisionObjects()
@@ -57,6 +59,38 @@ public class TiledMap
                 }
             }
         }
+    }
+
+    public List<IGameObject> CreateEnemyObjects()
+    {
+        var enemyObjects = new List<IGameObject>();
+
+        var enemyLayer = _map.ObjectGroups.FirstOrDefault(l => l.Name.ToLower().Contains("enemies"));
+
+        if (enemyLayer != null)
+        {
+            foreach (var enemy in enemyLayer.Objects)
+            {
+                Console.WriteLine($"Enemy Name: {enemy.Name}");
+
+                switch (enemy.Name.ToLower())
+                {
+                    case "big":
+                        var bigGuy = new BigGuy(
+                                _bigGuyTexture
+                                )
+                        {
+                            Position = new Vector2((float)enemy.X, (float)enemy.Y - BigGuy.SPRITE_HEIGHT),
+                        };
+                        enemyObjects.Add(bigGuy);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        return enemyObjects;
     }
 
     public void Draw(SpriteBatch spriteBatch)

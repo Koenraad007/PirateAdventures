@@ -23,6 +23,7 @@ public class Game1 : Game
     private Hero hero;
     private BigGuy bigGuy;
     private List<IGameObject> _blocks;
+    private List<IGameObject> _enemies;
     private TiledMap tiledMap;
     private Vector2 cameraOffset = Vector2.Zero;
     private const int CAMERA_MARGIN_X = 400, CAMERA_MARGIN_Y = 200;
@@ -77,7 +78,8 @@ public class Game1 : Game
     private void InitializeGameObjects()
     {
         hero = new Hero(_heroTexture, new KeyboardInputReader());
-        bigGuy = new BigGuy(_enemyTexture);
+        //bigGuy = new BigGuy(_enemyTexture);
+        _enemies = tiledMap.CreateEnemyObjects();
 
         _blocks = tiledMap.CollisionObjects;
     }
@@ -94,7 +96,11 @@ public class Game1 : Game
                 break;
             case GameState.Playing:
                 hero.Update(_blocks, gameTime);
-                bigGuy.Update(new List<IGameObject>() { hero }, gameTime);
+                //bigGuy.Update(new List<IGameObject>() { hero }, gameTime);
+                foreach (IGameObject enemy in _enemies)
+                {
+                    enemy.Update(new List<IGameObject>() { hero }, gameTime);
+                }
                 UpdateCamera();
                 break;
             case GameState.GameOver:
@@ -146,7 +152,11 @@ public class Game1 : Game
             case GameState.Playing:
                 tiledMap.Draw(_spriteBatch);
 
-                bigGuy.Draw(_spriteBatch);
+                //bigGuy.Draw(_spriteBatch);
+                foreach (IGameObject enemy in _enemies)
+                {
+                    enemy.Draw(_spriteBatch);
+                }
 
                 hero.Draw(_spriteBatch);
                 break;
