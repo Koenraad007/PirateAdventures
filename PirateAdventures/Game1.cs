@@ -86,6 +86,7 @@ public class Game1 : Game
                 _blocks.Add(BlockFactory.CreateBlock(gameboard[i, j], j, i, _tileset, 64));
             }
         }
+        _blocks = tiledMap.CollisionObjects;
     }
 
     private char[,] readLevelFromFile(string filePath)
@@ -150,7 +151,9 @@ public class Game1 : Game
         GraphicsDevice.Clear(new Color(50, 52, 67));
 
         // Add your drawing code here
-        _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+        _spriteBatch.Begin(
+            samplerState: SamplerState.PointClamp
+            );
 
         switch (_stateManager.CurrentState)
         {

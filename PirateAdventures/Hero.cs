@@ -34,7 +34,7 @@ namespace PirateAdventures
         {
             heroTexture = texture;
             input = inputReader;
-            this.Position = new Vector2(100, 100);
+            this.Position = new Vector2(200, 200);
             this.BoundingBox = new Rectangle((int)Position.X, (int)Position.Y, SPRITE_WIDTH, SPRITE_HEIGHT);
 
             idle = new Animation();
