@@ -78,49 +78,7 @@ public class Game1 : Game
         hero = new Hero(_heroTexture, new KeyboardInputReader());
         bigGuy = new BigGuy(_enemyTexture);
 
-        gameboard = readLevelFromFile("./../../../level1.txt");
-        for (int i = 0; i < gameboard.GetLength(0); i++)
-        {
-            for (int j = 0; j < gameboard.GetLength(1); j++)
-            {
-                _blocks.Add(BlockFactory.CreateBlock(gameboard[i, j], j, i, _tileset, 64));
-            }
-        }
         _blocks = tiledMap.CollisionObjects;
-    }
-
-    private char[,] readLevelFromFile(string filePath)
-    {
-        int rows = 0, cols = 0;
-
-        using (var reader = File.OpenText(filePath))
-        {
-            cols = reader.ReadLine().Length;
-            rows++;
-            while (reader.ReadLine() != null) rows++;
-        }
-
-        char[,] stringMatrix = new char[rows, cols];
-
-        try
-        {
-            using var sr = new StreamReader(filePath);
-            for (int i = 0; i < rows; i++)
-            {
-                var tiles = sr.ReadLine()?.ToCharArray();
-                for (int j = 0; j < cols; j++)
-                {
-                    if (tiles != null) stringMatrix[i, j] = tiles[j];
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            System.Console.WriteLine(e);
-            throw;
-        }
-
-        return stringMatrix;
     }
 
     protected override void Update(GameTime gameTime)
