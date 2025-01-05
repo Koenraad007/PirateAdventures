@@ -23,8 +23,6 @@ public class Game1 : Game
     private Hero hero;
     private BigGuy bigGuy;
     private List<IGameObject> _blocks;
-    private char[,] gameboard;
-
     private TiledMap tiledMap;
 
     public Game1()
@@ -37,8 +35,6 @@ public class Game1 : Game
 
     protected override void Initialize()
     {
-
-
         // Add your initialization logic here
 
         _stateManager = GameStateManager.Instance;
@@ -50,6 +46,9 @@ public class Game1 : Game
 
         base.Initialize();  // bevat de LoadContent() method, dus na deze lijn zijn de textures geladen
 
+        // TODO: store level in different location
+        tiledMap.Initialize("./../../../Content/naamloos.tmx");
+        startscreen.Initialize(GraphicsDevice);
         InitializeGameObjects();
 
 
@@ -57,7 +56,7 @@ public class Game1 : Game
 
     protected override void LoadContent()
     {
-        startscreen.Initialize(Content, GraphicsDevice);
+        startscreen.LoadContent(Content);
 
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
@@ -68,8 +67,8 @@ public class Game1 : Game
         _tileset = Content.Load<Texture2D>("tileset64");
 
         tiledMap = new TiledMap();
-        // TODO: store level in different location
-        tiledMap.LoadContent(Content, "./../../../Content/naamloos.tmx");
+
+        tiledMap.LoadContent(Content);
 
     }
 
@@ -121,11 +120,6 @@ public class Game1 : Game
 
             case GameState.Playing:
                 tiledMap.Draw(_spriteBatch);
-
-                // foreach (var block in _blocks)
-                // {
-                //     block!.Draw(_spriteBatch);
-                // }
 
                 bigGuy.Draw(_spriteBatch);
 

@@ -16,16 +16,19 @@ public class Startscreen
     private Color startBtnColor = Color.White;
     private bool startBtnPressed = false;
 
-    public void Initialize(ContentManager content, GraphicsDevice graphicsDevice)
+    public void Initialize(GraphicsDevice graphicsDevice)
     {
         _graphicsDevice = graphicsDevice;
+        startButtonSrcRectangle = new Rectangle(0, 48, 32, 16);
+        startButtonBounds = new Rectangle(_graphicsDevice.Viewport.Width / 2 - 64, _graphicsDevice.Viewport.Height / 2, 128, 64);
+    }
 
+    public void LoadContent(ContentManager content)
+    {
         backgroundTexture = content.Load<Texture2D>("start_bg");
         titlePirateTexture = content.Load<Texture2D>("PirateText");
         titleAdventuresTexture = content.Load<Texture2D>("AdventuresText");
         buttonsTexture = content.Load<Texture2D>("BrownButtons");
-        startButtonSrcRectangle = new Rectangle(0, 48, 32, 16);
-        startButtonBounds = new Rectangle(_graphicsDevice.Viewport.Width / 2 - 64, _graphicsDevice.Viewport.Height / 2, 128, 64);
     }
 
     public void Update(GameTime gameTime)

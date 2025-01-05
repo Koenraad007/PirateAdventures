@@ -13,13 +13,20 @@ public class TiledMap
     private TmxMap _map;
     private Texture2D _tilesetTexture;
     public List<IGameObject> CollisionObjects { get; private set; } = new List<IGameObject>();
+    public int Width { get; private set; }
+    public int Height { get; private set; }
 
-    public void LoadContent(ContentManager contentManager, string filePath)
+    public void Initialize(string filePath)
     {
         _map = new TmxMap(filePath);
-        _tilesetTexture = contentManager.Load<Texture2D>("tileset64");
-
+        Width = _map.Width * _map.TileWidth;
+        Height = _map.Height * _map.TileHeight;
         CreateCollisionObjects();
+    }
+
+    public void LoadContent(ContentManager contentManager)
+    {
+        _tilesetTexture = contentManager.Load<Texture2D>("tileset64");
     }
 
     private void CreateCollisionObjects()
