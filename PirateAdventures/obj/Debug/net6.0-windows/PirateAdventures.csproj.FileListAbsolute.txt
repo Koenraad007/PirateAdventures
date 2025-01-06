@@ -85,3 +85,4 @@ c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\bin\Debug\net6.0
 c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\bin\Debug\net6.0-windows\Content\BrownButtons.xnb
 c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\bin\Debug\net6.0-windows\TiledSharp.dll
 c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\bin\Debug\net6.0-windows\Content\enemy_shooter.xnb
+c:\Users\Koenv\StudioProjects\PirateAdventures\PirateAdventures\bin\Debug\net6.0-windows\Content\enemy_windowguy.xnb

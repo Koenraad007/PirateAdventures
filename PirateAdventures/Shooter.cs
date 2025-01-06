@@ -52,7 +52,13 @@ class Shooter : IEnemy, ICollidable
 
         if (hero.Position.Y < Position.Y + SPRITE_HEIGHT)
             EnemyState = 1;
-        else EnemyState = 0;
+        else
+        {
+            EnemyState = 0;
+            secondCtr = 0;
+            msCtr = 0;
+            lockedPos = hero.Position;
+        }
 
         animations[EnemyState].Update(gameTime);
         for (int i = 0; i < animations.Count; i++)
@@ -74,7 +80,7 @@ class Shooter : IEnemy, ICollidable
                     msCtr = 0;
                 }
 
-                System.Console.WriteLine((int)msCtr / 10);
+                // change laser color
                 if (msCtr / 100 < 256)
                     laserColor = new Color(255, (int)msCtr / 10, (int)msCtr / 10);
 
