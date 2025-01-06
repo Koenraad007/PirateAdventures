@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using PirateAdventures;
 using PirateAdventures.Animations;
 using PirateAdventures.Interfaces;
@@ -19,6 +21,7 @@ class Shooter : IEnemy, ICollidable
     private Texture2D texture2D;
     private List<Animation> animations = new();
     private SpriteEffects spriteEffects = SpriteEffects.None;
+    private float rotation = 0;
 
     public Shooter(Texture2D texture)
     {
@@ -53,13 +56,26 @@ class Shooter : IEnemy, ICollidable
         {
             if (EnemyState != i) animations[i].ResetAnimation();
         }
+
+
+
+        this.rotation += 1;
+        if (rotation == 360) rotation = 0;
     }
 
     public void Draw(SpriteBatch spriteBatch)
     {
         spriteBatch.Draw(texture2D, Position, animations[EnemyState].CurrentFrame.SourceRect, Color.White, 0, new Vector2(0, 0), 1f, spriteEffects, 0);
 
+
+        // Arm
         var rotationOrigin = new Vector2(13, 40);
-        spriteBatch.Draw(texture2D, Position, armSrcRect, Color.White, 2, rotationOrigin, 1f, spriteEffects, 0);
+        var armPos = new Vector2(Position.X + 13, Position.Y + 40);
+        if (spriteEffects == SpriteEffects.FlipHorizontally)
+        {
+            rotationOrigin = new Vector2(SPRITE_WIDTH - 13, 40);
+            armPos = new Vector2(Position.X + SPRITE_WIDTH - 13, Position.Y + 40);
+        }
+        spriteBatch.Draw(texture2D, armPos, armSrcRect, Color.White, MathHelper.ToRadians(rotation), rotationOrigin, 1.5f, spriteEffects, 0);
     }
 }
