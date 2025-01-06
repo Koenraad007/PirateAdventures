@@ -24,6 +24,9 @@ class Shooter : IEnemy, ICollidable
     private float rotation = 0, laserLength = 0;
     private Vector2 rotationOrigin = new Vector2(13, 40);
     private Vector2 armPos = Vector2.Zero;
+    private Vector2 lockedPos = Vector2.Zero;
+    private double secondCtr = 0, msCtr = 0;
+    private Color laserColor = Color.Red;
 
     public Shooter(Texture2D texture)
     {
@@ -51,47 +54,63 @@ class Shooter : IEnemy, ICollidable
             EnemyState = 1;
         else EnemyState = 0;
 
-        if (hero.Position.X < Position.X && EnemyState == 1)
-        {
-            spriteEffects = SpriteEffects.FlipHorizontally;
-        }
-        else spriteEffects = SpriteEffects.None;
-
         animations[EnemyState].Update(gameTime);
         for (int i = 0; i < animations.Count; i++)
         {
             if (EnemyState != i) animations[i].ResetAnimation();
         }
 
-        // Arm
-        var direction = hero.Position - Position;
-        rotation = MathF.Atan2(direction.Y, direction.X);
-        // Adjust rotation based on sprite flip
-        if (spriteEffects == SpriteEffects.FlipHorizontally)
+        switch (EnemyState)
         {
-            rotationOrigin = new Vector2(SPRITE_WIDTH - 13, 40);
-            rotation -= MathF.PI / 2;
+            case 0:
+                break;
+            case 1:
+                secondCtr += gameTime.ElapsedGameTime.TotalSeconds;
+                msCtr += gameTime.ElapsedGameTime.TotalMilliseconds;
+                if (secondCtr > 2)
+                {
+                    lockedPos = hero.Position;
+                    secondCtr = 0;
+                    msCtr = 0;
+                }
+
+                System.Console.WriteLine((int)msCtr / 10);
+                if (msCtr / 100 < 256)
+                    laserColor = new Color(255, (int)msCtr / 10, (int)msCtr / 10);
+
+                if (lockedPos.X < Position.X) spriteEffects = SpriteEffects.FlipHorizontally;
+                else spriteEffects = SpriteEffects.None;
+
+                // Arm
+                var direction = lockedPos - Position;
+                rotation = MathF.Atan2(direction.Y, direction.X);
+                // Adjust rotation based on sprite flip
+                if (spriteEffects == SpriteEffects.FlipHorizontally)
+                {
+                    rotationOrigin = new Vector2(SPRITE_WIDTH - 13, 40);
+                    rotation -= MathF.PI / 2;
+                }
+                else if (spriteEffects == SpriteEffects.None)
+                {
+                    rotationOrigin = new Vector2(13, 40);
+                    rotation += 3 * MathF.PI / 2;
+                }
+                armPos = Position + rotationOrigin;
+                laserLength = Vector2.Distance(armPos, new Vector2(lockedPos.X + Hero.SPRITE_WIDTH / 2, lockedPos.Y + Hero.SPRITE_HEIGHT / 2));
+                // normalize rotation
+                rotation = (rotation + MathF.PI * 2) % (MathF.PI * 2);
+                break;
         }
-        else if (spriteEffects == SpriteEffects.None)
-        {
-            rotationOrigin = new Vector2(13, 40);
-            rotation += 3 * MathF.PI / 2;
-        }
-        armPos = Position + rotationOrigin;
-        laserLength = Vector2.Distance(armPos, hero.BoundingBox.Center.ToVector2());
-        // normalize rotation
-        rotation = (rotation + MathF.PI * 2) % (MathF.PI * 2);
+
     }
 
     public void Draw(SpriteBatch spriteBatch)
     {
         spriteBatch.Draw(texture2D, Position, animations[EnemyState].CurrentFrame.SourceRect, Color.White, 0, new Vector2(0, 0), 1f, spriteEffects, 0);
 
-        // System.Console.WriteLine($"Laser length: {laserLength}, Laser origin: {armPos}, Rotation: {rotation}");
-
         if (EnemyState == 1)
         {
-            spriteBatch.Draw(laser, armPos, null, Color.Red, rotation + MathF.PI / 2, Vector2.Zero, new Vector2(laserLength, 3), SpriteEffects.None, 0);
+            spriteBatch.Draw(laser, armPos, null, laserColor, rotation + MathF.PI / 2, Vector2.Zero, new Vector2(laserLength, 3), SpriteEffects.None, 0);
 
             spriteBatch.Draw(texture2D, armPos, armSrcRect, Color.White, rotation, rotationOrigin, 1.5f, spriteEffects, 0);
         }
