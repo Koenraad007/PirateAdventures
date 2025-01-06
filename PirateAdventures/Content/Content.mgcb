@@ -73,6 +73,18 @@
 /processorParam:TextureFormat=Color
 /build:Pirate-2-1-2025 (1).png;PirateText.png
 
+#begin Shooter.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Shooter.png;enemy_shooter.png
+
 #begin start_bg.png
 /importer:TextureImporter
 /processor:TextureProcessor

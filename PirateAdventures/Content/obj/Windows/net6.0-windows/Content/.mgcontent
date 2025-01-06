@@ -9,6 +9,7 @@
     <File>c:/Users/Koenv/StudioProjects/PirateAdventures/PirateAdventures/Content/enemy_bigguy.png</File>
     <File>c:/Users/Koenv/StudioProjects/PirateAdventures/PirateAdventures/Content/hero.png</File>
     <File>c:/Users/Koenv/StudioProjects/PirateAdventures/PirateAdventures/Content/Pirate-2-1-2025 (1).png</File>
+    <File>c:/Users/Koenv/StudioProjects/PirateAdventures/PirateAdventures/Content/Shooter.png</File>
     <File>c:/Users/Koenv/StudioProjects/PirateAdventures/PirateAdventures/Content/start_bg.png</File>
     <File>c:/Users/Koenv/StudioProjects/PirateAdventures/PirateAdventures/Content/Tile-Sets (64-64).png</File>
   </SourceFiles>
@@ -18,6 +19,7 @@
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File>PirateText.png</File>
+    <File>enemy_shooter.png</File>
     <File xsi:nil="true" />
     <File>tileset64.png</File>
   </DestFiles>

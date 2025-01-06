@@ -12,7 +12,8 @@ using TiledSharp;
 public class TiledMap
 {
     private TmxMap _map;
-    private Texture2D _tilesetTexture, _bigGuyTexture;
+    private Texture2D _tilesetTexture, _bigGuyTexture, _shooterTexture;
+
     public List<IGameObject> CollisionObjects { get; private set; } = new List<IGameObject>();
     public int Width { get; private set; }
     public int Height { get; private set; }
@@ -29,6 +30,7 @@ public class TiledMap
     {
         _tilesetTexture = contentManager.Load<Texture2D>("tileset64");
         _bigGuyTexture = contentManager.Load<Texture2D>("enemy_bigguy");
+        _shooterTexture = contentManager.Load<Texture2D>("enemy_shooter");
     }
 
     private void CreateCollisionObjects()
@@ -84,6 +86,17 @@ public class TiledMap
                         };
                         enemyObjects.Add(bigGuy);
                         break;
+
+                    case "shoot":
+                        var shooter = new Shooter(
+                            _shooterTexture
+                        )
+                        {
+                            Position = new Vector2((float)enemy.X, (float)enemy.Y - Shooter.SPRITE_HEIGHT)
+                        };
+                        enemyObjects.Add(shooter);
+                        break;
+
                     default:
                         break;
                 }

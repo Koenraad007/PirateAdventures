@@ -21,7 +21,6 @@ public class Game1 : Game
 
     private Texture2D _heroTexture, _tileset, _enemyTexture;
     private Hero hero;
-    private BigGuy bigGuy;
     private List<IGameObject> _blocks;
     private List<IGameObject> _enemies;
     private TiledMap tiledMap;

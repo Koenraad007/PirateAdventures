@@ -78,7 +78,7 @@
   <object id="1" name="big" x="1536" y="1152">
    <point/>
   </object>
-  <object id="2" name="big" x="576" y="960">
+  <object id="2" name="shoot" x="576" y="960">
    <point/>
   </object>
  </objectgroup>

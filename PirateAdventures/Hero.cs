@@ -52,8 +52,6 @@ namespace PirateAdventures
 
         public void Update(List<IGameObject> objects, GameTime gameTime)
         {
-            System.Console.WriteLine($"Hero Position: {Position}");
-
             var direction = input.ReadInput();
 
             // change speed according to direction input
