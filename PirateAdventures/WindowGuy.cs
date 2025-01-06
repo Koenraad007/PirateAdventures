@@ -9,7 +9,7 @@ using PirateAdventures.Interfaces;
 public class WindowGuy : IEnemy, ICollidable
 {
     public const int SPRITE_WIDTH = 64, SPRITE_HEIGHT = 64;
-    private Texture2D texture2D;
+    private Texture2D texture2D, bombTexture;
     public bool Passable { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
     public Vector2 Position { get; set; } = Vector2.Zero;
     public Rectangle BoundingBox { get; set; }
@@ -18,10 +18,12 @@ public class WindowGuy : IEnemy, ICollidable
     private List<Animation> animations = new();
     private double mSecondCtr = 0;
     private bool dynamiteThrown = false;
+    private List<Bomb> bombs = new();
 
-    public WindowGuy(Texture2D texture)
+    public WindowGuy(Texture2D texture, Texture2D dynamiteTexture)
     {
         texture2D = texture;
+        bombTexture = dynamiteTexture;
         BoundingBox = new Rectangle((int)Position.X, (int)Position.Y, SPRITE_WIDTH, SPRITE_HEIGHT);
 
         animations.Add(new Animation());
@@ -42,6 +44,11 @@ public class WindowGuy : IEnemy, ICollidable
     public void Draw(SpriteBatch spriteBatch)
     {
         spriteBatch.Draw(texture2D, Position, animations[EnemyState].CurrentFrame.SourceRect, Color.White, 0, new Vector2(0, 0), 1f, SpriteEffects.None, 0);
+
+        foreach (var bomb in bombs)
+        {
+            bomb.Draw(spriteBatch);
+        }
     }
 
     public void Update(List<IGameObject> collisionObjects, GameTime gameTime)
@@ -63,12 +70,17 @@ public class WindowGuy : IEnemy, ICollidable
                 {
                     System.Console.WriteLine("Throw dynamite");
                     dynamiteThrown = true;
+                    bombs.Add(new Bomb(bombTexture)
+                    {
+                        Position = new Vector2(Position.X + SPRITE_WIDTH, Position.Y + SPRITE_HEIGHT + 10)
+                    });
                 }
                 else if (mSecondCtr > 2000)
                 {
                     EnemyState = 0;
                     mSecondCtr = 0;
                     dynamiteThrown = false;
+                    bombs.Clear();
                 }
                 break;
             default:
@@ -79,6 +91,11 @@ public class WindowGuy : IEnemy, ICollidable
         for (int i = 0; i < animations.Count; i++)
         {
             if (EnemyState != i) animations[i].ResetAnimation();
+        }
+
+        foreach (var bomb in bombs)
+        {
+            bomb.Update(collisionObjects, gameTime);
         }
     }
 }

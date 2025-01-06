@@ -1,2 +1,2 @@
 Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
-"c:/Users/Koenv/StudioProjects/PirateAdventures/PirateAdventures/Content/WindowGuy.png","c:/Users/Koenv/StudioProjects/PirateAdventures/PirateAdventures/Content/bin/Windows/enemy_windowguy.xnb","TextureProcessor","Texture2DContent",10747,573525,0,0650945
+"c:/Users/Koenv/StudioProjects/PirateAdventures/PirateAdventures/Content/Bomb.png","c:/Users/Koenv/StudioProjects/PirateAdventures/PirateAdventures/Content/bin/Windows/Bomb.xnb","TextureProcessor","Texture2DContent",10158,2252885,0,0834553

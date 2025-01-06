@@ -25,6 +25,18 @@
 /processorParam:TextureFormat=Color
 /build:Adventures-2-1-2025 (1).png;AdventuresText.png
 
+#begin Bomb.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Bomb.png
+
 #begin Brown_Buttons_Pixel.png
 /importer:TextureImporter
 /processor:TextureProcessor
