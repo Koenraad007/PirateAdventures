@@ -18,15 +18,19 @@ class Shooter : IEnemy, ICollidable
     public Vector2 Position { get; set; } = new Vector2(0, 0);
     public Rectangle BoundingBox { get; set; }
     private Rectangle armSrcRect;
-    private Texture2D texture2D;
+    private Texture2D texture2D, laser;
     private List<Animation> animations = new();
-    private SpriteEffects spriteEffects = SpriteEffects.None, armEffects = SpriteEffects.None;
-    private float rotation = 0;
+    private SpriteEffects spriteEffects = SpriteEffects.None;
+    private float rotation = 0, laserLength = 0;
+    private Vector2 rotationOrigin = new Vector2(13, 40);
+    private Vector2 armPos = Vector2.Zero;
 
     public Shooter(Texture2D texture)
     {
         texture2D = texture;
         BoundingBox = new Rectangle((int)Position.X, (int)Position.Y, SPRITE_WIDTH, SPRITE_HEIGHT);
+        laser = new Texture2D(texture2D.GraphicsDevice, 1, 1);
+        laser.SetData(new[] { Color.White });
 
         animations.Add(new Animation());
         for (int i = 0; i < 34; i++)
@@ -43,9 +47,11 @@ class Shooter : IEnemy, ICollidable
     {
         var hero = collisionObjects.OfType<Hero>().First();
 
-        EnemyState = 1;
+        if (hero.Position.Y < Position.Y + SPRITE_HEIGHT)
+            EnemyState = 1;
+        else EnemyState = 0;
 
-        if (hero.Position.X < Position.X)
+        if (hero.Position.X < Position.X && EnemyState == 1)
         {
             spriteEffects = SpriteEffects.FlipHorizontally;
         }
@@ -63,12 +69,16 @@ class Shooter : IEnemy, ICollidable
         // Adjust rotation based on sprite flip
         if (spriteEffects == SpriteEffects.FlipHorizontally)
         {
+            rotationOrigin = new Vector2(SPRITE_WIDTH - 13, 40);
             rotation -= MathF.PI / 2;
         }
         else if (spriteEffects == SpriteEffects.None)
         {
+            rotationOrigin = new Vector2(13, 40);
             rotation += 3 * MathF.PI / 2;
         }
+        armPos = Position + rotationOrigin;
+        laserLength = Vector2.Distance(armPos, hero.BoundingBox.Center.ToVector2());
         // normalize rotation
         rotation = (rotation + MathF.PI * 2) % (MathF.PI * 2);
     }
@@ -77,14 +87,13 @@ class Shooter : IEnemy, ICollidable
     {
         spriteBatch.Draw(texture2D, Position, animations[EnemyState].CurrentFrame.SourceRect, Color.White, 0, new Vector2(0, 0), 1f, spriteEffects, 0);
 
-        // Arm
-        var rotationOrigin = new Vector2(13, 40);
-        var armPos = new Vector2(Position.X + 13, Position.Y + 40);
-        if (spriteEffects == SpriteEffects.FlipHorizontally)
+        // System.Console.WriteLine($"Laser length: {laserLength}, Laser origin: {armPos}, Rotation: {rotation}");
+
+        if (EnemyState == 1)
         {
-            rotationOrigin = new Vector2(SPRITE_WIDTH - 13, 40);
-            armPos = new Vector2(Position.X + SPRITE_WIDTH - 13, Position.Y + 40);
+            spriteBatch.Draw(laser, armPos, null, Color.Red, rotation + MathF.PI / 2, Vector2.Zero, new Vector2(laserLength, 3), SpriteEffects.None, 0);
+
+            spriteBatch.Draw(texture2D, armPos, armSrcRect, Color.White, rotation, rotationOrigin, 1.5f, spriteEffects, 0);
         }
-        spriteBatch.Draw(texture2D, armPos, armSrcRect, Color.White, rotation, rotationOrigin, 1.5f, spriteEffects, 0);
     }
 }
