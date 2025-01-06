@@ -16,14 +16,15 @@ namespace PirateAdventures.Level
         public bool Passable { get; set; }
         public Color Color { get; set; }
         public Texture2D Texture { get; set; }
-        public int BlockType { get; set; }
+        public BlockType BlockType { get; set; }
 
-        public Block(Vector2 position, Texture2D tileset, Vector2 tile, int tileSize, bool passable)
+        public Block(Vector2 position, Texture2D tileset, Vector2 tile, int tileSize, BlockType blockType)
         {
             SourceRect = new Rectangle((int)tile.Y * tileSize, (int)tile.X * tileSize, tileSize, tileSize);
             BoundingBox = new Rectangle((int)position.X, (int)position.Y, tileSize, tileSize);
             Position = position;
-            Passable = passable;
+            BlockType = blockType;
+            if (blockType == BlockType.AIR) Passable = true;
             Color = Color.White;
             Texture = tileset;
         }
@@ -40,5 +41,11 @@ namespace PirateAdventures.Level
         }
     }
 
+    public enum BlockType
+    {
+        AIR,
+        FULL,
+        PLATFORM
+    }
 }
 

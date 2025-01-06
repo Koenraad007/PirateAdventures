@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using PirateAdventures.Animations;
 using PirateAdventures.Interfaces;
+using PirateAdventures.Level;
 
 namespace PirateAdventures
 {
@@ -67,6 +68,9 @@ namespace PirateAdventures
 
             CheckCollision(objects);   // check if next position doesn't collide
 
+            if (speed.Y > 0) isGrounded = false;
+            Position = new Vector2(BoundingBox.X, BoundingBox.Y);
+
             // Make sure the hero doesn't go out of the screen
             // if (Position.X > 800 - SPRITE_WIDTH) Position = new Vector2(800 - SPRITE_WIDTH, Position.Y);
             // if (Position.X < 0) Position = new Vector2(0, Position.Y);
@@ -95,7 +99,6 @@ namespace PirateAdventures
         private void Move(Vector2 direction)
         {
             // TODO: put movement logic in IMovable interface and MovementManager class
-
 
             // if left/right keys are pressed
             if (direction.X != 0)
@@ -129,11 +132,8 @@ namespace PirateAdventures
                 isGrounded = false;
             }
 
-            // if in the air, apply gravity/deceleration
-            if (!isGrounded)
-            {
-                speed.Y += acceleration.Y;
-            }
+            speed.Y += acceleration.Y;
+
 
         }
 
@@ -150,27 +150,42 @@ namespace PirateAdventures
                     {
                         Rectangle intersection = Rectangle.Intersect(BoundingBox, collisionObj.BoundingBox);
 
-                        if (intersection.Width < intersection.Height)
+                        if (collisionObj is Block)
                         {
-                            if (BoundingBox.Center.X < collisionObj.BoundingBox.Center.X)
-                                Position = new Vector2(Position.X - intersection.Width, Position.Y);
-                            else
-                                Position = new Vector2(Position.X + intersection.Width, Position.Y);
-                            speed.X = 0;
-                        }
-                        else
-                        {
-                            if (BoundingBox.Center.Y < collisionObj.BoundingBox.Center.Y)
-                            {
-                                Position = new Vector2(Position.X, Position.Y - intersection.Height);
-                                isGrounded = true;
-                            }
-                            else
-                            {
-                                Position = new Vector2(Position.X, Position.Y + intersection.Height);
-                            }
+                            Block collBlock = (Block)collisionObj;
 
-                            speed.Y = 0;
+                            // collision on the X axis
+                            if (intersection.Width < intersection.Height)
+                            {
+                                if (collBlock.BlockType == BlockType.FULL)
+                                {
+                                    if (BoundingBox.Center.X < collisionObj.BoundingBox.Center.X)
+                                        Position = new Vector2(Position.X - intersection.Width, Position.Y);
+                                    else
+                                        Position = new Vector2(Position.X + intersection.Width, Position.Y);
+                                    speed.X = 0;
+                                }
+                            }
+                            // collision on the Y axis
+                            else
+                            {
+                                if (BoundingBox.Center.Y < collisionObj.BoundingBox.Center.Y && speed.Y > 0)
+                                {
+                                    Position = new Vector2(Position.X, Position.Y - intersection.Height);
+                                    isGrounded = true;
+                                    speed.Y = 0;
+                                }
+                                else
+                                {
+                                    if (collBlock.BlockType == BlockType.FULL)
+                                    {
+                                        Position = new Vector2(Position.X, Position.Y + intersection.Height);
+                                        speed.Y = 0;
+                                    }
+                                }
+
+
+                            }
                         }
                         BoundingBox = new Rectangle((int)Position.X, (int)Position.Y, BoundingBox.Width, BoundingBox.Height);
                     }

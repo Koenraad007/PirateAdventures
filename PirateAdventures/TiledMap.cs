@@ -36,6 +36,7 @@ public class TiledMap
     private void CreateCollisionObjects()
     {
         var collisionLayer = _map.Layers.FirstOrDefault(l => l.Name.ToLower().Contains("collision"));
+        var firstGid = 31;
 
         if (collisionLayer != null)
         {
@@ -47,16 +48,35 @@ public class TiledMap
 
                     if (tileId > 0)
                     {
-                        var srcRect = CalculateTileSourceRectangle(tileId);
-                        var block = new Block(
-                            new Vector2(x * _map.TileWidth, y * _map.TileHeight),
-                            _tilesetTexture,
-                            new Vector2(srcRect.X / 64, srcRect.Y / 64),
-                            64,
-                            false
-                            );
+                        // full block
+                        if (tileId == firstGid)
+                        {
+                            var srcRect = CalculateTileSourceRectangle(tileId);
+                            var block = new Block(
+                                new Vector2(x * _map.TileWidth, y * _map.TileHeight),
+                                _tilesetTexture,
+                                new Vector2(srcRect.X / 64, srcRect.Y / 64),
+                                64,
+                                BlockType.FULL
+                                );
 
-                        CollisionObjects.Add(block);
+                            CollisionObjects.Add(block);
+                        }
+
+                        // platform, only collision from top
+                        if (tileId == firstGid + 1)
+                        {
+                            var srcRect = CalculateTileSourceRectangle(tileId);
+                            var block = new Block(
+                                new Vector2(x * _map.TileWidth, y * _map.TileHeight),
+                                _tilesetTexture,
+                                new Vector2(srcRect.X / 64, srcRect.Y / 64),
+                                64,
+                                BlockType.PLATFORM
+                                );
+
+                            CollisionObjects.Add(block);
+                        }
                     }
                 }
             }

@@ -51,7 +51,7 @@ namespace PirateAdventures.Level
                     break;
             }
 
-            if (tile != (-1, -1)) newBlock = new Block(new Vector2(posX, posY) * tileSize, tileset, new Vector2(tile.x, tile.y), tileSize, passable);
+            if (tile != (-1, -1)) newBlock = new Block(new Vector2(posX, posY) * tileSize, tileset, new Vector2(tile.x, tile.y), tileSize, BlockType.AIR);
 
             return newBlock;
         }
