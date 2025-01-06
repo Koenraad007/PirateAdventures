@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using PirateAdventures;
 using PirateAdventures.Animations;
 using PirateAdventures.Interfaces;
 
@@ -14,6 +16,8 @@ public class WindowGuy : IEnemy, ICollidable
     public int EnemyState { get; set; } = 0;
     public int EnemyType { get; set; } = 2;
     private List<Animation> animations = new();
+    private double mSecondCtr = 0;
+    private bool dynamiteThrown = false;
 
     public WindowGuy(Texture2D texture)
     {
@@ -28,6 +32,11 @@ public class WindowGuy : IEnemy, ICollidable
         {
             animations[1].AddFrame(new AnimationFrame(new Rectangle(SPRITE_WIDTH * i, 0, SPRITE_WIDTH, SPRITE_HEIGHT)));
         }
+        // add more frames so animation is 2 seconds (40 frames) long
+        for (int i = 0; i < 7; i++)
+        {
+            animations[1].AddFrame(new AnimationFrame(new Rectangle(SPRITE_WIDTH * 34, 0, SPRITE_WIDTH, SPRITE_HEIGHT)));
+        }
     }
 
     public void Draw(SpriteBatch spriteBatch)
@@ -37,6 +46,35 @@ public class WindowGuy : IEnemy, ICollidable
 
     public void Update(List<IGameObject> collisionObjects, GameTime gameTime)
     {
+        var hero = collisionObjects.OfType<Hero>().First();
+        if (hero.Position.X > Position.X && hero.Position.X < Position.X + SPRITE_WIDTH)
+        {
+            System.Console.WriteLine("Same X coords");
+            EnemyState = 1;
+        }
+
+        switch (EnemyState)
+        {
+            case 0:
+                break;
+            case 1:
+                mSecondCtr += gameTime.ElapsedGameTime.TotalMilliseconds;
+                if (mSecondCtr > 1000 && !dynamiteThrown)
+                {
+                    System.Console.WriteLine("Throw dynamite");
+                    dynamiteThrown = true;
+                }
+                else if (mSecondCtr > 2000)
+                {
+                    EnemyState = 0;
+                    mSecondCtr = 0;
+                    dynamiteThrown = false;
+                }
+                break;
+            default:
+                break;
+        }
+
         animations[EnemyState].Update(gameTime);
         for (int i = 0; i < animations.Count; i++)
         {
