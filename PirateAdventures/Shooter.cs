@@ -20,7 +20,7 @@ class Shooter : IEnemy, ICollidable
     private Rectangle armSrcRect;
     private Texture2D texture2D;
     private List<Animation> animations = new();
-    private SpriteEffects spriteEffects = SpriteEffects.None;
+    private SpriteEffects spriteEffects = SpriteEffects.None, armEffects = SpriteEffects.None;
     private float rotation = 0;
 
     public Shooter(Texture2D texture)
@@ -57,16 +57,25 @@ class Shooter : IEnemy, ICollidable
             if (EnemyState != i) animations[i].ResetAnimation();
         }
 
-
-
-        this.rotation += 1;
-        if (rotation == 360) rotation = 0;
+        // Arm
+        var direction = hero.Position - Position;
+        rotation = MathF.Atan2(direction.Y, direction.X);
+        // Adjust rotation based on sprite flip
+        if (spriteEffects == SpriteEffects.FlipHorizontally)
+        {
+            rotation -= MathF.PI / 2;
+        }
+        else if (spriteEffects == SpriteEffects.None)
+        {
+            rotation += 3 * MathF.PI / 2;
+        }
+        // normalize rotation
+        rotation = (rotation + MathF.PI * 2) % (MathF.PI * 2);
     }
 
     public void Draw(SpriteBatch spriteBatch)
     {
         spriteBatch.Draw(texture2D, Position, animations[EnemyState].CurrentFrame.SourceRect, Color.White, 0, new Vector2(0, 0), 1f, spriteEffects, 0);
-
 
         // Arm
         var rotationOrigin = new Vector2(13, 40);
@@ -76,6 +85,6 @@ class Shooter : IEnemy, ICollidable
             rotationOrigin = new Vector2(SPRITE_WIDTH - 13, 40);
             armPos = new Vector2(Position.X + SPRITE_WIDTH - 13, Position.Y + 40);
         }
-        spriteBatch.Draw(texture2D, armPos, armSrcRect, Color.White, MathHelper.ToRadians(rotation), rotationOrigin, 1.5f, spriteEffects, 0);
+        spriteBatch.Draw(texture2D, armPos, armSrcRect, Color.White, rotation, rotationOrigin, 1.5f, spriteEffects, 0);
     }
 }

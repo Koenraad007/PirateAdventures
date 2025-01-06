@@ -16,7 +16,7 @@ namespace PirateAdventures.Level
         public bool Passable { get; set; }
         public Color Color { get; set; }
         public Texture2D Texture { get; set; }
-        // public CollideWithEvent CollideWithEvent { get; set; }
+        public int BlockType { get; set; }
 
         public Block(Vector2 position, Texture2D tileset, Vector2 tile, int tileSize, bool passable)
         {
@@ -39,4 +39,6 @@ namespace PirateAdventures.Level
             throw new NotImplementedException();
         }
     }
+
 }
+
