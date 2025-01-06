@@ -35,7 +35,7 @@ public class WindowGuy : IEnemy, ICollidable
             animations[1].AddFrame(new AnimationFrame(new Rectangle(SPRITE_WIDTH * i, 0, SPRITE_WIDTH, SPRITE_HEIGHT)));
         }
         // add more frames so animation is 2 seconds (40 frames) long
-        for (int i = 0; i < 7; i++)
+        for (int i = 0; i < 5; i++)
         {
             animations[1].AddFrame(new AnimationFrame(new Rectangle(SPRITE_WIDTH * 34, 0, SPRITE_WIDTH, SPRITE_HEIGHT)));
         }
@@ -70,17 +70,16 @@ public class WindowGuy : IEnemy, ICollidable
                 {
                     System.Console.WriteLine("Throw dynamite");
                     dynamiteThrown = true;
-                    bombs.Add(new Bomb(bombTexture)
-                    {
-                        Position = new Vector2(Position.X + SPRITE_WIDTH, Position.Y + SPRITE_HEIGHT + 10)
-                    });
+                    // throw bomb from center of window guy
+                    bombs.Add(new Bomb(bombTexture, new Vector2(Position.X + SPRITE_WIDTH / 2, Position.Y + SPRITE_HEIGHT)));
                 }
                 else if (mSecondCtr > 2000)
                 {
                     EnemyState = 0;
                     mSecondCtr = 0;
                     dynamiteThrown = false;
-                    bombs.Clear();
+                    // bombs.Clear();
+                    animations[1].ResetAnimation();
                 }
                 break;
             default:

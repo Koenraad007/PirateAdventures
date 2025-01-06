@@ -97,7 +97,9 @@ public class Game1 : Game
                 hero.Update(_blocks, gameTime);
                 foreach (IGameObject enemy in _enemies)
                 {
-                    enemy.Update(new List<IGameObject>() { hero }, gameTime);
+                    var gameObjects = new List<IGameObject>() { hero };
+                    gameObjects.AddRange(_blocks);
+                    enemy.Update(gameObjects, gameTime);
                 }
                 UpdateCamera();
                 break;

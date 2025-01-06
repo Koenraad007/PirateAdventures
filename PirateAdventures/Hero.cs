@@ -27,7 +27,7 @@ namespace PirateAdventures
         private bool isGrounded = false;
         private Vector2 collision = Vector2.Zero;
 
-        public bool Passable { get; set; } = false;
+        public bool Passable { get; set; } = true;
         public Vector2 Position { get; set; }
         public Rectangle BoundingBox { get; set; }
 
