@@ -5,4 +5,6 @@ PirateAdventures/obj/
 PirateAdventures/.config
 PirateAdventures/bin/
 PirateAdventures/obj/project.packagespec.json
-/PirateAdventures/.config/
+PirateAdventures/.config/
+PirateAdventures/Content/bin/
+PirateAdventures/Content/obj/
