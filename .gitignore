@@ -1,1 +1,7 @@
-./PirateAdventures/obj/
+PirateAdventures/obj/
+.git/
+.idea/
+.vs/
+PirateAdventures/.config
+PirateAdventures/bin/
+PirateAdventures/obj/project.packagespec.json
