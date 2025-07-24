@@ -8,6 +8,7 @@ using SharpDX.Direct2D1.Effects;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using PirateAdventures.Settings;
 
 
 namespace PirateAdventures;
@@ -18,6 +19,7 @@ public class Game1 : Game
     private GraphicsDeviceManager _graphics;
     private GameStateManager _stateManager;
     private SpriteBatch _spriteBatch;
+    private InputSettings inputSettings;
 
     private Texture2D _heroTexture, _tileset, _enemyTexture;
     private Hero hero;
@@ -33,6 +35,7 @@ public class Game1 : Game
         _graphics.GraphicsProfile = GraphicsProfile.HiDef;  // zorgt ervoor dat we hoger resolutie sprites kunnen gebruiken
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
+        Window.AllowUserResizing = true;
     }
 
     protected override void Initialize()
@@ -41,6 +44,7 @@ public class Game1 : Game
 
         _stateManager = GameStateManager.Instance;
         _stateManager.ChangeState(GameState.Start);
+        inputSettings = SettingsManager.LoadSettings();
 
         startscreen = new Startscreen();
 
@@ -76,7 +80,7 @@ public class Game1 : Game
 
     private void InitializeGameObjects()
     {
-        hero = new Hero(_heroTexture, new KeyboardInputReader());
+        hero = new Hero(_heroTexture, new KeyboardInputReader(inputSettings));
         //bigGuy = new BigGuy(_enemyTexture);
         _enemies = tiledMap.CreateEnemyObjects();
 
@@ -85,8 +89,13 @@ public class Game1 : Game
 
     protected override void Update(GameTime gameTime)
     {
-        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
+            Keyboard.GetState().IsKeyDown(Keys.Escape))
+        {
+            SettingsManager.SaveSettings(inputSettings);
             Exit();
+        }
+           
 
         switch (_stateManager.CurrentState)
         {

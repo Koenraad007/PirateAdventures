@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
@@ -10,17 +11,24 @@ namespace PirateAdventures.Input
 {
     public class KeyboardInputReader : IInputReader
     {
+        private readonly InputSettings inputSettings;
+
+        public KeyboardInputReader(InputSettings inputSettings)
+        {
+            this.inputSettings = inputSettings;
+        }
+        
         public Vector2 ReadInput()
         {
             var direction = Vector2.Zero;
 
             KeyboardState state = Keyboard.GetState();
 
-            if (state.IsKeyDown(Keys.Left))
+            if (state.IsKeyDown(inputSettings.MoveLeftKey))
                 direction.X = -1;
-            if (state.IsKeyDown(Keys.Right))
+            if (state.IsKeyDown(inputSettings.MoveRightKey))
                 direction.X = 1;
-            if (state.IsKeyDown(Keys.Up))
+            if (state.IsKeyDown(inputSettings.JumpKey))
                 direction.Y = -1;
 
             return direction;
