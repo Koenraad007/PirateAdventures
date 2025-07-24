@@ -63,7 +63,7 @@ public class Game1 : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
         // use this.Content to load your game content here
-        _heroTexture = Content.Load<Texture2D>("hero");
+        _heroTexture = Content.Load<Texture2D>("cptclownnose20fps");
         _enemyTexture = Content.Load<Texture2D>("enemy_bigguy");
 
         _tileset = Content.Load<Texture2D>("tileset64");

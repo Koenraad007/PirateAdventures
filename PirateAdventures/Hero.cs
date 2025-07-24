@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
@@ -12,16 +13,17 @@ namespace PirateAdventures
 {
     public class Hero : IGameObject, ICollidable
     {
-        public const int SPRITE_WIDTH = 58;
-        public const int SPRITE_HEIGHT = 58;
+        public const int SPRITE_WIDTH = 80;
+        public const int SPRITE_HEIGHT = 80;
         public const int MAX_SPEED = 5;
 
 
         private Texture2D heroTexture;
-        private Animation idle, running;
+        private Animation idle, running, jumping, falling;
         private Vector2 speed = Vector2.Zero;
         private Vector2 acceleration = new Vector2(0.1f, 0.3f);
         private SpriteEffects spriteFx = SpriteEffects.None;
+        private float scale = 2f;
         private IInputReader input;
         private HeroState state;
         private bool isGrounded = false;
@@ -36,18 +38,28 @@ namespace PirateAdventures
             heroTexture = texture;
             input = inputReader;
             this.Position = new Vector2(200, 200);
-            this.BoundingBox = new Rectangle((int)Position.X, (int)Position.Y, SPRITE_WIDTH, SPRITE_HEIGHT);
+            this.BoundingBox = new Rectangle((int)Position.X, (int)Position.Y, (int)(SPRITE_WIDTH * scale), (int)(SPRITE_HEIGHT * scale));
 
             idle = new Animation();
             running = new Animation();
+            jumping = new Animation();
+            falling = new Animation();
 
-            for (int i = 0; i < 26; i++)
+            for (int i = 0; i < 10; i++)
             {
                 idle.AddFrame(new AnimationFrame(new Rectangle(SPRITE_WIDTH * i, 0, SPRITE_WIDTH, SPRITE_HEIGHT)));
             }
-            for (int i = 0; i < 14; i++)
+            for (int i = 0; i < 12; i++)
             {
-                running.AddFrame(new AnimationFrame(new Rectangle(SPRITE_WIDTH * i + (26 * SPRITE_WIDTH), 0, SPRITE_WIDTH, SPRITE_HEIGHT)));
+                running.AddFrame(new AnimationFrame(new Rectangle(SPRITE_WIDTH * i + (10 * SPRITE_WIDTH), 0, SPRITE_WIDTH, SPRITE_HEIGHT)));
+            }
+            for (int i = 0; i < 6; i++)
+            {
+                jumping.AddFrame(new AnimationFrame(new Rectangle(SPRITE_WIDTH * i + (22 * SPRITE_WIDTH), 0, SPRITE_WIDTH, SPRITE_HEIGHT)));
+            }
+            for (int i = 0; i < 2; i++)
+            {
+                falling.AddFrame(new AnimationFrame(new Rectangle(SPRITE_WIDTH * i + (28 * SPRITE_WIDTH), 0, SPRITE_WIDTH, SPRITE_HEIGHT)));
             }
         }
 
@@ -77,19 +89,33 @@ namespace PirateAdventures
             // if (Position.Y > 460 - SPRITE_HEIGHT) Position = new Vector2(Position.X, 460 - SPRITE_HEIGHT);
 
             // if the hero is not moving, the state is IDLE (0), else it's RUNNING (1)
-            if (speed.X != 0) state = HeroState.RUNNING;
+            if (speed.X != 0 && Math.Abs(speed.Y) < 1) state = HeroState.RUNNING;
+            else if (speed.Y <= -1) state = HeroState.JUMPING;
+            else if (speed.Y >= 1) state = HeroState.FALLING;
             else state = HeroState.IDLE;
+
+            Debug.WriteLine("Speed.Y: " + speed.Y);
+            Debug.WriteLine("Abs(Speed.Y): "+Math.Abs(speed.Y));
+            Debug.WriteLine("Hero State: " + state.ToString());
 
             switch (state)
             {
                 case HeroState.IDLE:
                     running.ResetAnimation();
+                    jumping.ResetAnimation();
                     idle.Update(gameTime);
                     break;
 
                 case HeroState.RUNNING:
-                    running.Update(gameTime);
                     idle.ResetAnimation();
+                    jumping.ResetAnimation();
+                    running.Update(gameTime);
+                    break;
+
+                case HeroState.JUMPING:
+                    idle.ResetAnimation();
+                    running.ResetAnimation();
+                    jumping.Update(gameTime);
                     break;
 
                 default: break;
@@ -203,11 +229,19 @@ namespace PirateAdventures
             switch (state)
             {
                 case HeroState.IDLE:
-                    spriteBatch.Draw(heroTexture, Position, idle.CurrentFrame.SourceRect, Color.White, 0, new Vector2(0, 0), 1f, spriteFx, 0);
+                    spriteBatch.Draw(heroTexture, Position, idle.CurrentFrame.SourceRect, Color.White, 0, new Vector2(16 * ((spriteFx == SpriteEffects.FlipHorizontally) ? 1 : -1), -32), scale, spriteFx, 0);
                     break;
 
                 case HeroState.RUNNING:
-                    spriteBatch.Draw(heroTexture, Position, running.CurrentFrame.SourceRect, Color.White, 0, new Vector2(0, 0), 1f, spriteFx, 0);
+                    spriteBatch.Draw(heroTexture, Position, running.CurrentFrame.SourceRect, Color.White, 0, new Vector2(16 * ((spriteFx == SpriteEffects.FlipHorizontally) ? 1 : -1), -32), scale, spriteFx, 0);
+                    break;
+
+                case HeroState.JUMPING:
+                    spriteBatch.Draw(heroTexture, Position, jumping.CurrentFrame.SourceRect, Color.White, 0, new Vector2(16 * ((spriteFx == SpriteEffects.FlipHorizontally) ? 1 : -1), -32), scale, spriteFx, 0);
+                    break;
+
+                case HeroState.FALLING:
+                    spriteBatch.Draw(heroTexture, Position, falling.CurrentFrame.SourceRect, Color.White, 0, new Vector2(16 * ((spriteFx == SpriteEffects.FlipHorizontally) ? 1 : -1), -32), scale, spriteFx, 0);
                     break;
 
                 default: break;
@@ -219,6 +253,8 @@ namespace PirateAdventures
     enum HeroState
     {
         IDLE,
-        RUNNING
+        RUNNING,
+        JUMPING,
+        FALLING
     }
 }
