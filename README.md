@@ -39,7 +39,9 @@ Optional requirements:
 
 ## Textures
 
-<https://pixelfrog-assets.itch.io/pirate-bomb>
+<https://pixelfrog-assets.itch.io/pirate-bomb>  
+<https://pixelfrog-assets.itch.io/treasure-hunters>  
+<https://pixelfrog-assets.itch.io/pixel-adventure-2>
 
 Start screen title: <https://www.textstudio.com/logo/831/pixel>
 Start screen buttons: <https://slyfox-studios.itch.io/buttons-pack>

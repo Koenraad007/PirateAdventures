@@ -21,8 +21,9 @@ public class Game1 : Game
     private SpriteBatch _spriteBatch;
     private InputSettings inputSettings;
 
-    private Texture2D _heroTexture, _tileset, _enemyTexture;
+    private Texture2D _heroTexture, _tileset, _enemyTexture, _companionTexture;
     private Hero hero;
+    private Companion companion;
     private List<IGameObject> _blocks;
     private List<IGameObject> _enemies;
     private TiledMap tiledMap;
@@ -68,6 +69,7 @@ public class Game1 : Game
 
         // use this.Content to load your game content here
         _heroTexture = Content.Load<Texture2D>("cptclownnose20fps");
+        _companionTexture = Content.Load<Texture2D>("bluebird20fps");
         _enemyTexture = Content.Load<Texture2D>("enemy_bigguy");
 
         _tileset = Content.Load<Texture2D>("tileset64");
@@ -81,6 +83,7 @@ public class Game1 : Game
     private void InitializeGameObjects()
     {
         hero = new Hero(_heroTexture, new KeyboardInputReader(inputSettings));
+        companion = new Companion(new KeyboardInputReader(inputSettings), _companionTexture);
         //bigGuy = new BigGuy(_enemyTexture);
         _enemies = tiledMap.CreateEnemyObjects();
 
@@ -104,6 +107,7 @@ public class Game1 : Game
                 break;
             case GameState.Playing:
                 hero.Update(_blocks, gameTime);
+                companion.Update(_blocks, gameTime);
                 foreach (IGameObject enemy in _enemies)
                 {
                     var gameObjects = new List<IGameObject>() { hero };
@@ -166,6 +170,7 @@ public class Game1 : Game
                     enemy.Draw(_spriteBatch);
                 }
 
+                companion.Draw(_spriteBatch);
                 hero.Draw(_spriteBatch);
                 break;
 
