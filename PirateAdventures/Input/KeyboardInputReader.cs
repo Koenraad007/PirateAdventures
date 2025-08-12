@@ -17,7 +17,7 @@ namespace PirateAdventures.Input
         {
             this.inputSettings = inputSettings;
         }
-        
+
         public Vector2 ReadInput()
         {
             var direction = Vector2.Zero;
@@ -30,6 +30,24 @@ namespace PirateAdventures.Input
                 direction.X = 1;
             if (state.IsKeyDown(inputSettings.JumpKey))
                 direction.Y = -1;
+
+            return direction;
+        }
+
+        public Vector2 ReadBirdInput()
+        {
+            var direction = Vector2.Zero;
+
+            KeyboardState state = Keyboard.GetState();
+
+            if (state.IsKeyDown(inputSettings.BirdLeftKey))
+                direction.X = -1;
+            if (state.IsKeyDown(inputSettings.BirdRightKey))
+                direction.X = 1;
+            if (state.IsKeyDown(inputSettings.BirdUpKey))
+                direction.Y = -1;
+            if (state.IsKeyDown(inputSettings.BirdDownKey))
+                direction.Y = 1;
 
             return direction;
         }

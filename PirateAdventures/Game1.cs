@@ -82,8 +82,10 @@ public class Game1 : Game
 
     private void InitializeGameObjects()
     {
-        hero = new Hero(_heroTexture, new KeyboardInputReader(inputSettings));
-        companion = new Companion(new KeyboardInputReader(inputSettings), _companionTexture);
+        KeyboardInputReader kir = new KeyboardInputReader(inputSettings);
+
+        hero = new Hero(_heroTexture, kir);
+        companion = new Companion(kir, _companionTexture);
         //bigGuy = new BigGuy(_enemyTexture);
         _enemies = tiledMap.CreateEnemyObjects();
 
@@ -98,7 +100,7 @@ public class Game1 : Game
             SettingsManager.SaveSettings(inputSettings);
             Exit();
         }
-           
+
 
         switch (_stateManager.CurrentState)
         {

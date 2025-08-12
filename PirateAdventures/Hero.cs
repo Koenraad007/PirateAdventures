@@ -95,7 +95,7 @@ namespace PirateAdventures
             else state = HeroState.IDLE;
 
             Debug.WriteLine("Speed.Y: " + speed.Y);
-            Debug.WriteLine("Abs(Speed.Y): "+Math.Abs(speed.Y));
+            Debug.WriteLine("Abs(Speed.Y): " + Math.Abs(speed.Y));
             Debug.WriteLine("Hero State: " + state.ToString());
 
             switch (state)
