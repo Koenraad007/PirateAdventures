@@ -51,6 +51,17 @@ namespace MonoGameLib.Graphics
         }
 
         /// <summary>
+        /// Create a new Sprite using the specified region from the atlas.
+        /// </summary>
+        /// <param name="regionName">The name of the region in the TextureAtlas.</param>
+        /// <returns>A new Sprite.</returns>
+        public Sprite CreateSprite(string regionName)
+        {
+            TextureRegion region = GetRegion(regionName);
+            return new Sprite(region);
+        }
+
+        /// <summary>
         /// Create a new TextureAtlas from an XML config file.
         /// </summary>
         /// <param name="content">The ContentManager that is used to load the file.</param>
