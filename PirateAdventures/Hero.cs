@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGameLib.Graphics;
 using PirateAdventures.Animations;
 using PirateAdventures.Interfaces;
 using PirateAdventures.Level;
@@ -19,7 +20,7 @@ namespace PirateAdventures
 
 
         private Texture2D heroTexture;
-        private Animation idle, running, jumping, falling;
+        private Animations.Animation idle, running, jumping, falling;
         private Vector2 speed = Vector2.Zero;
         private Vector2 acceleration = new Vector2(0.1f, 0.3f);
         private SpriteEffects spriteFx = SpriteEffects.None;
@@ -33,17 +34,21 @@ namespace PirateAdventures
         public Vector2 Position { get; set; }
         public Rectangle BoundingBox { get; set; }
 
-        public Hero(Texture2D texture, IInputReader inputReader)
+        private TextureAtlas textureAtlas;
+        private AnimatedSprite idleAS;
+
+        public Hero(Texture2D texture, IInputReader inputReader, TextureAtlas ta)
         {
+            textureAtlas = ta;
             heroTexture = texture;
             input = inputReader;
             this.Position = new Vector2(200, 200);
             this.BoundingBox = new Rectangle((int)Position.X, (int)Position.Y, (int)(SPRITE_WIDTH * scale), (int)(SPRITE_HEIGHT * scale));
 
-            idle = new Animation();
-            running = new Animation();
-            jumping = new Animation();
-            falling = new Animation();
+            idle = new Animations.Animation();
+            running = new Animations.Animation();
+            jumping = new Animations.Animation();
+            falling = new Animations.Animation();
 
             for (int i = 0; i < 10; i++)
             {
@@ -61,11 +66,16 @@ namespace PirateAdventures
             {
                 falling.AddFrame(new AnimationFrame(new Rectangle(SPRITE_WIDTH * i + (28 * SPRITE_WIDTH), 0, SPRITE_WIDTH, SPRITE_HEIGHT)));
             }
+
+            idleAS = textureAtlas.CreateAnimatedSprite("idle");
+            idleAS.Scale = new Vector2(scale, scale);
         }
 
         public void Update(List<IGameObject> objects, GameTime gameTime)
         {
             var direction = input.ReadInput();
+
+            idleAS.Update(gameTime);
 
             // change speed according to direction input
             Move(direction);
@@ -229,7 +239,10 @@ namespace PirateAdventures
             switch (state)
             {
                 case HeroState.IDLE:
-                    spriteBatch.Draw(heroTexture, Position, idle.CurrentFrame.SourceRect, Color.White, 0, new Vector2(16 * ((spriteFx == SpriteEffects.FlipHorizontally) ? 1 : -1), -32), scale, spriteFx, 0);
+                    idleAS.Effects = spriteFx;
+                    idleAS.Origin = new Vector2(16 * ((spriteFx == SpriteEffects.FlipHorizontally) ? 1 : -1), -32);
+                    idleAS.Draw(spriteBatch, Position);
+                    //spriteBatch.Draw(heroTexture, Position, idle.CurrentFrame.SourceRect, Color.White, 0, new Vector2(16 * ((spriteFx == SpriteEffects.FlipHorizontally) ? 1 : -1), -32), scale, spriteFx, 0);
                     break;
 
                 case HeroState.RUNNING:

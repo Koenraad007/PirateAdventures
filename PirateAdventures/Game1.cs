@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using PirateAdventures.Settings;
 using MonoGameLib;
+using MonoGameLib.Graphics;
 
 
 namespace PirateAdventures;
@@ -20,6 +21,7 @@ public class Game1 : Core
     private GameStateManager _stateManager;
     private InputSettings inputSettings;
 
+    private TextureAtlas _textureAtlas;
     private Texture2D _heroTexture, _tileset, _enemyTexture, _companionTexture;
     private Hero hero;
     private Companion companion;
@@ -59,8 +61,16 @@ public class Game1 : Core
     {
         startscreen.LoadContent();
 
-        // use this.Content to load your game content here
         _heroTexture = Content.Load<Texture2D>("cptclownnose20fps");
+        _textureAtlas = new TextureAtlas(_heroTexture);
+        List<TextureRegion> textureRegions = new List<TextureRegion>();
+        for (int i = 0; i < 10; i++)
+        {
+            textureRegions.Add(new TextureRegion(_heroTexture, 80 * i, 0, 80, 80));
+        }
+        MonoGameLib.Graphics.Animation anim = new MonoGameLib.Graphics.Animation(textureRegions, TimeSpan.FromMilliseconds(50));
+        _textureAtlas.AddAnimation("idle", anim);
+
         _companionTexture = Content.Load<Texture2D>("bluebird20fps");
         _enemyTexture = Content.Load<Texture2D>("enemy_bigguy");
 
@@ -76,7 +86,7 @@ public class Game1 : Core
     {
         KeyboardInputReader kir = new KeyboardInputReader(inputSettings);
 
-        hero = new Hero(_heroTexture, kir);
+        hero = new Hero(_heroTexture, kir, _textureAtlas);
         companion = new Companion(kir, _companionTexture);
         //bigGuy = new BigGuy(_enemyTexture);
         _enemies = tiledMap.CreateEnemyObjects();

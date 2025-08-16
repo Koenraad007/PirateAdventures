@@ -15,18 +15,21 @@ namespace MonoGameLib.Graphics
     public class TextureAtlas
     {
         private Dictionary<string, TextureRegion> _regions;
+        private Dictionary<string, Animation> _animations;
 
         public Texture2D Texture { get; set; }
 
         public TextureAtlas()
         {
             _regions = new Dictionary<string, TextureRegion>();
+            _animations = new Dictionary<string, Animation>();
         }
 
         public TextureAtlas(Texture2D texture)
         {
             Texture = texture;
             _regions = new Dictionary<string, TextureRegion>();
+            _animations = new Dictionary<string, Animation>();
         }
 
         public void AddRegion(string name, int x, int y, int width, int height)
@@ -45,9 +48,25 @@ namespace MonoGameLib.Graphics
             return _regions.Remove(name);
         }
 
+        public void AddAnimation(string name, Animation animation)
+        {
+            _animations.Add(name, animation);
+        }
+
+        public Animation GetAnimation(string name)
+        {
+            return _animations[name];
+        }
+
+        public bool RemoveAnimation(string name)
+        {
+            return _animations.Remove(name);
+        }
+
         public void ClearAtlas()
         {
             _regions.Clear();
+            _animations.Clear();
         }
 
         /// <summary>
@@ -59,6 +78,17 @@ namespace MonoGameLib.Graphics
         {
             TextureRegion region = GetRegion(regionName);
             return new Sprite(region);
+        }
+
+        /// <summary>
+        /// Create a new AnimatedSprite using the specified animation from the atlas.
+        /// </summary>
+        /// <param name="animationName">The name of the animation in the TextureAtlas.</param>
+        /// <returns></returns>
+        public AnimatedSprite CreateAnimatedSprite(string animationName)
+        {
+            Animation animation = GetAnimation(animationName);
+            return new AnimatedSprite(animation);
         }
 
         /// <summary>
@@ -104,6 +134,42 @@ namespace MonoGameLib.Graphics
                             {
                                 atlas.AddRegion(name, x, y, width, height);
                             }
+                        }
+                    }
+
+                    // Example:
+                    // <Animations>
+                    //      <Animation name="animation" delay="100">
+                    //          <Frame region="spriteOne" />
+                    //          <Frame region="spriteTwo" />
+                    //      </Animation>
+                    // </Animations>
+                    var animationElements = root.Element("Animations").Elements("Animation");
+
+                    if (animationElements != null)
+                    {
+                        foreach (var animationElement in animationElements)
+                        {
+                            string name = animationElement.Attribute("name")?.Value;
+                            float delayInMilliseconds = float.Parse(animationElement.Attribute("delay")?.Value ?? "0");
+                            TimeSpan delay = TimeSpan.FromMilliseconds(delayInMilliseconds);
+
+                            List<TextureRegion> frames = new List<TextureRegion>();
+
+                            var frameElements = animationElement.Elements("Frame");
+
+                            if (frameElements != null)
+                            {
+                                foreach (var frameElement in frameElements)
+                                {
+                                    string regionName = frameElement.Attribute("region").Value;
+                                    TextureRegion region = atlas.GetRegion(regionName);
+                                    frames.Add(region);
+                                }
+                            }
+
+                            Animation animation = new Animation(frames, delay);
+                            atlas.AddAnimation(name, animation);
                         }
                     }
 
