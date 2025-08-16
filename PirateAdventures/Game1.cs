@@ -49,7 +49,7 @@ public class Game1 : Core
 
         // TODO: store level in different location
         tiledMap.Initialize("./../../../Content/naamloos.tmx");
-        startscreen.Initialize(GraphicsDevice);
+        startscreen.Initialize();
         InitializeGameObjects();
 
 
@@ -57,7 +57,7 @@ public class Game1 : Core
 
     protected override void LoadContent()
     {
-        startscreen.LoadContent(Content);
+        startscreen.LoadContent();
 
         // use this.Content to load your game content here
         _heroTexture = Content.Load<Texture2D>("cptclownnose20fps");
@@ -142,21 +142,20 @@ public class Game1 : Core
 
     protected override void Draw(GameTime gameTime)
     {
-        GraphicsDevice.Clear(new Color(50, 52, 67));
-
-        // Add your drawing code here
-        SpriteBatch.Begin(
-            samplerState: SamplerState.PointClamp,
-            transformMatrix: Matrix.CreateTranslation(-cameraOffset.X, -cameraOffset.Y, 0)
-            );
+        GraphicsDevice.Clear(new Color(50, 52, 67));        
 
         switch (_stateManager.CurrentState)
         {
             case GameState.Start:
-                startscreen.Draw(SpriteBatch);
+                startscreen.Draw(gameTime);
                 break;
 
             case GameState.Playing:
+                SpriteBatch.Begin(
+                    samplerState: SamplerState.PointClamp,
+                    transformMatrix: Matrix.CreateTranslation(-cameraOffset.X, -cameraOffset.Y, 0)
+                );
+
                 tiledMap.Draw(SpriteBatch);
 
                 foreach (IGameObject enemy in _enemies)
@@ -166,6 +165,8 @@ public class Game1 : Core
 
                 companion.Draw(SpriteBatch);
                 hero.Draw(SpriteBatch);
+
+                SpriteBatch.End();
                 break;
 
             case GameState.GameOver:
@@ -174,8 +175,7 @@ public class Game1 : Core
             default:
                 break;
         }
-
-        SpriteBatch.End();
+        
 
         base.Draw(gameTime);
     }

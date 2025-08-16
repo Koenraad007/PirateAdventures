@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGameLib.Scenes;
 using System;
 using System.Diagnostics;
 
@@ -9,9 +10,12 @@ namespace MonoGameLib
 {
     public class Core : Game
     {
-        internal static Core s_instance;
+        internal static Core _instance;
 
-        public static Core Instance => s_instance;
+        public static Core Instance => _instance;
+
+        private static Scene _activeScene;
+        private static Scene _nextScene;
 
         public static GraphicsDeviceManager Graphics { get; private set; }
 
@@ -23,12 +27,12 @@ namespace MonoGameLib
 
         public Core(string title, int width, int height, bool fullScreen)
         {
-            if (s_instance != null)
+            if (_instance != null)
             {
                 throw new InvalidOperationException($"Only a single core instance can be created!");
             }
 
-            s_instance = this;
+            _instance = this;
 
             Graphics = new GraphicsDeviceManager(this);
 
@@ -56,6 +60,49 @@ namespace MonoGameLib
             GraphicsDevice = base.GraphicsDevice;
 
             SpriteBatch = new SpriteBatch(GraphicsDevice);
+        }
+
+        protected override void Update(GameTime gameTime)
+        {
+            if (_nextScene != null)
+            {
+                TransitionScene();
+            }
+
+            if (_activeScene != null)
+            {
+                _activeScene.Update(gameTime);
+            }
+
+            base.Update(gameTime);
+        }
+
+        protected override void Draw(GameTime gameTime)
+        {
+            _activeScene?.Draw(gameTime);
+
+            base.Draw(gameTime);
+        }
+
+        public static void ChangeScene(Scene next)
+        {
+            if (_activeScene != next)
+            {
+                _nextScene = next;
+            }
+        }
+
+        private static void TransitionScene()
+        {
+            if (_activeScene != null)
+            {
+                _activeScene.UnloadContent();
+                _activeScene.Dispose();
+            }
+            GC.Collect();
+            _activeScene = _nextScene;
+            _nextScene = null;
+            _activeScene?.Initialize();
         }
     }
 }
