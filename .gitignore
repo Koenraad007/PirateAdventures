@@ -1,9 +1,12 @@
+PirateAdventures/.config
+PirateAdventures/bin/
 PirateAdventures/obj/
+MonoGameLib/.config
+MonoGameLib/bin/
+MonoGameLib/obj/
 .git/
 .idea/
 .vs/
-PirateAdventures/.config
-PirateAdventures/bin/
 PirateAdventures/obj/project.packagespec.json
 PirateAdventures/.config/
 PirateAdventures/Content/bin/
