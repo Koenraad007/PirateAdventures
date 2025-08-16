@@ -9,11 +9,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using PirateAdventures.Settings;
+using MonoGameLib;
 
 
 namespace PirateAdventures;
 
-public class Game1 : Game
+public class Game1 : Core
 {
     private Startscreen startscreen;
     private GraphicsDeviceManager _graphics;
@@ -30,13 +31,8 @@ public class Game1 : Game
     private Vector2 cameraOffset = Vector2.Zero;
     private const int CAMERA_MARGIN_X = 400, CAMERA_MARGIN_Y = 200;
 
-    public Game1()
+    public Game1(): base("Pirate Adventures", 640, 480, false)
     {
-        _graphics = new GraphicsDeviceManager(this);
-        _graphics.GraphicsProfile = GraphicsProfile.HiDef;  // zorgt ervoor dat we hoger resolutie sprites kunnen gebruiken
-        Content.RootDirectory = "Content";
-        IsMouseVisible = true;
-        Window.AllowUserResizing = true;
     }
 
     protected override void Initialize()
@@ -64,8 +60,6 @@ public class Game1 : Game
     protected override void LoadContent()
     {
         startscreen.LoadContent(Content);
-
-        _spriteBatch = new SpriteBatch(GraphicsDevice);
 
         // use this.Content to load your game content here
         _heroTexture = Content.Load<Texture2D>("cptclownnose20fps");
@@ -153,10 +147,10 @@ public class Game1 : Game
         GraphicsDevice.Clear(new Color(50, 52, 67));
 
         // Add your drawing code here
-        _spriteBatch.Begin(
-            samplerState: SamplerState.PointClamp,
-            transformMatrix: Matrix.CreateTranslation(-cameraOffset.X, -cameraOffset.Y, 0)
-            );
+        //_spriteBatch.Begin(
+        //    samplerState: SamplerState.PointClamp,
+        //    transformMatrix: Matrix.CreateTranslation(-cameraOffset.X, -cameraOffset.Y, 0)
+        //    );
 
         switch (_stateManager.CurrentState)
         {
@@ -183,7 +177,7 @@ public class Game1 : Game
                 break;
         }
 
-        _spriteBatch.End();
+        //_spriteBatch.End();
 
         base.Draw(gameTime);
     }

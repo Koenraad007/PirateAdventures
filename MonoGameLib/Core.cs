@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using NVorbis.Contracts;
 using System;
 using System.Diagnostics;
 
@@ -36,6 +35,7 @@ namespace MonoGameLib
             Graphics.PreferredBackBufferWidth = width;
             Graphics.PreferredBackBufferHeight = height;
             Graphics.IsFullScreen = fullScreen;
+            Graphics.GraphicsProfile = GraphicsProfile.HiDef;
 
             Graphics.ApplyChanges();
 
