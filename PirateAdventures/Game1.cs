@@ -17,9 +17,7 @@ namespace PirateAdventures;
 public class Game1 : Core
 {
     private Startscreen startscreen;
-    private GraphicsDeviceManager _graphics;
     private GameStateManager _stateManager;
-    private SpriteBatch _spriteBatch;
     private InputSettings inputSettings;
 
     private Texture2D _heroTexture, _tileset, _enemyTexture, _companionTexture;
@@ -31,7 +29,7 @@ public class Game1 : Core
     private Vector2 cameraOffset = Vector2.Zero;
     private const int CAMERA_MARGIN_X = 400, CAMERA_MARGIN_Y = 200;
 
-    public Game1(): base("Pirate Adventures", 640, 480, false)
+    public Game1(): base("Pirate Adventures", 1000, 800, false)
     {
     }
 
@@ -147,27 +145,27 @@ public class Game1 : Core
         GraphicsDevice.Clear(new Color(50, 52, 67));
 
         // Add your drawing code here
-        //_spriteBatch.Begin(
-        //    samplerState: SamplerState.PointClamp,
-        //    transformMatrix: Matrix.CreateTranslation(-cameraOffset.X, -cameraOffset.Y, 0)
-        //    );
+        SpriteBatch.Begin(
+            samplerState: SamplerState.PointClamp,
+            transformMatrix: Matrix.CreateTranslation(-cameraOffset.X, -cameraOffset.Y, 0)
+            );
 
         switch (_stateManager.CurrentState)
         {
             case GameState.Start:
-                startscreen.Draw(_spriteBatch);
+                startscreen.Draw(SpriteBatch);
                 break;
 
             case GameState.Playing:
-                tiledMap.Draw(_spriteBatch);
+                tiledMap.Draw(SpriteBatch);
 
                 foreach (IGameObject enemy in _enemies)
                 {
-                    enemy.Draw(_spriteBatch);
+                    enemy.Draw(SpriteBatch);
                 }
 
-                companion.Draw(_spriteBatch);
-                hero.Draw(_spriteBatch);
+                companion.Draw(SpriteBatch);
+                hero.Draw(SpriteBatch);
                 break;
 
             case GameState.GameOver:
@@ -177,7 +175,7 @@ public class Game1 : Core
                 break;
         }
 
-        //_spriteBatch.End();
+        SpriteBatch.End();
 
         base.Draw(gameTime);
     }
