@@ -35,6 +35,7 @@ namespace MonoGameLib
             Graphics.PreferredBackBufferWidth = width;
             Graphics.PreferredBackBufferHeight = height;
             Graphics.IsFullScreen = fullScreen;
+            Window.AllowUserResizing = true;
             Graphics.GraphicsProfile = GraphicsProfile.HiDef;
 
             Graphics.ApplyChanges();
