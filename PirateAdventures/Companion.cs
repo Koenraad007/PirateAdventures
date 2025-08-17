@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using PirateAdventures.Animations;
@@ -42,7 +43,18 @@ public class Companion : IGameObject, ICollidable
 
     public void Update(List<IGameObject> collisionObjects, GameTime gameTime)
     {
+        var hero = collisionObjects.Find(obj => obj is Hero) as Hero;
+        var heroPos = hero != null ? hero.BoundingBox.Center.ToVector2()+new Vector2(0f,-10f) : Vector2.Zero;
+
         var direction = input.ReadBirdInput();
+
+        Debug.WriteLine(Vector2.Distance(heroPos, Position));
+        if (direction == Vector2.Zero && hero != null && Vector2.Distance(heroPos, Position) > 20f)
+        {
+            // move towards hero if no input is given
+            direction = heroPos - Position;
+            direction.Normalize();
+        }
 
         Position += speed * direction;
         BoundingBox = new Rectangle(

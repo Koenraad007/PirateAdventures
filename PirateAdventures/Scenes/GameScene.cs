@@ -71,7 +71,7 @@ namespace PirateAdventures.Scenes
         public override void Update(GameTime gameTime)
         {
             _hero.Update(_blocks, gameTime);
-            _companion.Update(_blocks, gameTime);
+            _companion.Update(new List<IGameObject>() { _hero }, gameTime);
             foreach (IGameObject enemy in _enemies)
             {
                 var gameObjects = new List<IGameObject>() { _hero };

@@ -78,10 +78,6 @@ namespace PirateAdventures
             else if (speed.Y >= 1) currentState = HeroState.FALLING;
             else currentState = HeroState.IDLE;
 
-            Debug.WriteLine("Speed.Y: " + speed.Y);
-            Debug.WriteLine("Abs(Speed.Y): " + Math.Abs(speed.Y));
-            Debug.WriteLine("Hero State: " + currentState.ToString());
-
             if (currentState != prevState)
             {
                 string animationName = $"hero-{currentState.ToString().ToLower()}";
