@@ -49,15 +49,16 @@ class Shooter : IEnemy, ICollidable
     public void Update(List<IGameObject> collisionObjects, GameTime gameTime)
     {
         var hero = collisionObjects.OfType<Hero>().First();
+        var heroPos = hero.BoundingBox.Center.ToVector2();
 
-        if (hero.Position.Y < Position.Y + SPRITE_HEIGHT)
+        if (heroPos.Y < Position.Y + SPRITE_HEIGHT)
             EnemyState = 1;
         else
         {
             EnemyState = 0;
             secondCtr = 0;
             msCtr = 0;
-            lockedPos = hero.Position;
+            lockedPos = heroPos;
         }
 
         animations[EnemyState].Update(gameTime);
@@ -75,7 +76,7 @@ class Shooter : IEnemy, ICollidable
                 msCtr += gameTime.ElapsedGameTime.TotalMilliseconds;
                 if (secondCtr > 2)
                 {
-                    lockedPos = hero.Position;
+                    lockedPos = heroPos;
                     secondCtr = 0;
                     msCtr = 0;
                 }
