@@ -73,6 +73,13 @@
 /processorParam:TextureFormat=Color
 /build:enemy_bigguy.png
 
+#begin Fonts/Pixellari.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Pixellari.spritefont
+
 #begin hero.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -134,7 +141,7 @@
 /build:Sprites/Hero/cptclownnose20fps.png
 
 #begin Sprites/Hero/hero-atlas.xml
-/copy:Sprites/Hero/hero-atlas.xml;Sprites/Hero/hero-atlas.xml
+/copy:Sprites/Hero/hero-atlas.xml
 
 #begin start_bg.png
 /importer:TextureImporter

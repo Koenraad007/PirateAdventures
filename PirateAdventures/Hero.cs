@@ -25,7 +25,7 @@ namespace PirateAdventures
         private SpriteEffects spriteFx = SpriteEffects.None;
         private float scale = 2f;
         private IInputReader input;
-        private HeroState current, prev = HeroState.IDLE;
+        private HeroState currentState, prevState = HeroState.IDLE;
         private bool isGrounded = false;
         private Vector2 collision = Vector2.Zero;
 
@@ -73,20 +73,20 @@ namespace PirateAdventures
             // if (Position.Y > 460 - SPRITE_HEIGHT) Position = new Vector2(Position.X, 460 - SPRITE_HEIGHT);
 
             // if the hero is not moving, the state is IDLE (0), else it's RUNNING (1)
-            if (speed.X != 0 && Math.Abs(speed.Y) < 1) current = HeroState.RUNNING;
-            else if (speed.Y <= -1) current = HeroState.JUMPING;
-            else if (speed.Y >= 1) current = HeroState.FALLING;
-            else current = HeroState.IDLE;
+            if (speed.X != 0 && Math.Abs(speed.Y) < 1) currentState = HeroState.RUNNING;
+            else if (speed.Y <= -1) currentState = HeroState.JUMPING;
+            else if (speed.Y >= 1) currentState = HeroState.FALLING;
+            else currentState = HeroState.IDLE;
 
             Debug.WriteLine("Speed.Y: " + speed.Y);
             Debug.WriteLine("Abs(Speed.Y): " + Math.Abs(speed.Y));
-            Debug.WriteLine("Hero State: " + current.ToString());
+            Debug.WriteLine("Hero State: " + currentState.ToString());
 
-            if (current != prev)
+            if (currentState != prevState)
             {
-                string animationName = $"hero-{current.ToString().ToLower()}";
+                string animationName = $"hero-{currentState.ToString().ToLower()}";
                 currentAnimation = textureAtlas.CreateAnimatedSprite(animationName);
-                prev = current;
+                prevState = currentState;
             }
 
             currentAnimation.Update(gameTime);

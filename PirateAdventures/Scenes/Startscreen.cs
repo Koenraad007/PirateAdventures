@@ -17,6 +17,8 @@ public class Startscreen: Scene
     private Color startBtnColor = Color.White;
     private bool startBtnPressed = false;
 
+    private SpriteFont font;
+
     public override void Initialize()
     {
         base.Initialize();
@@ -31,6 +33,8 @@ public class Startscreen: Scene
         titlePirateTexture = Core.Content.Load<Texture2D>("PirateText");
         titleAdventuresTexture = Core.Content.Load<Texture2D>("AdventuresText");
         buttonsTexture = Core.Content.Load<Texture2D>("BrownButtons");
+
+        font = Core.Content.Load<SpriteFont>("Fonts/Pixellari");
     }
 
     public override void Update(GameTime gameTime)
@@ -80,7 +84,10 @@ public class Startscreen: Scene
         Core.SpriteBatch.Draw(titlePirateTexture, new Vector2((viewport.Width / 2 - (titlePirateTexture.Width * pirateScale) / 2), 100 - (titlePirateTexture.Height * pirateScale)), null, Color.White, 0f, Vector2.Zero, pirateScale, SpriteEffects.None, 0f);
         Core.SpriteBatch.Draw(titleAdventuresTexture, new Vector2((viewport.Width / 2 - (titleAdventuresTexture.Width * adventuresScale) / 2), 150 - (titleAdventuresTexture.Height * adventuresScale)), null, Color.White, 0f, Vector2.Zero, adventuresScale, SpriteEffects.None, 0f);
 
+        startButtonBounds = new Rectangle(Core.GraphicsDevice.Viewport.Width / 2 - 64, Core.GraphicsDevice.Viewport.Height / 2, 128, 64);
         Core.SpriteBatch.Draw(buttonsTexture, startButtonBounds, startButtonSrcRectangle, startBtnColor);
+
+        //Core.SpriteBatch.DrawString(font, "Pirate\nAdventures", new Vector2(viewport.Width / 2 - 100, 40), Color.Brown, 0f, Vector2.Zero, new Vector2(4.1f, 3.1f), SpriteEffects.None, 0f);
 
         Core.SpriteBatch.End();
     }

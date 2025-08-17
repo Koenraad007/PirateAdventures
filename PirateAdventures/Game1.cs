@@ -30,9 +30,7 @@ public class Game1 : Core
     private Vector2 cameraOffset = Vector2.Zero;
     private const int CAMERA_MARGIN_X = 400, CAMERA_MARGIN_Y = 200;
 
-    public Game1(): base("Pirate Adventures", 1200, 600, false)
-    {
-    }
+    public Game1(): base("Pirate Adventures", 1200, 600, false) { }
 
     protected override void Initialize()
     {
@@ -85,7 +83,7 @@ public class Game1 : Core
     {
         KeyboardInputReader kir = new KeyboardInputReader(inputSettings);
 
-        hero = new Hero(_heroTexture, kir, _textureAtlas);
+        hero = tiledMap.CreateHero(_heroTexture, kir, _textureAtlas);
         companion = new Companion(kir, _companionTexture);
         //bigGuy = new BigGuy(_enemyTexture);
         _enemies = tiledMap.CreateEnemyObjects();

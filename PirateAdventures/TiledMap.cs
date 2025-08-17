@@ -4,7 +4,9 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGameLib.Graphics;
 using PirateAdventures;
+using PirateAdventures.Input;
 using PirateAdventures.Interfaces;
 using PirateAdventures.Level;
 using TiledSharp;
@@ -12,7 +14,7 @@ using TiledSharp;
 public class TiledMap
 {
     private TmxMap _map;
-    private Texture2D _tilesetTexture, _bigGuyTexture, _shooterTexture, _windowGuyTexture, _bombTexture;
+    private Texture2D _tilesetTexture, _bigGuyTexture, _shooterTexture, _windowGuyTexture, _bombTexture, _heroTexture;
 
     public List<IGameObject> CollisionObjects { get; private set; } = new List<IGameObject>();
     public int Width { get; private set; }
@@ -89,7 +91,7 @@ public class TiledMap
     {
         var enemyObjects = new List<IGameObject>();
 
-        var enemyLayer = _map.ObjectGroups.FirstOrDefault(l => l.Name.ToLower().Contains("enemies"));
+        var enemyLayer = _map.ObjectGroups.FirstOrDefault(l => l.Name.ToLower().Contains("gameobjects"));
 
         if (enemyLayer != null)
         {
@@ -134,6 +136,29 @@ public class TiledMap
         }
 
         return enemyObjects;
+    }
+
+    public Hero CreateHero(Texture2D texture, KeyboardInputReader kir, TextureAtlas ta)
+    {
+        var gameObjectsLayer = _map.ObjectGroups.FirstOrDefault(l => l.Name.ToLower().Contains("gameobjects"));
+
+        if (gameObjectsLayer != null)
+        {
+            var heroObject = gameObjectsLayer.Objects.FirstOrDefault(o => o.Name.ToLower().Contains("hero"));
+            if (heroObject != null)
+            {
+                return new Hero(
+                    texture,
+                    kir,
+                    ta
+                    )
+                {
+                    Position = new Vector2((float)heroObject.X, (float)heroObject.Y - Hero.SPRITE_HEIGHT),
+                };
+            }
+        }
+
+        return null;
     }
 
     public void Draw(SpriteBatch spriteBatch)
