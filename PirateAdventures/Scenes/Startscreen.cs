@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameLib;
 using MonoGameLib.Scenes;
+using PirateAdventures.Scenes;
 
 public class Startscreen: Scene
 {
@@ -47,7 +48,7 @@ public class Startscreen: Scene
             if (startBtnPressed)
             {
                 // Start game
-                GameStateManager.Instance.ChangeState(GameState.Playing);
+                Core.ChangeScene(new GameScene());
                 startBtnPressed = false;
             }
 

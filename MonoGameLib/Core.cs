@@ -73,6 +73,11 @@ namespace MonoGameLib
         {
             Input.Update();
 
+            if (ExitOnEscape && Input.Keyboard.IsKeyDown(Keys.Escape))
+            {
+                Exit();
+            }
+
             if (_nextScene != null)
             {
                 TransitionScene();
