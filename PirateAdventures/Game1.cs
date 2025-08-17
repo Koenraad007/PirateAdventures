@@ -12,7 +12,6 @@ using PirateAdventures.Settings;
 using MonoGameLib;
 using MonoGameLib.Graphics;
 
-
 namespace PirateAdventures;
 
 public class Game1 : Core
@@ -31,7 +30,7 @@ public class Game1 : Core
     private Vector2 cameraOffset = Vector2.Zero;
     private const int CAMERA_MARGIN_X = 400, CAMERA_MARGIN_Y = 200;
 
-    public Game1(): base("Pirate Adventures", 1000, 800, false)
+    public Game1(): base("Pirate Adventures", 1200, 600, false)
     {
     }
 
@@ -61,8 +60,8 @@ public class Game1 : Core
     {
         startscreen.LoadContent();
 
-        _heroTexture = Content.Load<Texture2D>("cptclownnose20fps");
-        _textureAtlas = new TextureAtlas(_heroTexture);
+        _heroTexture = Content.Load<Texture2D>("Sprites/Hero/cptclownnose20fps");
+        _textureAtlas = TextureAtlas.FromFile(Content, "Sprites/Hero/hero-atlas.xml");
         List<TextureRegion> textureRegions = new List<TextureRegion>();
         for (int i = 0; i < 10; i++)
         {
@@ -152,7 +151,7 @@ public class Game1 : Core
 
     protected override void Draw(GameTime gameTime)
     {
-        GraphicsDevice.Clear(new Color(50, 52, 67));        
+        GraphicsDevice.Clear(new Color(146, 169, 206));        
 
         switch (_stateManager.CurrentState)
         {

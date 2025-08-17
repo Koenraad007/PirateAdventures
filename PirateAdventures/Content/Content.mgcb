@@ -61,18 +61,6 @@
 /processorParam:TextureFormat=Color
 /build:Brown_Buttons_Pixel.png;BrownButtons.png
 
-#begin cptclownnose20fps.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:cptclownnose20fps.png
-
 #begin enemy_bigguy.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -132,6 +120,21 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Shooter.png;enemy_shooter.png
+
+#begin Sprites/Hero/cptclownnose20fps.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Hero/cptclownnose20fps.png
+
+#begin Sprites/Hero/hero-atlas.xml
+/copy:Sprites/Hero/hero-atlas.xml;Sprites/Hero/hero-atlas.xml
 
 #begin start_bg.png
 /importer:TextureImporter

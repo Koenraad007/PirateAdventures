@@ -20,13 +20,12 @@ namespace PirateAdventures
 
 
         private Texture2D heroTexture;
-        private Animations.Animation idle, running, jumping, falling;
         private Vector2 speed = Vector2.Zero;
         private Vector2 acceleration = new Vector2(0.1f, 0.3f);
         private SpriteEffects spriteFx = SpriteEffects.None;
         private float scale = 2f;
         private IInputReader input;
-        private HeroState state;
+        private HeroState current, prev = HeroState.IDLE;
         private bool isGrounded = false;
         private Vector2 collision = Vector2.Zero;
 
@@ -35,7 +34,7 @@ namespace PirateAdventures
         public Rectangle BoundingBox { get; set; }
 
         private TextureAtlas textureAtlas;
-        private AnimatedSprite idleAS;
+        private AnimatedSprite currentAnimation;
 
         public Hero(Texture2D texture, IInputReader inputReader, TextureAtlas ta)
         {
@@ -45,37 +44,12 @@ namespace PirateAdventures
             this.Position = new Vector2(200, 200);
             this.BoundingBox = new Rectangle((int)Position.X, (int)Position.Y, (int)(SPRITE_WIDTH * scale), (int)(SPRITE_HEIGHT * scale));
 
-            idle = new Animations.Animation();
-            running = new Animations.Animation();
-            jumping = new Animations.Animation();
-            falling = new Animations.Animation();
-
-            for (int i = 0; i < 10; i++)
-            {
-                idle.AddFrame(new AnimationFrame(new Rectangle(SPRITE_WIDTH * i, 0, SPRITE_WIDTH, SPRITE_HEIGHT)));
-            }
-            for (int i = 0; i < 12; i++)
-            {
-                running.AddFrame(new AnimationFrame(new Rectangle(SPRITE_WIDTH * i + (10 * SPRITE_WIDTH), 0, SPRITE_WIDTH, SPRITE_HEIGHT)));
-            }
-            for (int i = 0; i < 6; i++)
-            {
-                jumping.AddFrame(new AnimationFrame(new Rectangle(SPRITE_WIDTH * i + (22 * SPRITE_WIDTH), 0, SPRITE_WIDTH, SPRITE_HEIGHT)));
-            }
-            for (int i = 0; i < 2; i++)
-            {
-                falling.AddFrame(new AnimationFrame(new Rectangle(SPRITE_WIDTH * i + (28 * SPRITE_WIDTH), 0, SPRITE_WIDTH, SPRITE_HEIGHT)));
-            }
-
-            idleAS = textureAtlas.CreateAnimatedSprite("idle");
-            idleAS.Scale = new Vector2(scale, scale);
+            currentAnimation = textureAtlas.CreateAnimatedSprite("idle");
         }
 
         public void Update(List<IGameObject> objects, GameTime gameTime)
         {
             var direction = input.ReadInput();
-
-            idleAS.Update(gameTime);
 
             // change speed according to direction input
             Move(direction);
@@ -99,37 +73,23 @@ namespace PirateAdventures
             // if (Position.Y > 460 - SPRITE_HEIGHT) Position = new Vector2(Position.X, 460 - SPRITE_HEIGHT);
 
             // if the hero is not moving, the state is IDLE (0), else it's RUNNING (1)
-            if (speed.X != 0 && Math.Abs(speed.Y) < 1) state = HeroState.RUNNING;
-            else if (speed.Y <= -1) state = HeroState.JUMPING;
-            else if (speed.Y >= 1) state = HeroState.FALLING;
-            else state = HeroState.IDLE;
+            if (speed.X != 0 && Math.Abs(speed.Y) < 1) current = HeroState.RUNNING;
+            else if (speed.Y <= -1) current = HeroState.JUMPING;
+            else if (speed.Y >= 1) current = HeroState.FALLING;
+            else current = HeroState.IDLE;
 
             Debug.WriteLine("Speed.Y: " + speed.Y);
             Debug.WriteLine("Abs(Speed.Y): " + Math.Abs(speed.Y));
-            Debug.WriteLine("Hero State: " + state.ToString());
+            Debug.WriteLine("Hero State: " + current.ToString());
 
-            switch (state)
+            if (current != prev)
             {
-                case HeroState.IDLE:
-                    running.ResetAnimation();
-                    jumping.ResetAnimation();
-                    idle.Update(gameTime);
-                    break;
-
-                case HeroState.RUNNING:
-                    idle.ResetAnimation();
-                    jumping.ResetAnimation();
-                    running.Update(gameTime);
-                    break;
-
-                case HeroState.JUMPING:
-                    idle.ResetAnimation();
-                    running.ResetAnimation();
-                    jumping.Update(gameTime);
-                    break;
-
-                default: break;
+                string animationName = $"hero-{current.ToString().ToLower()}";
+                currentAnimation = textureAtlas.CreateAnimatedSprite(animationName);
+                prev = current;
             }
+
+            currentAnimation.Update(gameTime);
         }
 
         private void Move(Vector2 direction)
@@ -236,29 +196,10 @@ namespace PirateAdventures
             if (speed.X < 0) spriteFx = SpriteEffects.FlipHorizontally;
             if (speed.X > 0) spriteFx = SpriteEffects.None;
 
-            switch (state)
-            {
-                case HeroState.IDLE:
-                    idleAS.Effects = spriteFx;
-                    idleAS.Origin = new Vector2(16 * ((spriteFx == SpriteEffects.FlipHorizontally) ? 1 : -1), -32);
-                    idleAS.Draw(spriteBatch, Position);
-                    //spriteBatch.Draw(heroTexture, Position, idle.CurrentFrame.SourceRect, Color.White, 0, new Vector2(16 * ((spriteFx == SpriteEffects.FlipHorizontally) ? 1 : -1), -32), scale, spriteFx, 0);
-                    break;
-
-                case HeroState.RUNNING:
-                    spriteBatch.Draw(heroTexture, Position, running.CurrentFrame.SourceRect, Color.White, 0, new Vector2(16 * ((spriteFx == SpriteEffects.FlipHorizontally) ? 1 : -1), -32), scale, spriteFx, 0);
-                    break;
-
-                case HeroState.JUMPING:
-                    spriteBatch.Draw(heroTexture, Position, jumping.CurrentFrame.SourceRect, Color.White, 0, new Vector2(16 * ((spriteFx == SpriteEffects.FlipHorizontally) ? 1 : -1), -32), scale, spriteFx, 0);
-                    break;
-
-                case HeroState.FALLING:
-                    spriteBatch.Draw(heroTexture, Position, falling.CurrentFrame.SourceRect, Color.White, 0, new Vector2(16 * ((spriteFx == SpriteEffects.FlipHorizontally) ? 1 : -1), -32), scale, spriteFx, 0);
-                    break;
-
-                default: break;
-            }
+            currentAnimation.Effects = spriteFx;
+            currentAnimation.Origin = new Vector2(16 * ((spriteFx == SpriteEffects.FlipHorizontally) ? 1 : -1), -32);
+            currentAnimation.Scale = new Vector2(scale, scale);
+            currentAnimation.Draw(spriteBatch, Position);
         }
 
     }

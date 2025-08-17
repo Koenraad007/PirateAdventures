@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas>
+	<Texture>Sprites/Hero/cptclownnose20fps</Texture>
+	<Regions>
+		<Region name="hero-idle1" x="0" y="0" width="80" height="80" />
+		<Region name="hero-idle2" x="80" y="0" width="80" height="80" />
+		<Region name="hero-idle3" x="160" y="0" width="80" height="80" />
+		<Region name="hero-idle4" x="240" y="0" width="80" height="80" />
+		<Region name="hero-idle5" x="320" y="0" width="80" height="80" />
+		<Region name="hero-idle6" x="400" y="0" width="80" height="80" />
+		<Region name="hero-idle7" x="480" y="0" width="80" height="80" />
+		<Region name="hero-idle8" x="560" y="0" width="80" height="80" />
+		<Region name="hero-idle9" x="640" y="0" width="80" height="80" />
+		<Region name="hero-idle10" x="720" y="0" width="80" height="80" />
+		<Region name="hero-running1" x="800" y="0" width="80" height="80" />
+		<Region name="hero-running2" x="880" y="0" width="80" height="80" />
+		<Region name="hero-running3" x="960" y="0" width="80" height="80" />
+		<Region name="hero-running4" x="1040" y="0" width="80" height="80" />
+		<Region name="hero-running5" x="1120" y="0" width="80" height="80" />
+		<Region name="hero-running6" x="1200" y="0" width="80" height="80" />
+		<Region name="hero-running7" x="1280" y="0" width="80" height="80" />
+		<Region name="hero-running8" x="1360" y="0" width="80" height="80" />
+		<Region name="hero-running9" x="1440" y="0" width="80" height="80" />
+		<Region name="hero-running10" x="1520" y="0" width="80" height="80" />
+		<Region name="hero-running11" x="1600" y="0" width="80" height="80" />
+		<Region name="hero-running12" x="1680" y="0" width="80" height="80" />
+		<Region name="hero-jumping1" x="1760" y="0" width="80" height="80" />
+		<Region name="hero-jumping2" x="1840" y="0" width="80" height="80" />
+		<Region name="hero-jumping3" x="1920" y="0" width="80" height="80" />
+		<Region name="hero-jumping4" x="2000" y="0" width="80" height="80" />
+		<Region name="hero-jumping5" x="2080" y="0" width="80" height="80" />
+		<Region name="hero-jumping6" x="2160" y="0" width="80" height="80" />
+		<Region name="hero-falling1" x="2240" y="0" width="80" height="80" />
+		<Region name="hero-falling2" x="2320" y="0" width="80" height="80" />		
+	</Regions>
+	<Animations>
+		<Animation name="hero-idle" delay="50">
+			<Frame region="hero-idle1" />
+			<Frame region="hero-idle2" />
+			<Frame region="hero-idle3" />
+			<Frame region="hero-idle4" />
+			<Frame region="hero-idle5" />
+			<Frame region="hero-idle6" />
+			<Frame region="hero-idle7" />
+			<Frame region="hero-idle8" />
+			<Frame region="hero-idle9" />
+			<Frame region="hero-idle10" />
+		</Animation>
+		<Animation name="hero-running" delay="50">
+			<Frame region="hero-running1" />
+			<Frame region="hero-running2" />
+			<Frame region="hero-running3" />
+			<Frame region="hero-running4" />
+			<Frame region="hero-running5" />
+			<Frame region="hero-running6" />
+			<Frame region="hero-running7" />
+			<Frame region="hero-running8" />
+			<Frame region="hero-running9" />
+			<Frame region="hero-running10" />
+			<Frame region="hero-running11" />
+			<Frame region="hero-running12" />
+		</Animation>
+		<Animation name="hero-jumping" delay="50">
+			<Frame region="hero-jumping1" />
+			<Frame region="hero-jumping2" />
+			<Frame region="hero-jumping3" />
+			<Frame region="hero-jumping4" />
+			<Frame region="hero-jumping5" />
+			<Frame region="hero-jumping6" />
+		</Animation>
+		<Animation name="hero-falling" delay="50">
+			<Frame region="hero-falling1" />
+			<Frame region="hero-falling2" />
+		</Animation>
+	</Animations>
+</TextureAtlas>
