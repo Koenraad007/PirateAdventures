@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGameLib.Input;
 using MonoGameLib.Scenes;
 using System;
 using System.Diagnostics;
@@ -24,6 +25,10 @@ namespace MonoGameLib
         public static SpriteBatch SpriteBatch { get; private set; }
 
         public static new ContentManager Content { get; private set; }
+
+        public static InputManager Input { get; private set; }
+
+        public static bool ExitOnEscape { get; set; } = true;
 
         public Core(string title, int width, int height, bool fullScreen)
         {
@@ -60,10 +65,14 @@ namespace MonoGameLib
             GraphicsDevice = base.GraphicsDevice;
 
             SpriteBatch = new SpriteBatch(GraphicsDevice);
+
+            Input = new InputManager();
         }
 
         protected override void Update(GameTime gameTime)
         {
+            Input.Update();
+
             if (_nextScene != null)
             {
                 TransitionScene();

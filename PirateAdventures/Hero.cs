@@ -44,7 +44,7 @@ namespace PirateAdventures
             this.Position = new Vector2(200, 200);
             this.BoundingBox = new Rectangle((int)Position.X, (int)Position.Y, (int)(SPRITE_WIDTH * scale), (int)(SPRITE_HEIGHT * scale));
 
-            currentAnimation = textureAtlas.CreateAnimatedSprite("idle");
+            currentAnimation = textureAtlas.CreateAnimatedSprite("hero-idle");
         }
 
         public void Update(List<IGameObject> objects, GameTime gameTime)

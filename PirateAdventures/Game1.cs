@@ -60,13 +60,6 @@ public class Game1 : Core
 
         _heroTexture = Content.Load<Texture2D>("Sprites/Hero/cptclownnose20fps");
         _textureAtlas = TextureAtlas.FromFile(Content, "Sprites/Hero/hero-atlas.xml");
-        List<TextureRegion> textureRegions = new List<TextureRegion>();
-        for (int i = 0; i < 10; i++)
-        {
-            textureRegions.Add(new TextureRegion(_heroTexture, 80 * i, 0, 80, 80));
-        }
-        MonoGameLib.Graphics.Animation anim = new MonoGameLib.Graphics.Animation(textureRegions, TimeSpan.FromMilliseconds(50));
-        _textureAtlas.AddAnimation("idle", anim);
 
         _companionTexture = Content.Load<Texture2D>("bluebird20fps");
         _enemyTexture = Content.Load<Texture2D>("enemy_bigguy");

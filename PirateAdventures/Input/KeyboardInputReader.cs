@@ -5,7 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using MonoGameLib;
 using PirateAdventures.Interfaces;
+using PirateAdventures.Settings;
 
 namespace PirateAdventures.Input
 {
@@ -22,13 +24,11 @@ namespace PirateAdventures.Input
         {
             var direction = Vector2.Zero;
 
-            KeyboardState state = Keyboard.GetState();
-
-            if (state.IsKeyDown(inputSettings.MoveLeftKey))
+            if (Core.Input.Keyboard.IsKeyDown(inputSettings.KeyBindings[EGameAction.MoveLeft]))
                 direction.X = -1;
-            if (state.IsKeyDown(inputSettings.MoveRightKey))
+            if (Core.Input.Keyboard.IsKeyDown(inputSettings.KeyBindings[EGameAction.MoveRight]))
                 direction.X = 1;
-            if (state.IsKeyDown(inputSettings.JumpKey))
+            if (Core.Input.Keyboard.IsKeyDown(inputSettings.KeyBindings[EGameAction.Jump]))
                 direction.Y = -1;
 
             return direction;
@@ -38,15 +38,13 @@ namespace PirateAdventures.Input
         {
             var direction = Vector2.Zero;
 
-            KeyboardState state = Keyboard.GetState();
-
-            if (state.IsKeyDown(inputSettings.BirdLeftKey))
+            if (Core.Input.Keyboard.IsKeyDown(inputSettings.KeyBindings[EGameAction.BirdLeft]))
                 direction.X = -1;
-            if (state.IsKeyDown(inputSettings.BirdRightKey))
+            if (Core.Input.Keyboard.IsKeyDown(inputSettings.KeyBindings[EGameAction.BirdRight]))
                 direction.X = 1;
-            if (state.IsKeyDown(inputSettings.BirdUpKey))
+            if (Core.Input.Keyboard.IsKeyDown(inputSettings.KeyBindings[EGameAction.BirdUp]))
                 direction.Y = -1;
-            if (state.IsKeyDown(inputSettings.BirdDownKey))
+            if (Core.Input.Keyboard.IsKeyDown(inputSettings.KeyBindings[EGameAction.BirdDown]))
                 direction.Y = 1;
 
             return direction;
