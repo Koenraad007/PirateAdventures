@@ -44,7 +44,7 @@ public class Companion : IGameObject, ICollidable
     public void Update(List<IGameObject> collisionObjects, GameTime gameTime)
     {
         var hero = collisionObjects.Find(obj => obj is Hero) as Hero;
-        var heroPos = hero != null ? hero.BoundingBox.Center.ToVector2()+new Vector2(0f,-10f) : Vector2.Zero;
+        var heroPos = hero != null ? hero.BoundingBox.Center.ToVector2()+new Vector2(0f,-32f) : Vector2.Zero;
 
         var direction = input.ReadBirdInput();
 
