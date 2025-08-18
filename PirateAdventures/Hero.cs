@@ -16,7 +16,7 @@ namespace PirateAdventures
 {
     public class Hero : IGameObject, ICollidable
     {
-        public const int SPRITE_WIDTH = 40;
+        public const int SPRITE_WIDTH = 32;
         public const int SPRITE_HEIGHT = 32;
         public const int MAX_SPEED = 3;
 
@@ -197,12 +197,12 @@ namespace PirateAdventures
             currentAnimation.Effects = spriteFx;
             currentAnimation.Origin = new Vector2(16 * ((spriteFx == SpriteEffects.FlipHorizontally) ? 1 : -1), -32);
             currentAnimation.Scale = new Vector2(scale, scale);
-            currentAnimation.Draw(spriteBatch, Position + new Vector2(-20,-48));
+            currentAnimation.Draw(spriteBatch, Position + new Vector2(-24,-48));
 
             // draw bounding box for debugging
-            //var pixel = new Texture2D(Core.GraphicsDevice, 1, 1);
-            //pixel.SetData(new[] { Color.Red });
-            //spriteBatch.Draw(pixel, BoundingBox, Color.Red * 0.5f);
+            var pixel = new Texture2D(Core.GraphicsDevice, 1, 1);
+            pixel.SetData(new[] { Color.Red });
+            spriteBatch.Draw(pixel, BoundingBox, Color.Red * 0.5f);
         }
 
     }

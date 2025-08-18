@@ -82,8 +82,8 @@ namespace PirateAdventures.Scenes
 
             float viewWidth = screenWidth / _cameraZoom;
             float viewHeight = screenHeight / _cameraZoom;
-            float marginX = CAMERA_MARGIN_X / _cameraZoom;
-            float marginY = CAMERA_MARGIN_Y / _cameraZoom;
+            float marginX = (screenWidth * 0.5f) / _cameraZoom;
+            float marginY = (screenHeight*0.5f) / _cameraZoom;
 
             // calculate where the hero should be displayed on the screen
             float heroDisplayX = _hero.Position.X - cameraOffset.X;
@@ -94,7 +94,7 @@ namespace PirateAdventures.Scenes
             else if (heroDisplayX > viewWidth - marginX) cameraOffset.X = _hero.Position.X - (viewWidth - marginX);
 
             // vertical scrolling
-            if (heroDisplayY < marginY) cameraOffset.Y = _hero.Position.Y - marginY;
+            if (heroDisplayY < marginY) cameraOffset.Y = _hero.Position.Y - marginY + 32f;
             else if (heroDisplayY > viewHeight - marginY) cameraOffset.Y = _hero.Position.Y - (viewHeight - marginY) + 32f;
 
             cameraOffset.X = MathHelper.Clamp(cameraOffset.X, 0, _tiledMap.Width - viewWidth);
