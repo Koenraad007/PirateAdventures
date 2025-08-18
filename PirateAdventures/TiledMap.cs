@@ -21,6 +21,7 @@ namespace PirateAdventures
         public int Width { get; private set; }
         public int Height { get; private set; }
         private float scale = 2f;
+        public const int TileSize = 32;
 
         public void Initialize(string filePath)
         {
@@ -62,8 +63,8 @@ namespace PirateAdventures
                                 var block = new Block(
                                     new Vector2(x * _map.TileWidth, y * _map.TileHeight),
                                     _tilesetTexture,
-                                    new Vector2(srcRect.X / 64, srcRect.Y / 64),
-                                    64,
+                                    new Vector2(srcRect.X / TileSize, srcRect.Y / TileSize),
+                                    TileSize,
                                     BlockType.FULL
                                     );
 
@@ -77,8 +78,8 @@ namespace PirateAdventures
                                 var block = new Block(
                                     new Vector2(x * _map.TileWidth, y * _map.TileHeight),
                                     _tilesetTexture,
-                                    new Vector2(srcRect.X / 64, srcRect.Y / 64),
-                                    64,
+                                    new Vector2(srcRect.X / TileSize, srcRect.Y / TileSize),
+                                    TileSize,
                                     BlockType.PLATFORM
                                     );
 

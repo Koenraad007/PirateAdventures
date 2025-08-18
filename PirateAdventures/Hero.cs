@@ -1,14 +1,16 @@
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using MonoGameLib;
+using MonoGameLib.Graphics;
+using PirateAdventures.Animations;
+using PirateAdventures.Interfaces;
+using PirateAdventures.Level;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using MonoGameLib.Graphics;
-using PirateAdventures.Animations;
-using PirateAdventures.Interfaces;
-using PirateAdventures.Level;
+using System.Windows.Forms;
 
 namespace PirateAdventures
 {
@@ -196,6 +198,11 @@ namespace PirateAdventures
             currentAnimation.Origin = new Vector2(16 * ((spriteFx == SpriteEffects.FlipHorizontally) ? 1 : -1), -32);
             currentAnimation.Scale = new Vector2(scale, scale);
             currentAnimation.Draw(spriteBatch, Position);
+
+            // draw bounding box for debugging
+            var pixel = new Texture2D(Core.GraphicsDevice, 1, 1);
+            pixel.SetData(new[] { Color.Red });
+            spriteBatch.Draw(pixel, BoundingBox, Color.Red * 0.5f);
         }
 
     }
