@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas>
+	<Texture>Sprites/Endpoint/openingDoor</Texture>
+	<Regions>
+		<Region name="endpoint1" x="0" y="0" width="64" height="64" />
+		<Region name="endpoint2" x="64" y="0" width="64" height="64" />
+		<Region name="endpoint3" x="128" y="0" width="64" height="64" />
+		<Region name="endpoint4" x="192" y="0" width="64" height="64" />
+		<Region name="endpoint5" x="256" y="0" width="64" height="64" />
+	</Regions>
+	<Animations>
+		<Animation name="endpoint" delay="100">
+			<Frame region="endpoint1" />
+			<Frame region="endpoint2" />
+			<Frame region="endpoint3" />
+			<Frame region="endpoint4" />
+			<Frame region="endpoint5" />
+		</Animation>
+	</Animations>
+</TextureAtlas>
+	

@@ -117,9 +117,11 @@ namespace PirateAdventures.Scenes
 
             foreach (IGameObject gameObject in _gameObjects)
             {
-                if (gameObject.GetType() == typeof(Block)) continue;
+                if (gameObject.GetType() == typeof(Block) || gameObject.GetType() == typeof(Hero)) continue;
                 gameObject.Draw(Core.SpriteBatch);
             }
+
+            _gameObjects.OfType<Hero>().FirstOrDefault()?.Draw(Core.SpriteBatch);
 
             Core.SpriteBatch.End();
 

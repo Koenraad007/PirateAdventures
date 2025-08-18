@@ -61,6 +61,9 @@
 /processorParam:TextureFormat=Color
 /build:Brown_Buttons_Pixel.png;BrownButtons.png
 
+#begin endpoint-atlas.xml
+/copy:endpoint-atlas.xml
+
 #begin enemy_bigguy.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -130,6 +133,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Shooter.png;enemy_shooter.png
+
+#begin Sprites/Endpoint/openingDoor.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Endpoint/openingDoor.png
 
 #begin Sprites/Hero/cptclownnose20fps.png
 /importer:TextureImporter

@@ -200,9 +200,9 @@ namespace PirateAdventures
             currentAnimation.Draw(spriteBatch, Position + new Vector2(-24,-48));
 
             // draw bounding box for debugging
-            var pixel = new Texture2D(Core.GraphicsDevice, 1, 1);
-            pixel.SetData(new[] { Color.Red });
-            spriteBatch.Draw(pixel, BoundingBox, Color.Red * 0.5f);
+            //var pixel = new Texture2D(Core.GraphicsDevice, 1, 1);
+            //pixel.SetData(new[] { Color.Red });
+            //spriteBatch.Draw(pixel, BoundingBox, Color.Red * 0.5f);
         }
 
     }

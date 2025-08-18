@@ -12,6 +12,7 @@ namespace MonoGameLib.Graphics
         private int _currentFrame;
         private TimeSpan _elapsed;
         private Animation _animation;
+        public bool PlayOnce = false;
 
         public Animation Animation
         {
@@ -32,6 +33,11 @@ namespace MonoGameLib.Graphics
 
         public void Update(GameTime gameTime)
         {
+            if (PlayOnce && _currentFrame >= _animation.Frames.Count - 1)
+            {
+                return;
+            }
+
             _elapsed += gameTime.ElapsedGameTime;
 
             if (_elapsed >= _animation.Delay)

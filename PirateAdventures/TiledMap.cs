@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLib;
 using MonoGameLib.Graphics;
+using PirateAdventures.GameObjects;
 using PirateAdventures.Input;
 using PirateAdventures.Interfaces;
 using PirateAdventures.Level;
@@ -16,8 +17,8 @@ namespace PirateAdventures
     public class TiledMap
     {
         private TmxMap _map;
-        private Texture2D _heroTexture, _companionTexture, _tilesetTexture, _bigGuyTexture, _shooterTexture, _windowGuyTexture, _bombTexture;
-        private TextureAtlas _heroAtlas;
+        private Texture2D _heroTexture, _companionTexture, _tilesetTexture, _bigGuyTexture, _shooterTexture, _windowGuyTexture, _bombTexture, _endpointTexture;
+        private TextureAtlas _heroAtlas, _endpointAtlas;
 
         public List<IGameObject> CollisionObjects { get; private set; } = new List<IGameObject>();
         public int Width { get; private set; }
@@ -43,6 +44,8 @@ namespace PirateAdventures
             _shooterTexture = contentManager.Load<Texture2D>("enemy_shooter");
             _windowGuyTexture = contentManager.Load<Texture2D>("enemy_windowguy");
             _bombTexture = contentManager.Load<Texture2D>("Bomb");
+            _endpointTexture = contentManager.Load<Texture2D>("Sprites/Endpoint/openingDoor");
+            _endpointAtlas = TextureAtlas.FromFile(contentManager, "endpoint-atlas.xml");
 
         }
 
@@ -159,6 +162,14 @@ namespace PirateAdventures
                                 Position = new Vector2((float)gameObject.X, (float)gameObject.Y - WindowGuy.SPRITE_HEIGHT)
                             };
                             gameObjects.Add(windowGuy);
+                            break;
+
+                        case "endpoint":
+                            var endPoint = new EndPoint(
+                                new Vector2((float)gameObject.X, (float)gameObject.Y - EndPoint.SPRITE_HEIGHT),
+                                _endpointAtlas
+                            );
+                            gameObjects.Add(endPoint);
                             break;
 
                         default:
