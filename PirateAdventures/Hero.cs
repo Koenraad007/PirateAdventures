@@ -16,14 +16,14 @@ namespace PirateAdventures
     {
         public const int SPRITE_WIDTH = 80;
         public const int SPRITE_HEIGHT = 80;
-        public const int MAX_SPEED = 5;
+        public const int MAX_SPEED = 3;
 
 
         private Texture2D heroTexture;
         private Vector2 speed = Vector2.Zero;
         private Vector2 acceleration = new Vector2(0.1f, 0.3f);
         private SpriteEffects spriteFx = SpriteEffects.None;
-        private float scale = 2f;
+        private float scale = 1f;
         private IInputReader input;
         private HeroState currentState, prevState = HeroState.IDLE;
         private bool isGrounded = false;
@@ -120,7 +120,7 @@ namespace PirateAdventures
             // if jump key is pressed
             if (direction.Y < 0 && isGrounded)
             {
-                speed.Y = -10;
+                speed.Y = -6;
                 isGrounded = false;
             }
 

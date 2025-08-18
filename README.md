@@ -22,7 +22,8 @@ Minimal requirements:
   -[ ] At least 3 examples of the use of SOLID
 -[ ] At least 2 optional requirements
 -[ ] No duplicate code
--[ ] Second controllable character
+-[X] Second controllable character
+  -[ ] Make it easy to add more controllable characters
 
 Optional requirements:
 

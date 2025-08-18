@@ -28,13 +28,14 @@ namespace PirateAdventures.Scenes
         private const int CAMERA_MARGIN_X = 400, CAMERA_MARGIN_Y = 200;
         private InputSettings _inputSettings;
         private Texture2D _heroTexture, _tileset, _enemyTexture, _companionTexture;
+        private float _cameraZoom = 2f;
 
         public override void Initialize()
         {
             base.Initialize();
 
             _inputSettings = SettingsManager.LoadSettings();
-            _tiledMap.Initialize("./../../../Content/naamloos.tmx");
+            _tiledMap.Initialize("./../../../Content/Level1.tmx");
             _blocks = new List<IGameObject>();
 
             InitializeGameObjects();
@@ -87,29 +88,37 @@ namespace PirateAdventures.Scenes
             int screenWidth = Core.GraphicsDevice.Viewport.Width;
             int screenHeight = Core.GraphicsDevice.Viewport.Height;
 
+            float viewWidth = screenWidth / _cameraZoom;
+            float viewHeight = screenHeight / _cameraZoom;
+            float marginX = CAMERA_MARGIN_X / _cameraZoom;
+            float marginY = CAMERA_MARGIN_Y / _cameraZoom;
+
             // calculate where the hero should be displayed on the screen
             float heroDisplayX = _hero.Position.X - cameraOffset.X;
             float heroDisplayY = _hero.Position.Y - cameraOffset.Y;
 
             // horizontal scrolling
-            if (heroDisplayX < CAMERA_MARGIN_X) cameraOffset.X = _hero.Position.X - CAMERA_MARGIN_X;
-            else if (heroDisplayX > screenWidth - CAMERA_MARGIN_X) cameraOffset.X = _hero.Position.X - (screenWidth - CAMERA_MARGIN_X);
+            if (heroDisplayX < marginX) cameraOffset.X = _hero.Position.X - marginX;
+            else if (heroDisplayX > viewWidth - marginX) cameraOffset.X = _hero.Position.X - (viewWidth - marginX);
 
             // vertical scrolling
-            if (heroDisplayY < CAMERA_MARGIN_Y) cameraOffset.Y = _hero.Position.Y - CAMERA_MARGIN_Y;
-            else if (heroDisplayY > screenHeight - CAMERA_MARGIN_Y) cameraOffset.Y = _hero.Position.Y - (screenHeight - CAMERA_MARGIN_Y);
+            if (heroDisplayY < marginY) cameraOffset.Y = _hero.Position.Y - marginY;
+            else if (heroDisplayY > viewHeight - marginY) cameraOffset.Y = _hero.Position.Y - (viewHeight - marginY) + 32f;
 
-            cameraOffset.X = MathHelper.Clamp(cameraOffset.X, 0, _tiledMap.Width - screenWidth);
-            cameraOffset.Y = MathHelper.Clamp(cameraOffset.Y, 0, _tiledMap.Height - screenHeight);
+            cameraOffset.X = MathHelper.Clamp(cameraOffset.X, 0, _tiledMap.Width - viewWidth);
+            cameraOffset.Y = MathHelper.Clamp(cameraOffset.Y, 0, _tiledMap.Height - viewHeight);
         }
 
         public override void Draw(GameTime gameTime)
         {
             Core.GraphicsDevice.Clear(new Color(146, 169, 206));
 
+            var transform = Matrix.CreateTranslation(-cameraOffset.X, -cameraOffset.Y, 0) * 
+                Matrix.CreateScale(_cameraZoom, _cameraZoom, 1);
+
             Core.SpriteBatch.Begin(
                     samplerState: SamplerState.PointClamp,
-                    transformMatrix: Matrix.CreateTranslation(-cameraOffset.X, -cameraOffset.Y, 0)
+                    transformMatrix: transform
                 );
 
             _tiledMap.Draw(Core.SpriteBatch);

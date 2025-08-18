@@ -19,7 +19,7 @@ public class Companion : IGameObject, ICollidable
     private Animation _animation;
     private Vector2 speed = new Vector2(2, 2);
     private SpriteEffects spriteFx = SpriteEffects.None;
-    private float scale = 1f;
+    private float scale = .5f;
     private KeyboardInputReader input;
     private Vector2 collision = Vector2.Zero;
 
@@ -31,7 +31,7 @@ public class Companion : IGameObject, ICollidable
     {
         this.input = input;
         _texture = texture;
-        this.Position = new Vector2(200, 1000);
+        this.Position = new Vector2(100, 400);
         this.BoundingBox = new Rectangle((int)Position.X, (int)Position.Y, (int)(SPRITE_WIDTH * scale), (int)(SPRITE_HEIGHT * scale));
 
         _animation = new Animation();
