@@ -37,7 +37,7 @@ namespace PirateAdventures.Level
 
         public void Update(List<IGameObject> collidables, GameTime gameTime)
         {
-            throw new NotImplementedException();
+            //
         }
     }
 

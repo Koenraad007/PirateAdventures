@@ -8,6 +8,9 @@
 /profile:Reach
 /compress:False
 
+#-------------------------------- References --------------------------------#
+
+
 #---------------------------------- Content ---------------------------------#
 
 #begin Adventures-2-1-2025 (1).png
@@ -77,6 +80,9 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/Pixellari.spritefont
 
+#begin hero-atlas.xml
+/copy:hero-atlas.xml
+
 #begin hero.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -136,9 +142,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Sprites/Hero/cptclownnose20fps.png
-
-#begin Sprites/Hero/hero-atlas.xml
-/copy:Sprites/Hero/hero-atlas.xml
 
 #begin start_bg.png
 /importer:TextureImporter

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGameLib;
 using PirateAdventures.Animations;
 using PirateAdventures.Interfaces;
 
@@ -23,11 +24,12 @@ namespace PirateAdventures
         public Vector2 Position { get; set; } = new Vector2(200, 7 * 64 - SPRITE_HEIGHT);
         public Rectangle BoundingBox { get; set; }
         private SpriteEffects spriteEffects = SpriteEffects.None;
+        private float scale = .5f;
 
         public BigGuy(Texture2D texture)
         {
             texture2D = texture;
-            BoundingBox = new Rectangle((int)Position.X, (int)Position.Y, SPRITE_WIDTH, SPRITE_HEIGHT);
+            BoundingBox = new Rectangle((int)Position.X, (int)Position.Y, (int)(SPRITE_WIDTH * scale), (int)(SPRITE_HEIGHT * scale));
 
             animations.Add(new Animation());
             for (int i = 0; i < 38; i++)
@@ -48,7 +50,10 @@ namespace PirateAdventures
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture2D, Position, animations[EnemyState].CurrentFrame.SourceRect, Color.White, 0, new Vector2(0, 0), 1f, spriteEffects, 0);
+            spriteBatch.Draw(texture2D, Position , animations[EnemyState].CurrentFrame.SourceRect, Color.White, 0, new Vector2(0, 0),scale, spriteEffects, 0);
+            var pixel = new Texture2D(Core.GraphicsDevice, 1, 1);
+            pixel.SetData(new[] { Color.Red });
+            spriteBatch.Draw(pixel, BoundingBox, Color.Red * 0.5f);
         }
 
         public void Update(List<IGameObject> collisionObjects, GameTime gameTime)
@@ -75,7 +80,7 @@ namespace PirateAdventures
                         }
                         else spriteEffects = SpriteEffects.None;
                         Position = new Vector2(Position.X + speed, Position.Y);
-                        BoundingBox = new Rectangle((int)Position.X, (int)Position.Y, SPRITE_WIDTH, SPRITE_HEIGHT);
+                        BoundingBox = new Rectangle((int)Position.X, (int)Position.Y, BoundingBox.Width, BoundingBox.Height);
                     }
                     else
                     {

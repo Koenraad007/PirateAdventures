@@ -18,16 +18,14 @@ namespace PirateAdventures.Scenes
 {
     public class GameScene: Scene
     {
-        private TextureAtlas _textureAtlas;
-        private Hero _hero;
-        private Companion _companion;
-        private List<IGameObject> _enemies;
+        private TextureAtlas _heroAtlas;
+        private List<IGameObject> _gameObjects;
         private List<IGameObject> _blocks;
         private TiledMap _tiledMap;
         private Vector2 cameraOffset = Vector2.Zero;
-        private const int CAMERA_MARGIN_X = 400, CAMERA_MARGIN_Y = 200;
+        private const int CAMERA_MARGIN_X = 600, CAMERA_MARGIN_Y = 200;
         private InputSettings _inputSettings;
-        private Texture2D _heroTexture, _tileset, _enemyTexture, _companionTexture;
+        private Texture2D _tileset, _enemyTexture;
         private float _cameraZoom = 2f;
 
         public override void Initialize()
@@ -43,10 +41,8 @@ namespace PirateAdventures.Scenes
 
         public override void LoadContent()
         {
-            _heroTexture = Core.Content.Load<Texture2D>("Sprites/Hero/cptclownnose20fps");
-            _textureAtlas = TextureAtlas.FromFile(Core.Content, "Sprites/Hero/hero-atlas.xml");
+            _heroAtlas = TextureAtlas.FromFile(Core.Content, "hero-atlas.xml");
 
-            _companionTexture = Core.Content.Load<Texture2D>("bluebird20fps");
             _enemyTexture = Core.Content.Load<Texture2D>("enemy_bigguy");
 
             _tileset = Core.Content.Load<Texture2D>("tileset64");
@@ -61,23 +57,17 @@ namespace PirateAdventures.Scenes
         {
             KeyboardInputReader kir = new KeyboardInputReader(_inputSettings);
 
-            _hero = _tiledMap.CreateHero(_heroTexture, kir, _textureAtlas);
-            _companion = new Companion(kir, _companionTexture);
-            //bigGuy = new BigGuy(_enemyTexture);
-            _enemies = _tiledMap.CreateEnemyObjects();
+            _gameObjects = _tiledMap.CreateGameObjects(kir);
 
             _blocks = _tiledMap.CollisionObjects;
+            _gameObjects.AddRange(_blocks);
         }
 
         public override void Update(GameTime gameTime)
         {
-            _hero.Update(_blocks, gameTime);
-            _companion.Update(new List<IGameObject>() { _hero }, gameTime);
-            foreach (IGameObject enemy in _enemies)
+            foreach (IGameObject gameObject in _gameObjects)
             {
-                var gameObjects = new List<IGameObject>() { _hero };
-                gameObjects.AddRange(_blocks);
-                enemy.Update(gameObjects, gameTime);
+                gameObject.Update(_gameObjects, gameTime);
             }
             UpdateCamera();
             base.Update(gameTime);
@@ -85,6 +75,8 @@ namespace PirateAdventures.Scenes
 
         private void UpdateCamera()
         {
+            Hero _hero = _gameObjects.OfType<Hero>().FirstOrDefault();
+
             int screenWidth = Core.GraphicsDevice.Viewport.Width;
             int screenHeight = Core.GraphicsDevice.Viewport.Height;
 
@@ -123,13 +115,11 @@ namespace PirateAdventures.Scenes
 
             _tiledMap.Draw(Core.SpriteBatch);
 
-            foreach (IGameObject enemy in _enemies)
+            foreach (IGameObject gameObject in _gameObjects)
             {
-                enemy.Draw(Core.SpriteBatch);
+                if (gameObject.GetType() == typeof(Block)) continue;
+                gameObject.Draw(Core.SpriteBatch);
             }
-
-            _companion.Draw(Core.SpriteBatch);
-            _hero.Draw(Core.SpriteBatch);
 
             Core.SpriteBatch.End();
 

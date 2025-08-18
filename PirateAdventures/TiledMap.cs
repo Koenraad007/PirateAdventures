@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGameLib;
 using MonoGameLib.Graphics;
 using PirateAdventures.Input;
 using PirateAdventures.Interfaces;
@@ -15,7 +16,8 @@ namespace PirateAdventures
     public class TiledMap
     {
         private TmxMap _map;
-        private Texture2D _tilesetTexture, _bigGuyTexture, _shooterTexture, _windowGuyTexture, _bombTexture, _heroTexture;
+        private Texture2D _heroTexture, _companionTexture, _tilesetTexture, _bigGuyTexture, _shooterTexture, _windowGuyTexture, _bombTexture;
+        private TextureAtlas _heroAtlas;
 
         public List<IGameObject> CollisionObjects { get; private set; } = new List<IGameObject>();
         public int Width { get; private set; }
@@ -33,6 +35,9 @@ namespace PirateAdventures
 
         public void LoadContent(ContentManager contentManager)
         {
+            _heroTexture = contentManager.Load<Texture2D>("Sprites/Hero/cptclownnose20fps");
+            _companionTexture = contentManager.Load<Texture2D>("bluebird20fps");
+            _heroAtlas = TextureAtlas.FromFile(contentManager, "hero-atlas.xml");
             _tilesetTexture = contentManager.Load<Texture2D>("Tileset32");
             _bigGuyTexture = contentManager.Load<Texture2D>("enemy_bigguy");
             _shooterTexture = contentManager.Load<Texture2D>("enemy_shooter");
@@ -91,28 +96,51 @@ namespace PirateAdventures
             }
         }
 
-        public List<IGameObject> CreateEnemyObjects()
+        public List<IGameObject> CreateGameObjects(KeyboardInputReader kir)
         {
-            var enemyObjects = new List<IGameObject>();
+            var gameObjects = new List<IGameObject>();
 
-            var enemyLayer = _map.ObjectGroups.FirstOrDefault(l => l.Name.ToLower().Contains("gameobjects"));
+            var gameObjectLayer = _map.ObjectGroups.FirstOrDefault(l => l.Name.ToLower().Contains("gameobjects"));
 
-            if (enemyLayer != null)
+            if (gameObjectLayer != null)
             {
-                foreach (var enemy in enemyLayer.Objects)
+                foreach (var gameObject in gameObjectLayer.Objects)
                 {
-                    Console.WriteLine($"Enemy Name: {enemy.Name}");
+                    Console.WriteLine($"Enemy Name: {gameObject.Name}");
 
-                    switch (enemy.Name.ToLower())
+                    switch (gameObject.Name.ToLower())
                     {
+                        case "hero":
+                            var hero = new Hero(
+                                    _heroTexture,
+                                    kir,
+                                    _heroAtlas
+                                    )
+                            {
+                                Position = new Vector2((float)gameObject.X, (float)gameObject.Y - Hero.SPRITE_HEIGHT),
+                            };
+                            gameObjects.Add(hero);
+                            break;
+
+                        case "companion":
+                            var companion = new Companion(
+                                    kir,
+                                    _companionTexture
+                                    )
+                            {
+                                Position = new Vector2((float)gameObject.X, (float)gameObject.Y - Companion.SPRITE_HEIGHT),
+                            };
+                            gameObjects.Add(companion);
+                            break;
+
                         case "big":
                             var bigGuy = new BigGuy(
                                     _bigGuyTexture
                                     )
                             {
-                                Position = new Vector2((float)enemy.X, (float)enemy.Y - BigGuy.SPRITE_HEIGHT),
+                                Position = new Vector2((float)gameObject.X, (float)gameObject.Y - BigGuy.SPRITE_HEIGHT),
                             };
-                            enemyObjects.Add(bigGuy);
+                            gameObjects.Add(bigGuy);
                             break;
 
                         case "shoot":
@@ -120,17 +148,17 @@ namespace PirateAdventures
                                 _shooterTexture
                             )
                             {
-                                Position = new Vector2((float)enemy.X, (float)enemy.Y - Shooter.SPRITE_HEIGHT)
+                                Position = new Vector2((float)gameObject.X, (float)gameObject.Y - Shooter.SPRITE_HEIGHT)
                             };
-                            enemyObjects.Add(shooter);
+                            gameObjects.Add(shooter);
                             break;
 
                         case "window":
                             var windowGuy = new WindowGuy(_windowGuyTexture, _bombTexture)
                             {
-                                Position = new Vector2((float)enemy.X, (float)enemy.Y - WindowGuy.SPRITE_HEIGHT)
+                                Position = new Vector2((float)gameObject.X, (float)gameObject.Y - WindowGuy.SPRITE_HEIGHT)
                             };
-                            enemyObjects.Add(windowGuy);
+                            gameObjects.Add(windowGuy);
                             break;
 
                         default:
@@ -139,7 +167,7 @@ namespace PirateAdventures
                 }
             }
 
-            return enemyObjects;
+            return gameObjects;
         }
 
         public Hero CreateHero(Texture2D texture, KeyboardInputReader kir, TextureAtlas ta)
