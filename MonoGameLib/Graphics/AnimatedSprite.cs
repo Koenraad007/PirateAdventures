@@ -9,7 +9,7 @@ namespace MonoGameLib.Graphics
 {
     public class AnimatedSprite: Sprite
     {
-        private int _currentFrame;
+        public int CurrentFrame { get; private set; }
         private TimeSpan _elapsed;
         private Animation _animation;
         public bool PlayOnce = false;
@@ -33,7 +33,7 @@ namespace MonoGameLib.Graphics
 
         public void Update(GameTime gameTime)
         {
-            if (PlayOnce && _currentFrame >= _animation.Frames.Count - 1)
+            if (PlayOnce && CurrentFrame >= _animation.Frames.Count - 1)
             {
                 return;
             }
@@ -43,14 +43,14 @@ namespace MonoGameLib.Graphics
             if (_elapsed >= _animation.Delay)
             {
                 _elapsed -= _animation.Delay;
-                _currentFrame++;
+                CurrentFrame++;
 
-                if (_currentFrame >= _animation.Frames.Count)
+                if (CurrentFrame >= _animation.Frames.Count)
                 {
-                    _currentFrame = 0;
+                    CurrentFrame = 0;
                 }
 
-                Region = _animation.Frames[_currentFrame];
+                Region = _animation.Frames[CurrentFrame];
             }
         }
     }

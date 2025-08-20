@@ -89,6 +89,10 @@ namespace PirateAdventures.Scenes
             {
                 hero.OnDeath += HandleGameOver;
             }
+            foreach (var enemy in _gameObjects.OfType<BigGuy>())
+            {
+                enemy.Attack += HandleAttack;
+            }
         }
 
         public override void Update(GameTime gameTime)
@@ -138,6 +142,20 @@ namespace PirateAdventures.Scenes
         {
             _isGameOver = true;
             Debug.WriteLine("Game Over! Hero died.");
+        }
+
+        private void HandleAttack(IEnemy enemy, int damage)
+        {
+            Hero hero = _gameObjects.OfType<Hero>().FirstOrDefault();
+            if (hero != null)
+            {
+                Debug.WriteLine($"Hero attacked by {enemy.GetType().Name} for {damage} damage.");
+                hero.Health -= damage;
+                if (hero.Health <= 0)
+                {
+                    HandleGameOver(hero);
+                }
+            }
         }
 
         private void UpdateCamera()

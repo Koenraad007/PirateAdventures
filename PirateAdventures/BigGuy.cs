@@ -19,6 +19,7 @@ namespace PirateAdventures
         private TextureAtlas ta;
         private List<Animations.Animation> animations = new();
         private AnimatedSprite currentAnimation;
+        private int prevFrame = 0;
         public int EnemyState { get; set; } = 0;    // 0=idle,1=running,2=attack
         private BigGuyState currentState, prevState = BigGuyState.Idle;
         public int EnemyType { get; set; } = 0;
@@ -36,6 +37,7 @@ namespace PirateAdventures
         public Rectangle BoundingBox { get; set; }
         private SpriteEffects spriteEffects = SpriteEffects.None;
         private float scale = .5f;
+        public event Action<BigGuy, int> Attack;
 
         public BigGuy(TextureAtlas ta)
         {
@@ -66,6 +68,11 @@ namespace PirateAdventures
                 currentState = BigGuyState.Attacking;
                 if (hero.Position.X < _pos.X + (SPRITE_WIDTH*scale) / 2) spriteEffects = SpriteEffects.FlipHorizontally;
                 else spriteEffects = SpriteEffects.None;
+                if (currentAnimation.CurrentFrame == currentAnimation.Animation.Frames.Count-1 && currentAnimation.CurrentFrame != prevFrame)
+                {
+                    Attack?.Invoke(this, 10);
+                }
+                prevFrame = currentAnimation.CurrentFrame;
             }
             else if (Math.Abs(hero.BoundingBox.Center.X - BoundingBox.Center.X) < 150 && 
                 Math.Abs(hero.BoundingBox.Center.X - BoundingBox.Center.X) > 20 && 
