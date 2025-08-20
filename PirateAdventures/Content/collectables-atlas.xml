@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas>
+	<Texture>Sprites/Collectables/Collectables</Texture>
+	<Regions>
+		<Region name="silverCoin1" x="0" y="0" width="64" height="64" />
+		<Region name="silverCoin2" x="64" y="0" width="64" height="64" />
+		<Region name="silverCoin3" x="128" y="0" width="64" height="64" />
+		<Region name="silverCoin4" x="192" y="0" width="64" height="64" />
+		<Region name="goldCoin1" x="256" y="0" width="64" height="64" />
+		<Region name="goldCoin2" x="320" y="0" width="64" height="64" />
+		<Region name="goldCoin3" x="384" y="0" width="64" height="64" />
+		<Region name="goldCoin4" x="448" y="0" width="64" height="64" />
+		<Region name="coinPickup1" x="512" y="0" width="64" height="64" />
+		<Region name="coinPickup2" x="576" y="0" width="64" height="64" />
+		<Region name="coinPickup3" x="640" y="0" width="64" height="64" />
+		<Region name="coinPickup4" x="704" y="0" width="64" height="64" />
+		<Region name="blueGem1" x="768" y="0" width="64" height="64" />
+		<Region name="blueGem2" x="832" y="0" width="64" height="64" />
+		<Region name="blueGem3" x="896" y="0" width="64" height="64" />
+		<Region name="blueGem4" x="960" y="0" width="64" height="64" />
+		<Region name="greenGem1" x="1024" y="0" width="64" height="64" />
+		<Region name="greenGem2" x="1088" y="0" width="64" height="64" />
+		<Region name="greenGem3" x="1152" y="0" width="64" height="64" />
+		<Region name="greenGem4" x="1216" y="0" width="64" height="64" />
+		<Region name="redGem1" x="1280" y="0" width="64" height="64" />
+		<Region name="redGem2" x="1344" y="0" width="64" height="64" />
+		<Region name="redGem3" x="1408" y="0" width="64" height="64" />
+		<Region name="redGem4" x="1472" y="0" width="64" height="64" />
+		<Region name="gemPickup1" x="1536" y="0" width="64" height="64" />
+		<Region name="gemPickup2" x="1600" y="0" width="64" height="64" />
+		<Region name="gemPickup3" x="1664" y="0" width="64" height="64" />
+		<Region name="gemPickup4" x="1728" y="0" width="64" height="64" />
+		<Region name="gemPickup5" x="1792" y="0" width="64" height="64" />
+		<Region name="bluePotion1" x="1856" y="0" width="64" height="64" />
+		<Region name="bluePotion2" x="1920" y="0" width="64" height="64" />
+		<Region name="bluePotion3" x="1984" y="0" width="64" height="64" />
+		<Region name="bluePotion4" x="2048" y="0" width="64" height="64" />
+		<Region name="bluePotion5" x="2112" y="0" width="64" height="64" />
+		<Region name="bluePotion6" x="2176" y="0" width="64" height="64" />
+		<Region name="bluePotion7" x="2240" y="0" width="64" height="64" />
+		<Region name="redPotion1" x="2304" y="0" width="64" height="64" />
+		<Region name="redPotion2" x="2368" y="0" width="64" height="64" />
+		<Region name="redPotion3" x="2432" y="0" width="64" height="64" />
+		<Region name="redPotion4" x="2496" y="0" width="64" height="64" />
+		<Region name="redPotion5" x="2560" y="0" width="64" height="64" />
+		<Region name="redPotion6" x="2624" y="0" width="64" height="64" />
+		<Region name="redPotion7" x="2688" y="0" width="64" height="64" />
+		<Region name="greenPotion1" x="2752" y="0" width="64" height="64" />
+		<Region name="greenPotion2" x="2816" y="0" width="64" height="64" />
+		<Region name="greenPotion3" x="2880" y="0" width="64" height="64" />
+		<Region name="greenPotion4" x="2944" y="0" width="64" height="64" />
+		<Region name="greenPotion5" x="3008" y="0" width="64" height="64" />
+		<Region name="greenPotion6" x="3072" y="0" width="64" height="64" />
+		<Region name="greenPotion7" x="3136" y="0" width="64" height="64" />
+		<Region name="potionPickup1" x="3200" y="0" width="64" height="64" />
+		<Region name="potionPickup2" x="3264" y="0" width="64" height="64" />
+		<Region name="potionPickup3" x="3328" y="0" width="64" height="64" />
+		<Region name="potionPickup4" x="3392" y="0" width="64" height="64" />
+		<Region name="potionPickup5" x="3456" y="0" width="64" height="64" />
+		<Region name="skull1" x="3520" y="0" width="64" height="64" />
+		<Region name="skull2" x="3584" y="0" width="64" height="64" />
+		<Region name="skull3" x="3648" y="0" width="64" height="64" />
+		<Region name="skull4" x="3712" y="0" width="64" height="64" />
+		<Region name="skull5" x="3776" y="0" width="64" height="64" />
+		<Region name="skull6" x="3840" y="0" width="64" height="64" />
+		<Region name="skull7" x="3904" y="0" width="64" height="64" />
+		<Region name="skull8" x="3968" y="0" width="64" height="64" />
+		<Region name="skullPickup1" x="4032" y="0" width="64" height="64" />
+		<Region name="skullPickup2" x="4096" y="0" width="64" height="64" />
+		<Region name="skullPickup3" x="4160" y="0" width="64" height="64" />
+		<Region name="skullPickup4" x="4224" y="0" width="64" height="64" />
+		<Region name="skullPickup5" x="4288" y="0" width="64" height="64" />
+		<Region name="skullPickup6" x="4352" y="0" width="64" height="64" />
+		</Regions>
+	<Animations>
+		<Animation name="silverCoin" delay="100">
+			<Frame region="silverCoin1" />
+			<Frame region="silverCoin2"  />
+			<Frame region="silverCoin3"  />
+			<Frame region="silverCoin4"  />
+		</Animation>
+		<Animation name="goldCoin" delay="100">
+			<Frame region="goldCoin1" />
+			<Frame region="goldCoin2"  />
+			<Frame region="goldCoin3"  />
+			<Frame region="goldCoin4"  />
+		</Animation>
+		<Animation name="coinPickup" delay="100">
+			<Frame region="coinPickup1"  />
+			<Frame region="coinPickup2"  />
+			<Frame region="coinPickup3"  />
+			<Frame region="coinPickup4" />
+		</Animation>
+		<Animation name="blueGem" delay="100">
+			<Frame region="blueGem1"  />
+			<Frame region="blueGem2"  />
+			<Frame region="blueGem3"  />
+			<Frame region="blueGem4"  />
+		</Animation>
+		<Animation name="greenGem" delay="100">
+			<Frame region="greenGem1"  />
+			<Frame region="greenGem2" />
+			<Frame region="greenGem3"  />
+			<Frame region="greenGem4"  />
+		</Animation>
+		<Animation name="redGem" delay="100">
+			<Frame region="redGem1"  />
+			<Frame region="redGem2" />
+			<Frame region="redGem3" />
+			<Frame region="redGem4"  />
+		</Animation>
+		<Animation name="gemPickup" delay="100">
+			<Frame region="gemPickup1"  />
+			<Frame region="gemPickup2"  />
+			<Frame region="gemPickup3" />
+			<Frame region="gemPickup4" />
+			<Frame region="gemPickup5"  />
+		</Animation>
+		<Animation name="bluePotion" delay="100">
+			<Frame region="bluePotion1" />
+			<Frame region="bluePotion2"  />
+			<Frame region="bluePotion3" />
+			<Frame region="bluePotion4"  />
+			<Frame region="bluePotion5" />
+			<Frame region="bluePotion6"  />
+			<Frame region="bluePotion7"  />
+		</Animation>
+		<Animation name="redPotion" delay="100">
+			<Frame region="redPotion1"  />
+			<Frame region="redPotion2"  />
+			<Frame region="redPotion3"  />
+			<Frame region="redPotion4"/>
+			<Frame region="redPotion5"  />
+			<Frame region="redPotion6" />
+			<Frame region="redPotion7" />
+		</Animation>
+		<Animation name="greenPotion" delay="100">
+			<Frame region="greenPotion1" />
+			<Frame region="greenPotion2"  />
+			<Frame region="greenPotion3"  />
+			<Frame region="greenPotion4" />
+			<Frame region="greenPotion5"  />
+			<Frame region="greenPotion6"  />
+			<Frame region="greenPotion7"  />
+		</Animation>
+		<Animation name="potionPickup" delay="100">
+			<Frame region="potionPickup1" />
+			<Frame region="potionPickup2"  />
+			<Frame region="potionPickup3"  />
+			<Frame region="potionPickup4"  />
+			<Frame region="potionPickup5"/>
+		</Animation>
+		<Animation name="skull" delay="100">
+			<Frame region="skull1" />
+			<Frame region="skull2" />
+			<Frame region="skull3" />
+			<Frame region="skull4"  />
+			<Frame region="skull5"  />
+			<Frame region="skull6" />
+			<Frame region="skull7"  />
+			<Frame region="skull8"  />
+		</Animation>
+		<Animation name="skullPickup" delay="100">
+			<Frame region="skullPickup1"  />
+			<Frame region="skullPickup2"  />
+			<Frame region="skullPickup3"  />
+			<Frame region="skullPickup4" />
+			<Frame region="skullPickup5" />
+			<Frame region="skullPickup6"  />
+		</Animation>
+	</Animations>
+</TextureAtlas>

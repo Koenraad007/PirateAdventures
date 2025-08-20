@@ -1,7 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameLib;
 using MonoGameLib.Graphics;
 using PirateAdventures.GameObjects;
 using PirateAdventures.Input;
@@ -9,6 +8,7 @@ using PirateAdventures.Interfaces;
 using PirateAdventures.Level;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using TiledSharp;
 
@@ -18,7 +18,7 @@ namespace PirateAdventures
     {
         private TmxMap _map;
         private Texture2D _heroTexture, _companionTexture, _tilesetTexture, _shooterTexture, _windowGuyTexture, _bombTexture, _endpointTexture;
-        private TextureAtlas _heroAtlas, _endpointAtlas, _bigguyAtlas;
+        private TextureAtlas _heroAtlas, _endpointAtlas, _bigguyAtlas, _collectableAtlas;
 
         public List<IGameObject> CollisionObjects { get; private set; } = new List<IGameObject>();
         public int Width { get; private set; }
@@ -40,6 +40,7 @@ namespace PirateAdventures
             _companionTexture = contentManager.Load<Texture2D>("bluebird20fps");
             _heroAtlas = TextureAtlas.FromFile(contentManager, "hero-atlas.xml");
             _bigguyAtlas = TextureAtlas.FromFile(contentManager, "bigguy-atlas.xml");
+            _collectableAtlas = TextureAtlas.FromFile(contentManager, "collectables-atlas.xml");
             _tilesetTexture = contentManager.Load<Texture2D>("Tileset32");
             _shooterTexture = contentManager.Load<Texture2D>("enemy_shooter");
             _windowGuyTexture = contentManager.Load<Texture2D>("enemy_windowguy");
@@ -184,6 +185,14 @@ namespace PirateAdventures
                                 _endpointAtlas
                             );
                             gameObjects.Add(endPoint);
+                            break;
+
+                        case "silver":
+                            var silver = new Collectable(_collectableAtlas,
+                                new Vector2((float)gameObject.X, (float)gameObject.Y - Collectable.SPRITE_HEIGHT),
+                                CollectableType.SilverCoin
+                            );
+                            gameObjects.Add(silver);
                             break;
 
                         default:

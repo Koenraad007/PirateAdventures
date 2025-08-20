@@ -64,6 +64,9 @@
 /processorParam:TextureFormat=Color
 /build:Brown_Buttons_Pixel.png;BrownButtons.png
 
+#begin collectables-atlas.xml
+/copy:collectables-atlas.xml
+
 #begin endpoint-atlas.xml
 /copy:endpoint-atlas.xml
 
@@ -172,6 +175,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Sprites/Bigguy/enemy_bigguy.png
+
+#begin Sprites/Collectables/Collectables.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Collectables/Collectables.png
 
 #begin Sprites/Endpoint/openingDoor.png
 /importer:TextureImporter
