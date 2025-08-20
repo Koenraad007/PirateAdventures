@@ -5,8 +5,8 @@ using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using PirateAdventures;
 using PirateAdventures.Animations;
+using PirateAdventures.GameObjects;
 using PirateAdventures.Interfaces;
 
 class Shooter : IEnemy, ICollidable

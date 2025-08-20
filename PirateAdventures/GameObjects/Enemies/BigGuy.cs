@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace PirateAdventures
+namespace PirateAdventures.GameObjects.Enemies
 {
     public class BigGuy : IEnemy, ICollidable
     {
@@ -42,7 +42,7 @@ namespace PirateAdventures
         public BigGuy(TextureAtlas ta)
         {
             this.ta = ta;
-            BoundingBox = new Rectangle((int)(_pos.X), (int)(_pos.Y), (int)(SPRITE_WIDTH * scale), (int)(SPRITE_HEIGHT * scale));
+            BoundingBox = new Rectangle((int)_pos.X, (int)_pos.Y, (int)(SPRITE_WIDTH * scale), (int)(SPRITE_HEIGHT * scale));
 
             currentAnimation = this.ta.CreateAnimatedSprite("idle");
         }
@@ -66,7 +66,7 @@ namespace PirateAdventures
             {
                 EnemyState = 2;
                 currentState = BigGuyState.Attacking;
-                if (hero.Position.X < _pos.X + (SPRITE_WIDTH*scale) / 2) spriteEffects = SpriteEffects.FlipHorizontally;
+                if (hero.Position.X < _pos.X + SPRITE_WIDTH*scale / 2) spriteEffects = SpriteEffects.FlipHorizontally;
                 else spriteEffects = SpriteEffects.None;
                 if (currentAnimation.CurrentFrame == currentAnimation.Animation.Frames.Count-1 && currentAnimation.CurrentFrame != prevFrame)
                 {

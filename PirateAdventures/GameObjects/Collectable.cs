@@ -17,7 +17,8 @@ namespace PirateAdventures.GameObjects
         private TextureAtlas _textureAtlas;
         private Vector2 _position;
         private AnimatedSprite _currentAnimation;
-        private bool pickup = false;
+        public bool IsCollected = false;
+        private bool _collected = false;
         private CollectableType type;
         public Rectangle BoundingBox;
 
@@ -42,9 +43,9 @@ namespace PirateAdventures.GameObjects
         public void Update(List<IGameObject> collisionObjects, GameTime gameTime)
         {
             var hero = collisionObjects.FirstOrDefault(obj => obj is Hero) as Hero;
-            if (hero != null && hero.BoundingBox.Intersects(BoundingBox) && !pickup)
+            if (hero != null && hero.BoundingBox.Intersects(BoundingBox) && !_collected)
             {
-                pickup = true;
+                _collected = true;
                 OnPickup?.Invoke(this, type);
                 switch (type)
                 {
@@ -59,9 +60,9 @@ namespace PirateAdventures.GameObjects
                 _currentAnimation.PlayOnce = true;
             }
             
-            if (pickup && _currentAnimation.CurrentFrame == _currentAnimation.Animation.Frames.Count-1)
+            if (_collected && _currentAnimation.CurrentFrame == _currentAnimation.Animation.Frames.Count-1)
             {
-                //collisionObjects.Remove(this);
+                IsCollected = true;
                 return;
             }
 

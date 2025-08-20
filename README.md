@@ -6,7 +6,7 @@ Minimal requirements:
 
 -[X] Start screen
 -[X] Animated Hero and Enemies
--[ ] At least 2 levels or an extra difficulty level
+-[X] At least 2 levels or an extra difficulty level
 -[X] At least 3 different enemies
 -[X] Keyboard input has to be supported
 -[X] Game Over screen

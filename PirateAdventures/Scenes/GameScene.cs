@@ -4,6 +4,7 @@ using MonoGameLib;
 using MonoGameLib.Graphics;
 using MonoGameLib.Scenes;
 using PirateAdventures.GameObjects;
+using PirateAdventures.GameObjects.Enemies;
 using PirateAdventures.Input;
 using PirateAdventures.Interfaces;
 using PirateAdventures.Level;
@@ -134,6 +135,8 @@ namespace PirateAdventures.Scenes
                 {
                     gameObject.Update(_gameObjects, gameTime);
                 }
+
+                _gameObjects.RemoveAll(obj => obj is Collectable collectable && collectable.IsCollected);
             }
 
             base.Update(gameTime);

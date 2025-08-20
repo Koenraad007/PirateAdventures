@@ -12,7 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace PirateAdventures
+namespace PirateAdventures.GameObjects
 {
     public class Hero : IGameObject, ICollidable
     {
@@ -46,8 +46,8 @@ namespace PirateAdventures
             textureAtlas = ta;
             heroTexture = texture;
             input = inputReader;
-            this.Position = new Vector2(200, 200);
-            this.BoundingBox = new Rectangle((int)Position.X, (int)Position.Y, (int)(SPRITE_WIDTH * scale), (int)(SPRITE_HEIGHT * scale));
+            Position = new Vector2(200, 200);
+            BoundingBox = new Rectangle((int)Position.X, (int)Position.Y, (int)(SPRITE_WIDTH * scale), (int)(SPRITE_HEIGHT * scale));
 
             currentAnimation = textureAtlas.CreateAnimatedSprite("hero-idle");
         }
@@ -200,7 +200,7 @@ namespace PirateAdventures
             if (speed.X > 0) spriteFx = SpriteEffects.None;
 
             currentAnimation.Effects = spriteFx;
-            currentAnimation.Origin = new Vector2(16 * ((spriteFx == SpriteEffects.FlipHorizontally) ? 1 : -1), -32);
+            currentAnimation.Origin = new Vector2(16 * (spriteFx == SpriteEffects.FlipHorizontally ? 1 : -1), -32);
             currentAnimation.Scale = new Vector2(scale, scale);
             currentAnimation.Draw(spriteBatch, Position + new Vector2(-24,-48));
 

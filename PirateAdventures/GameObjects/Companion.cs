@@ -8,7 +8,7 @@ using PirateAdventures.Animations;
 using PirateAdventures.Input;
 using PirateAdventures.Interfaces;
 
-namespace PirateAdventures;
+namespace PirateAdventures.GameObjects;
 
 public class Companion : IGameObject, ICollidable
 {
@@ -31,8 +31,8 @@ public class Companion : IGameObject, ICollidable
     {
         this.input = input;
         _texture = texture;
-        this.Position = new Vector2(100, 400);
-        this.BoundingBox = new Rectangle((int)Position.X, (int)Position.Y, (int)(SPRITE_WIDTH * scale), (int)(SPRITE_HEIGHT * scale));
+        Position = new Vector2(100, 400);
+        BoundingBox = new Rectangle((int)Position.X, (int)Position.Y, (int)(SPRITE_WIDTH * scale), (int)(SPRITE_HEIGHT * scale));
 
         _animation = new Animation();
         for (int i = 0; i < 9; i++)
