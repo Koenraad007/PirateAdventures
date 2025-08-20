@@ -26,7 +26,7 @@ namespace PirateAdventures.Scenes
         private InputSettings _inputSettings;
         private Texture2D _tileset, _enemyTexture;
         private float _cameraZoom = 2f;
-        private Texture2D _gameOverTexture, _buttonsTexture, _levelCompleteTexture;
+        private Texture2D _gameOverTexture, _buttonsTexture, _levelCompleteTexture, _healthBar;
         private Rectangle _playAgainSrcRect;
         private bool _isGameOver = false, _isLevelComplete = false;
         private SpriteFont font;
@@ -66,6 +66,7 @@ namespace PirateAdventures.Scenes
             _gameOverTexture = Core.Content.Load<Texture2D>("Menu/GameOver");
             _levelCompleteTexture = Core.Content.Load<Texture2D>("Menu/LevelComplete");
             _buttonsTexture = Core.Content.Load<Texture2D>("BrownButtons");
+            _healthBar = Core.Content.Load<Texture2D>("Menu/HeroHealth");
 
             font = Core.Content.Load<SpriteFont>("Fonts/Pixellari");
 
@@ -105,9 +106,9 @@ namespace PirateAdventures.Scenes
                 float scale = Math.Min(screenWidth / (texture.Width * 2f),
                                screenHeight / (texture.Height * 2f));
 
-                Vector2 playAgainPos = centerScreen + new Vector2(0, texture.Height * scale / 2f + 14*scale);
+                Vector2 playAgainPos = centerScreen + new Vector2(0, texture.Height * scale / 2f + 14 * scale);
                 Rectangle playAgainBounds = new Rectangle((int)(playAgainPos.X - _playAgainSrcRect.Width * scale / 2), (int)(playAgainPos.Y - _playAgainSrcRect.Height * scale / 2), (int)(_playAgainSrcRect.Width * scale), (int)(_playAgainSrcRect.Height * scale));
-               
+
                 if (playAgainBounds.Contains(Core.Input.Mouse.Position))
                 {
                     _playAgainColor = Color.Yellow;
@@ -191,11 +192,44 @@ namespace PirateAdventures.Scenes
 
             Core.SpriteBatch.End();
 
-            if (_isGameOver || _isLevelComplete)
-            {
-                Core.SpriteBatch.Begin(
+            // ----- UI --------------
+
+            Core.SpriteBatch.Begin(
                     samplerState: SamplerState.PointClamp
                 );
+
+            // draw health bar
+            Hero hero = _gameObjects.OfType<Hero>().FirstOrDefault();
+            if (hero != null)
+            {
+                int healthBarWidth = (int)(hero.Health * 2.14f);
+                Vector2 healthBarPosition = new Vector2(16, 16);
+                var pixel = new Texture2D(Core.GraphicsDevice, 1, 1);
+                pixel.SetData(new[] { Color.Red });
+
+                Core.SpriteBatch.Draw(
+                    _healthBar,
+                    healthBarPosition,
+                    null,
+                    Color.White,
+                    0f,
+                    Vector2.Zero,
+                    2f,
+                    SpriteEffects.None,
+                    0f
+                );
+
+                Core.SpriteBatch.Draw(
+                    pixel,
+                    healthBarPosition + new Vector2(17*2, 14*2),
+                    new Rectangle(0, 0, healthBarWidth, 4),
+                    Color.White
+                );
+            }
+
+            if (_isGameOver || _isLevelComplete)
+            {
+
 
                 int screenWidth = Core.GraphicsDevice.Viewport.Width;
                 int screenHeight = Core.GraphicsDevice.Viewport.Height;
@@ -210,7 +244,7 @@ namespace PirateAdventures.Scenes
                 // darken the background
                 var pixel = new Texture2D(Core.GraphicsDevice, 1, 1);
                 pixel.SetData(new[] { Color.White });
-                Core.SpriteBatch.Draw(pixel, new Rectangle(0,0,screenWidth, screenHeight), new Color(0, 0, 0, 128));
+                Core.SpriteBatch.Draw(pixel, new Rectangle(0, 0, screenWidth, screenHeight), new Color(0, 0, 0, 128));
 
                 Core.SpriteBatch.Draw(
                     texture,
@@ -229,7 +263,7 @@ namespace PirateAdventures.Scenes
                 Core.SpriteBatch.DrawString(
                     font,
                     "Score: " + score.ToString("D7"),
-                    centerScreen + new Vector2(0,6f*scale),
+                    centerScreen + new Vector2(0, 6f * scale),
                     Color.LightYellow,
                     0f,
                     font.MeasureString("Score: 0000000") / 2f,
@@ -238,7 +272,7 @@ namespace PirateAdventures.Scenes
                     0f
                 );
 
-                Vector2 playAgainPos = centerScreen + new Vector2(0, texture.Height * scale / 2f + 14*scale);
+                Vector2 playAgainPos = centerScreen + new Vector2(0, texture.Height * scale / 2f + 14 * scale);
                 Vector2 playAgainOrigin = new Vector2(_playAgainSrcRect.Width / 2f, _playAgainSrcRect.Height / 2f);
 
                 Core.SpriteBatch.Draw(
@@ -253,8 +287,10 @@ namespace PirateAdventures.Scenes
                     0f
                 );
 
-                Core.SpriteBatch.End();
+
             }
+
+            Core.SpriteBatch.End();
 
 
 

@@ -1,13 +1,13 @@
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using MonoGameLib;
+using MonoGameLib.Graphics;
+using PirateAdventures.Interfaces;
+using SharpDX.Direct3D9;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using MonoGameLib;
-using PirateAdventures.Animations;
-using PirateAdventures.Interfaces;
 
 namespace PirateAdventures
 {
@@ -16,85 +16,94 @@ namespace PirateAdventures
         public const int SPRITE_WIDTH = 77;
         public const int SPRITE_HEIGHT = 74;
 
-        private Texture2D texture2D;
-        private List<Animation> animations = new();
+        private TextureAtlas ta;
+        private List<Animations.Animation> animations = new();
+        private AnimatedSprite currentAnimation;
         public int EnemyState { get; set; } = 0;    // 0=idle,1=running,2=attack
+        private BigGuyState currentState, prevState = BigGuyState.Idle;
         public int EnemyType { get; set; } = 0;
         public bool Passable { get; set; } = false;
-        public Vector2 Position { get; set; } = new Vector2(200, 7 * 64 - SPRITE_HEIGHT);
+        private Vector2 _pos = Vector2.Zero;
+        public Vector2 Position
+        {
+            get => _pos;
+            set
+            {
+                _pos = new Vector2(value.X + SPRITE_WIDTH * scale, value.Y + SPRITE_HEIGHT * scale);
+                BoundingBox = new Rectangle((int)_pos.X, (int)_pos.Y, (int)(SPRITE_WIDTH * scale), (int)(SPRITE_HEIGHT * scale));
+            }
+        }
         public Rectangle BoundingBox { get; set; }
         private SpriteEffects spriteEffects = SpriteEffects.None;
         private float scale = .5f;
 
-        public BigGuy(Texture2D texture)
+        public BigGuy(TextureAtlas ta)
         {
-            texture2D = texture;
-            BoundingBox = new Rectangle((int)Position.X, (int)Position.Y, (int)(SPRITE_WIDTH * scale), (int)(SPRITE_HEIGHT * scale));
+            this.ta = ta;
+            BoundingBox = new Rectangle((int)(_pos.X), (int)(_pos.Y), (int)(SPRITE_WIDTH * scale), (int)(SPRITE_HEIGHT * scale));
 
-            animations.Add(new Animation());
-            for (int i = 0; i < 38; i++)
-            {
-                animations[0].AddFrame(new AnimationFrame(new Rectangle(SPRITE_WIDTH * i, 0, SPRITE_WIDTH, SPRITE_HEIGHT)));
-            }
-            animations.Add(new Animation());
-            for (int i = 0; i < 16; i++)
-            {
-                animations[1].AddFrame(new AnimationFrame(new Rectangle(SPRITE_WIDTH * i + (38 * SPRITE_WIDTH), 0, SPRITE_WIDTH, SPRITE_HEIGHT)));
-            }
-            animations.Add(new Animation());
-            for (int i = 0; i < 11; i++)
-            {
-                animations[2].AddFrame(new AnimationFrame(new Rectangle(SPRITE_WIDTH * i + ((38 + 16) * SPRITE_WIDTH), 0, SPRITE_WIDTH, SPRITE_HEIGHT)));
-            }
+            currentAnimation = this.ta.CreateAnimatedSprite("idle");
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture2D, Position , animations[EnemyState].CurrentFrame.SourceRect, Color.White, 0, new Vector2(0, 0),scale, spriteEffects, 0);
-            var pixel = new Texture2D(Core.GraphicsDevice, 1, 1);
-            pixel.SetData(new[] { Color.Red });
-            spriteBatch.Draw(pixel, BoundingBox, Color.Red * 0.5f);
+            currentAnimation.Effects = spriteEffects;
+            currentAnimation.Scale = new Vector2(scale, scale);
+            currentAnimation.Draw(spriteBatch, Position);
+
+            //var pixel = new Texture2D(Core.GraphicsDevice, 1, 1);
+            //pixel.SetData(new[] { Color.Red });
+            //spriteBatch.Draw(pixel, BoundingBox, Color.Red * 0.5f);
         }
 
         public void Update(List<IGameObject> collisionObjects, GameTime gameTime)
         {
-            foreach (var item in collisionObjects)
+            var hero = collisionObjects.OfType<Hero>().FirstOrDefault();
+
+            if (hero.BoundingBox.Intersects(BoundingBox))
             {
-                if (item is Hero)
+                EnemyState = 2;
+                currentState = BigGuyState.Attacking;
+                if (hero.Position.X < _pos.X + (SPRITE_WIDTH*scale) / 2) spriteEffects = SpriteEffects.FlipHorizontally;
+                else spriteEffects = SpriteEffects.None;
+            }
+            else if (Math.Abs(hero.BoundingBox.Center.X - BoundingBox.Center.X) < 150 && 
+                Math.Abs(hero.BoundingBox.Center.X - BoundingBox.Center.X) > 20 && 
+                Math.Abs(hero.BoundingBox.Center.Y - BoundingBox.Center.Y) < 20)
+            {
+                EnemyState = 1;
+                currentState = BigGuyState.Running;
+                int speed = 2;
+                if (hero.Position.X < _pos.X)
                 {
-                    var hero = item as Hero;
-                    if (hero.BoundingBox.Intersects(BoundingBox))
-                    {
-                        EnemyState = 2;
-                        if (hero.Position.X < Position.X + SPRITE_WIDTH / 2) spriteEffects = SpriteEffects.FlipHorizontally;
-                        else spriteEffects = SpriteEffects.None;
-                    }
-                    else if (Math.Abs(hero.Position.X - Position.X) < 150)
-                    {
-                        EnemyState = 1;
-                        int speed = 2;
-                        if (hero.Position.X < Position.X)
-                        {
-                            speed *= -1;
-                            spriteEffects = SpriteEffects.FlipHorizontally;
-                        }
-                        else spriteEffects = SpriteEffects.None;
-                        Position = new Vector2(Position.X + speed, Position.Y);
-                        BoundingBox = new Rectangle((int)Position.X, (int)Position.Y, BoundingBox.Width, BoundingBox.Height);
-                    }
-                    else
-                    {
-                        EnemyState = 0;
-                    }
+                    speed *= -1;
+                    spriteEffects = SpriteEffects.FlipHorizontally;
                 }
+                else spriteEffects = SpriteEffects.None;
+                _pos = new Vector2(_pos.X + speed, _pos.Y);
+                BoundingBox = new Rectangle((int)_pos.X, (int)_pos.Y, BoundingBox.Width, BoundingBox.Height);
             }
-
-
-            animations[EnemyState].Update(gameTime);
-            for (int i = 0; i < animations.Count; i++)
+            else
             {
-                if (EnemyState != i) animations[i].ResetAnimation();
+                EnemyState = 0;
+                currentState = BigGuyState.Idle;
             }
+
+
+            if (currentState != prevState)
+            {
+                string animationName = $"{currentState.ToString().ToLower()}";
+                currentAnimation = ta.CreateAnimatedSprite(animationName);
+                prevState = currentState;
+            }
+            currentAnimation.Update(gameTime);
         }
+    }
+
+    public enum BigGuyState
+    {
+        Idle,
+        Running,
+        Attacking
     }
 }

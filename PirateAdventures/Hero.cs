@@ -30,6 +30,7 @@ namespace PirateAdventures
         private HeroState currentState, prevState = HeroState.IDLE;
         private bool isGrounded = false;
         private Vector2 collision = Vector2.Zero;
+        public int Health { get; set; } = 100;
 
         public bool Passable { get; set; } = true;
         public Vector2 Position { get; set; }

@@ -17,8 +17,8 @@ namespace PirateAdventures
     public class TiledMap
     {
         private TmxMap _map;
-        private Texture2D _heroTexture, _companionTexture, _tilesetTexture, _bigGuyTexture, _shooterTexture, _windowGuyTexture, _bombTexture, _endpointTexture;
-        private TextureAtlas _heroAtlas, _endpointAtlas;
+        private Texture2D _heroTexture, _companionTexture, _tilesetTexture, _shooterTexture, _windowGuyTexture, _bombTexture, _endpointTexture;
+        private TextureAtlas _heroAtlas, _endpointAtlas, _bigguyAtlas;
 
         public List<IGameObject> CollisionObjects { get; private set; } = new List<IGameObject>();
         public int Width { get; private set; }
@@ -39,8 +39,8 @@ namespace PirateAdventures
             _heroTexture = contentManager.Load<Texture2D>("Sprites/Hero/cptclownnose20fps");
             _companionTexture = contentManager.Load<Texture2D>("bluebird20fps");
             _heroAtlas = TextureAtlas.FromFile(contentManager, "hero-atlas.xml");
+            _bigguyAtlas = TextureAtlas.FromFile(contentManager, "bigguy-atlas.xml");
             _tilesetTexture = contentManager.Load<Texture2D>("Tileset32");
-            _bigGuyTexture = contentManager.Load<Texture2D>("enemy_bigguy");
             _shooterTexture = contentManager.Load<Texture2D>("enemy_shooter");
             _windowGuyTexture = contentManager.Load<Texture2D>("enemy_windowguy");
             _bombTexture = contentManager.Load<Texture2D>("Bomb");
@@ -152,7 +152,7 @@ namespace PirateAdventures
 
                         case "big":
                             var bigGuy = new BigGuy(
-                                    _bigGuyTexture
+                                    _bigguyAtlas
                                     )
                             {
                                 Position = new Vector2((float)gameObject.X, (float)gameObject.Y - BigGuy.SPRITE_HEIGHT),

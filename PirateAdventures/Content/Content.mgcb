@@ -25,6 +25,9 @@
 /processorParam:TextureFormat=Color
 /build:Adventures-2-1-2025 (1).png;AdventuresText.png
 
+#begin bigguy-atlas.xml
+/copy:bigguy-atlas.xml
+
 #begin bluebird20fps.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -63,18 +66,6 @@
 
 #begin endpoint-atlas.xml
 /copy:endpoint-atlas.xml
-
-#begin enemy_bigguy.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:enemy_bigguy.png
 
 #begin Fonts/Pixellari.spritefont
 /importer:FontDescriptionImporter
@@ -122,6 +113,18 @@
 /processorParam:TextureFormat=Color
 /build:Menu/GameOver.png
 
+#begin Menu/HeroHealth.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Menu/HeroHealth.png
+
 #begin Menu/LevelComplete.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -157,6 +160,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Shooter.png;enemy_shooter.png
+
+#begin Sprites/Bigguy/enemy_bigguy.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Bigguy/enemy_bigguy.png
 
 #begin Sprites/Endpoint/openingDoor.png
 /importer:TextureImporter
