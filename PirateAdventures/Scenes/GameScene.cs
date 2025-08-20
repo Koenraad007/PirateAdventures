@@ -26,12 +26,13 @@ namespace PirateAdventures.Scenes
         private InputSettings _inputSettings;
         private Texture2D _tileset, _enemyTexture;
         private float _cameraZoom = 2f;
-        private Texture2D _gameOverTexture, _buttonsTexture, _levelCompleteTexture, _healthBar;
+        private Texture2D _gameOverTexture, _buttonsTexture, _levelCompleteTexture, _healthBarTexture, _scoreTexture;
         private Rectangle _playAgainSrcRect;
         private bool _isGameOver = false, _isLevelComplete = false;
         private SpriteFont font;
         private Color _playAgainColor = Color.White;
         private string _levelPath;
+        public int Score { get; set; } = 0;
 
         public GameScene(string levelPath)
         {
@@ -66,7 +67,8 @@ namespace PirateAdventures.Scenes
             _gameOverTexture = Core.Content.Load<Texture2D>("Menu/GameOver");
             _levelCompleteTexture = Core.Content.Load<Texture2D>("Menu/LevelComplete");
             _buttonsTexture = Core.Content.Load<Texture2D>("BrownButtons");
-            _healthBar = Core.Content.Load<Texture2D>("Menu/HeroHealth");
+            _healthBarTexture = Core.Content.Load<Texture2D>("Menu/HeroHealth");
+            _scoreTexture = Core.Content.Load<Texture2D>("Menu/Score");
 
             font = Core.Content.Load<SpriteFont>("Fonts/Pixellari");
 
@@ -226,7 +228,7 @@ namespace PirateAdventures.Scenes
                 pixel.SetData(new[] { Color.Red });
 
                 Core.SpriteBatch.Draw(
-                    _healthBar,
+                    _healthBarTexture,
                     healthBarPosition,
                     null,
                     Color.White,
@@ -244,6 +246,31 @@ namespace PirateAdventures.Scenes
                     Color.White
                 );
             }
+
+            // draw score
+            Vector2 scorePos = new Vector2(Core.GraphicsDevice.Viewport.Width - (_scoreTexture.Width * 2) - 16, 16);
+            Core.SpriteBatch.Draw(
+                _scoreTexture,
+                new Vector2(Core.GraphicsDevice.Viewport.Width-(_scoreTexture.Width*2)-16, 16),
+                null,
+                Color.White,
+                0f,
+                Vector2.Zero,
+                2f,
+                SpriteEffects.None,
+                0f
+            );
+            Core.SpriteBatch.DrawString(
+                font,
+                Score.ToString("D7"),
+                scorePos + new Vector2(_scoreTexture.Width-10, 10),
+                new Color(51, 50, 61),
+                0f,
+                Vector2.Zero,
+                1.6f,
+                SpriteEffects.None,
+                0f
+            );
 
             if (_isGameOver || _isLevelComplete)
             {
