@@ -9,7 +9,7 @@ Minimal requirements:
 -[ ] At least 2 levels or an extra difficulty level
 -[X] At least 3 different enemies
 -[X] Keyboard input has to be supported
--[ ] Game Over screen
+-[X] Game Over screen
 -[X] Basic physics:
   -[X] Collisions with objects and enemies
   -[X] Acceleration and momentum of the Hero
