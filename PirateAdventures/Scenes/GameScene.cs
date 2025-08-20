@@ -95,6 +95,10 @@ namespace PirateAdventures.Scenes
             {
                 enemy.Attack += HandleAttack;
             }
+            foreach (var collectable in _gameObjects.OfType<Collectable>())
+            {
+                collectable.OnPickup += HandleCollectablePickup;
+            }
         }
 
         public override void Update(GameTime gameTime)
@@ -157,6 +161,23 @@ namespace PirateAdventures.Scenes
                 {
                     HandleGameOver(hero);
                 }
+            }
+        }
+
+        private void HandleCollectablePickup(Collectable collectable, CollectableType type)
+        {
+            switch (type)
+            {
+                case CollectableType.SilverCoin:
+                    Score += 10;
+                    break;
+                case CollectableType.GoldCoin:
+                    Score += 20;
+                    break;
+
+                default:
+                    Debug.WriteLine($"Unknown collectable type: {type}");
+                    break;
             }
         }
 

@@ -21,6 +21,8 @@ namespace PirateAdventures.GameObjects
         private CollectableType type;
         public Rectangle BoundingBox;
 
+        public event Action<Collectable, CollectableType> OnPickup;
+
         public Collectable(TextureAtlas ta, Vector2 pos, CollectableType type) 
         { 
             _textureAtlas = ta;
@@ -43,6 +45,7 @@ namespace PirateAdventures.GameObjects
             if (hero != null && hero.BoundingBox.Intersects(BoundingBox) && !pickup)
             {
                 pickup = true;
+                OnPickup?.Invoke(this, type);
                 switch (type)
                 {
                     case CollectableType.SilverCoin:
