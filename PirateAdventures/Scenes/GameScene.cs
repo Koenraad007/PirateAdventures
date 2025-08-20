@@ -8,9 +8,9 @@ using PirateAdventures.Input;
 using PirateAdventures.Interfaces;
 using PirateAdventures.Level;
 using PirateAdventures.Settings;
-using SharpDX.Direct2D1.Effects;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace PirateAdventures.Scenes
@@ -30,6 +30,7 @@ namespace PirateAdventures.Scenes
         private Rectangle _playAgainSrcRect;
         private bool _isGameOver = false;
         private SpriteFont font;
+        private Color _playAgainColor = Color.White;
 
         public override void Initialize()
         {
@@ -80,14 +81,33 @@ namespace PirateAdventures.Scenes
             if (_isGameOver || _gameObjects.OfType<EndPoint>().Last()?.Reached == true)
             {
                 _isGameOver = true;
-                return;
+
+                int screenWidth = Core.GraphicsDevice.Viewport.Width;
+                int screenHeight = Core.GraphicsDevice.Viewport.Height;
+                Vector2 centerScreen = new Vector2(screenWidth / 2f, screenHeight / 2f);
+                float scale = Math.Min(screenWidth / (_gameOverTexture.Width * 2f),
+                               screenHeight / (_gameOverTexture.Height * 2f));
+
+                Vector2 playAgainPos = centerScreen + new Vector2(0, _gameOverTexture.Height * scale / 2f + 14*scale);
+                Rectangle playAgainBounds = new Rectangle((int)(playAgainPos.X - _playAgainSrcRect.Width * scale / 2), (int)(playAgainPos.Y - _playAgainSrcRect.Height * scale / 2), (int)(_playAgainSrcRect.Width * scale), (int)(_playAgainSrcRect.Height * scale));
+               
+                if (playAgainBounds.Contains(Core.Input.Mouse.Position))
+                {
+                    _playAgainColor = Color.Yellow;
+                }
+                else
+                {
+                    _playAgainColor = Color.White;
+                }
+            }
+            else
+            {
+                foreach (IGameObject gameObject in _gameObjects)
+                {
+                    gameObject.Update(_gameObjects, gameTime);
+                }
             }
 
-            foreach (IGameObject gameObject in _gameObjects)
-            {
-                gameObject.Update(_gameObjects, gameTime);
-            }
-            
             base.Update(gameTime);
         }
 
@@ -141,72 +161,72 @@ namespace PirateAdventures.Scenes
 
             _gameObjects.OfType<Hero>().FirstOrDefault()?.Draw(Core.SpriteBatch); // Draw hero last to ensure it is on top of other objects
 
-            // Center the game over menu on the screen
+            Core.SpriteBatch.End();
+
             if (_isGameOver)
             {
+                Core.SpriteBatch.Begin(
+                    samplerState: SamplerState.PointClamp
+                );
+
                 int screenWidth = Core.GraphicsDevice.Viewport.Width;
                 int screenHeight = Core.GraphicsDevice.Viewport.Height;
 
-                // Calculate center position in world coordinates
-                float viewWidth = screenWidth / _cameraZoom;
-                float viewHeight = screenHeight / _cameraZoom;
-                Vector2 centerWorld = new Vector2(cameraOffset.X + viewWidth / 2f, cameraOffset.Y + viewHeight / 2f);
+                float scale = Math.Min(screenWidth / (_gameOverTexture.Width * 2f),
+                               screenHeight / (_gameOverTexture.Height * 2f));
 
-                // center the texture
-                Vector2 gameOverOrigin = new Vector2(_gameOverTexture.Width / 2f, _gameOverTexture.Height / 2f);
-
-                // make scale accordin to the camera size
-                float scale = Math.Min(viewWidth / (_gameOverTexture.Width*2), viewHeight / (_gameOverTexture.Height*2));
+                Vector2 centerScreen = new Vector2(screenWidth / 2f, screenHeight / 2f);
 
                 // darken the background
                 var pixel = new Texture2D(Core.GraphicsDevice, 1, 1);
                 pixel.SetData(new[] { Color.White });
-                Core.SpriteBatch.Draw(pixel, new Rectangle((int)cameraOffset.X, (int)cameraOffset.Y, (int)viewWidth, (int)viewHeight), new Color(0, 0, 0, 128)); // R,G,B,Alpha (128/255 = ~50% opacity));
+                Core.SpriteBatch.Draw(pixel, new Rectangle(0,0,screenWidth, screenHeight), new Color(0, 0, 0, 128));
 
                 Core.SpriteBatch.Draw(
                     _gameOverTexture,
-                    centerWorld,
+                    centerScreen,
                     null,
                     Color.White,
                     0f,
-                    gameOverOrigin,
+                    new Vector2(_gameOverTexture.Width / 2f, _gameOverTexture.Height / 2f),
                     scale,
                     SpriteEffects.None,
                     0f
                 );
 
-                // Draw the score
+                // draw the score
                 int score = 100;
                 Core.SpriteBatch.DrawString(
                     font,
-                    "Score: "+score.ToString("D7"),
-                    centerWorld + new Vector2(-10*scale, _gameOverTexture.Height * scale / 4f - 14f*scale),
+                    "Score: " + score.ToString("D7"),
+                    centerScreen + new Vector2(0,6f*scale),
                     Color.LightYellow,
                     0f,
-                    font.MeasureString("Game Over") / 2f,
-                    scale/2,
+                    font.MeasureString("Score: 0000000") / 2f,
+                    scale / 2,
                     SpriteEffects.None,
                     0f
                 );
 
-                // draw the play again button below the game over menu
-                Vector2 playAgainOrigin = new Vector2(_playAgainTexture.Width / 2f, _playAgainTexture.Height / 2f);
-                Vector2 playAgainPos = centerWorld + new Vector2(_gameOverTexture.Width*scale, _gameOverTexture.Height * scale / 2f + 20f*scale);
+                Vector2 playAgainPos = centerScreen + new Vector2(0, _gameOverTexture.Height * scale / 2f + 14*scale);
+                Vector2 playAgainOrigin = new Vector2(_playAgainSrcRect.Width / 2f, _playAgainSrcRect.Height / 2f);
+
                 Core.SpriteBatch.Draw(
                     _playAgainTexture,
                     playAgainPos,
                     _playAgainSrcRect,
-                    Color.White,
+                    _playAgainColor,
                     0f,
                     playAgainOrigin,
                     scale,
                     SpriteEffects.None,
                     0f
                 );
+
+                Core.SpriteBatch.End();
             }
 
 
-            Core.SpriteBatch.End();
 
             base.Draw(gameTime);
         }

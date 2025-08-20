@@ -88,8 +88,6 @@ public class Startscreen: Scene
         startButtonBounds = new Rectangle(Core.GraphicsDevice.Viewport.Width / 2 - 64, Core.GraphicsDevice.Viewport.Height / 2, 128, 64);
         Core.SpriteBatch.Draw(buttonsTexture, startButtonBounds, startButtonSrcRectangle, startBtnColor);
 
-        //Core.SpriteBatch.DrawString(font, "Pirate\nAdventures", new Vector2(viewport.Width / 2 - 100, 40), Color.Brown, 0f, Vector2.Zero, new Vector2(4.1f, 3.1f), SpriteEffects.None, 0f);
-
         Core.SpriteBatch.End();
     }
 }
