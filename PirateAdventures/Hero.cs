@@ -150,6 +150,8 @@ namespace PirateAdventures
                         {
                             Block collBlock = (Block)collisionObj;
 
+                            if (collBlock.BlockType == BlockType.DEATH) OnDeath?.Invoke(this);
+
                             // collision on the X axis
                             if (intersection.Width < intersection.Height)
                             {
@@ -161,8 +163,6 @@ namespace PirateAdventures
                                         Position = new Vector2(Position.X + intersection.Width, Position.Y);
                                     speed.X = 0;
                                 }
-
-                                if (collBlock.BlockType == BlockType.DEATH) OnDeath?.Invoke(this);
                             }
                             // collision on the Y axis
                             else

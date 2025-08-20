@@ -6,11 +6,10 @@ using PirateAdventures;
 using PirateAdventures.Animations;
 using PirateAdventures.Interfaces;
 
-public class WindowGuy : IEnemy, ICollidable
+public class WindowGuy : IEnemy
 {
     public const int SPRITE_WIDTH = 64, SPRITE_HEIGHT = 64;
     private Texture2D texture2D, bombTexture;
-    public bool Passable { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
     public Vector2 Position { get; set; } = Vector2.Zero;
     public Rectangle BoundingBox { get; set; }
     public int EnemyState { get; set; } = 0;
@@ -43,7 +42,7 @@ public class WindowGuy : IEnemy, ICollidable
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        spriteBatch.Draw(texture2D, Position, animations[EnemyState].CurrentFrame.SourceRect, Color.White, 0, new Vector2(0, 0), 1f, SpriteEffects.None, 0);
+        spriteBatch.Draw(texture2D, Position, animations[EnemyState].CurrentFrame.SourceRect, Color.White, 0, new Vector2(0, 0), .5f, SpriteEffects.None, 0);
 
         foreach (var bomb in bombs)
         {

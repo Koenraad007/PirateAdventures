@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGameLib;
 using PirateAdventures.Animations;
 using PirateAdventures.Interfaces;
 using PirateAdventures.Level;
@@ -21,13 +22,14 @@ public class Bomb : IGameObject, ICollidable
     private List<Animation> animations = new();
     private int BombState = 1;
     private float speed = 0, acceleration = 0.3f;
+    private float scale = 0.5f;
 
     public Bomb(Texture2D texture, Vector2 position)
     {
         texture2D = texture;
         Position = position;
-        // BoundingBox = new Rectangle((int)Center.X - BOMB_WIDTH / 2, (int)Center.Y, BOMB_WIDTH, BOMB_HEIGHT);
-        BoundingBox = new Rectangle((int)Position.X, (int)Position.Y, SPRITE_WIDTH, SPRITE_HEIGHT);
+        BoundingBox = new Rectangle((int)Center.X - BOMB_WIDTH / 2, (int)Center.Y, BOMB_WIDTH, BOMB_HEIGHT);
+        //BoundingBox = new Rectangle((int)Position.X, (int)Position.Y, SPRITE_WIDTH, SPRITE_HEIGHT);
 
         // Bomb off
         animations.Add(new Animation());
@@ -50,7 +52,11 @@ public class Bomb : IGameObject, ICollidable
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        spriteBatch.Draw(texture2D, Center + new Vector2(0, SPRITE_HEIGHT - 32), animations[BombState].CurrentFrame.SourceRect, Color.White, 0, new Vector2(0, 0), 1f, SpriteEffects.None, 0);
+        spriteBatch.Draw(texture2D, Center + new Vector2(0, SPRITE_HEIGHT - 32), animations[BombState].CurrentFrame.SourceRect, Color.White, 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
+
+        var pixel = new Texture2D(Core.GraphicsDevice, 1, 1);
+        pixel.SetData(new[] { Color.Red });
+        spriteBatch.Draw(pixel, BoundingBox, Color.Red * 0.5f);
     }
 
     public void Update(List<IGameObject> collisionObjects, GameTime gameTime)
