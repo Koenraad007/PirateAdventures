@@ -38,6 +38,8 @@ namespace PirateAdventures
         private TextureAtlas textureAtlas;
         private AnimatedSprite currentAnimation;
 
+        public event Action<Hero> OnDeath;
+
         public Hero(Texture2D texture, IInputReader inputReader, TextureAtlas ta)
         {
             textureAtlas = ta;
@@ -159,6 +161,8 @@ namespace PirateAdventures
                                         Position = new Vector2(Position.X + intersection.Width, Position.Y);
                                     speed.X = 0;
                                 }
+
+                                if (collBlock.BlockType == BlockType.DEATH) OnDeath?.Invoke(this);
                             }
                             // collision on the Y axis
                             else

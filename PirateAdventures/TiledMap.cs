@@ -93,6 +93,20 @@ namespace PirateAdventures
 
                                 CollisionObjects.Add(block);
                             }
+
+                            if (tileId == firstGid + 2)
+                            {
+                                var srcRect = CalculateTileSourceRectangle(tileId);
+                                var block = new Block(
+                                    new Vector2(x * _map.TileWidth, y * _map.TileHeight),
+                                    _tilesetTexture,
+                                    new Vector2(srcRect.X / TileSize, srcRect.Y / TileSize),
+                                    TileSize,
+                                    BlockType.DEATH
+                                    );
+
+                                CollisionObjects.Add(block);
+                            }
                         }
                     }
                 }

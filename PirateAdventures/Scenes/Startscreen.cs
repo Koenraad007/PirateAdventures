@@ -48,7 +48,7 @@ public class Startscreen: Scene
             if (startBtnPressed)
             {
                 // Start game
-                Core.ChangeScene(new GameScene());
+                Core.ChangeScene(new GameScene("./../../../Content/Level2.tmx"));
                 startBtnPressed = false;
             }
 

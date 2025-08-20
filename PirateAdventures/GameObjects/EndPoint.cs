@@ -1,14 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameLib;
 using MonoGameLib.Graphics;
 using PirateAdventures.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PirateAdventures.GameObjects
 {
@@ -21,6 +17,8 @@ namespace PirateAdventures.GameObjects
         public Rectangle Bounds => new Rectangle((int)Position.X, (int)Position.Y, (int)Texture.Width, (int)Texture.Height);
         public bool Reached { get; set; } = false;
         private int animationCounter = -1;
+
+        public event Action<EndPoint> OnReached;
 
         public EndPoint(Vector2 position, TextureAtlas atlas)
         {
@@ -35,13 +33,14 @@ namespace PirateAdventures.GameObjects
             var heroBoundsSmall = new Rectangle(
                 (int)hero.BoundingBox.Center.X - 1,
                 (int)hero.BoundingBox.Center.Y - 1,
-                2,2);
+                2, 2);
 
             if (!Reached && heroBoundsSmall.Intersects(Bounds))
             {
-                
-                    Reached = true;      
-                    Debug.WriteLine("EndPoint reached!");
+
+                Reached = true;
+                Debug.WriteLine("EndPoint reached!");
+                OnReached?.Invoke(this);
             }
 
             if (Vector2.Distance(hero.BoundingBox.Center.ToVector2(), Bounds.Center.ToVector2()) < 100f)

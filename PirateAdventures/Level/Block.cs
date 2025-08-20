@@ -45,7 +45,8 @@ namespace PirateAdventures.Level
     {
         AIR,
         FULL,
-        PLATFORM
+        PLATFORM,
+        DEATH
     }
 }
 

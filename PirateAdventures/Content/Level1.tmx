@@ -77,13 +77,7 @@
   <object id="1" name="hero" x="160" y="512">
    <point/>
   </object>
-  <object id="6" name="companion" x="128" y="448">
-   <point/>
-  </object>
   <object id="7" name="endpoint" x="6272" y="512">
-   <point/>
-  </object>
-  <object id="9" name="endpoint" x="352" y="512">
    <point/>
   </object>
  </objectgroup>

@@ -28,16 +28,22 @@ namespace PirateAdventures.Scenes
         private float _cameraZoom = 2f;
         private Texture2D _gameOverTexture, _buttonsTexture, _levelCompleteTexture;
         private Rectangle _playAgainSrcRect;
-        private bool _isGameOver = false;
+        private bool _isGameOver = false, _isLevelComplete = false;
         private SpriteFont font;
         private Color _playAgainColor = Color.White;
+        private string _levelPath;
+
+        public GameScene(string levelPath)
+        {
+            _levelPath = levelPath;
+        }
 
         public override void Initialize()
         {
             base.Initialize();
 
             _inputSettings = SettingsManager.LoadSettings();
-            _tiledMap.Initialize("./../../../Content/Level1.tmx");
+            _tiledMap.Initialize(_levelPath);
             _blocks = new List<IGameObject>();
 
             _playAgainSrcRect = new Rectangle(144, 32, 16, 16);
@@ -73,23 +79,33 @@ namespace PirateAdventures.Scenes
 
             _blocks = _tiledMap.CollisionObjects;
             _gameObjects.AddRange(_blocks);
+
+            foreach (var endPoint in _gameObjects.OfType<EndPoint>())
+            {
+                endPoint.OnReached += HandleEndPointReached;
+            }
+            foreach (var hero in _gameObjects.OfType<Hero>())
+            {
+                hero.OnDeath += HandleGameOver;
+            }
         }
 
         public override void Update(GameTime gameTime)
         {
             UpdateCamera();
 
-            if (_isGameOver || _gameObjects.OfType<EndPoint>().Last()?.Reached == true)
+            if (_isGameOver || _isLevelComplete)
             {
-                _isGameOver = true;
-
                 int screenWidth = Core.GraphicsDevice.Viewport.Width;
                 int screenHeight = Core.GraphicsDevice.Viewport.Height;
                 Vector2 centerScreen = new Vector2(screenWidth / 2f, screenHeight / 2f);
-                float scale = Math.Min(screenWidth / (_levelCompleteTexture.Width * 2f),
-                               screenHeight / (_levelCompleteTexture.Height * 2f));
 
-                Vector2 playAgainPos = centerScreen + new Vector2(0, _levelCompleteTexture.Height * scale / 2f + 14*scale);
+                Texture2D texture = _isGameOver ? _gameOverTexture : _levelCompleteTexture;
+
+                float scale = Math.Min(screenWidth / (texture.Width * 2f),
+                               screenHeight / (texture.Height * 2f));
+
+                Vector2 playAgainPos = centerScreen + new Vector2(0, texture.Height * scale / 2f + 14*scale);
                 Rectangle playAgainBounds = new Rectangle((int)(playAgainPos.X - _playAgainSrcRect.Width * scale / 2), (int)(playAgainPos.Y - _playAgainSrcRect.Height * scale / 2), (int)(_playAgainSrcRect.Width * scale), (int)(_playAgainSrcRect.Height * scale));
                
                 if (playAgainBounds.Contains(Core.Input.Mouse.Position))
@@ -110,6 +126,17 @@ namespace PirateAdventures.Scenes
             }
 
             base.Update(gameTime);
+        }
+
+        private void HandleEndPointReached(EndPoint endPoint)
+        {
+            _isLevelComplete = true;
+        }
+
+        private void HandleGameOver(Hero hero)
+        {
+            _isGameOver = true;
+            Debug.WriteLine("Game Over! Hero died.");
         }
 
         private void UpdateCamera()
@@ -164,7 +191,7 @@ namespace PirateAdventures.Scenes
 
             Core.SpriteBatch.End();
 
-            if (_isGameOver)
+            if (_isGameOver || _isLevelComplete)
             {
                 Core.SpriteBatch.Begin(
                     samplerState: SamplerState.PointClamp
@@ -173,8 +200,10 @@ namespace PirateAdventures.Scenes
                 int screenWidth = Core.GraphicsDevice.Viewport.Width;
                 int screenHeight = Core.GraphicsDevice.Viewport.Height;
 
-                float scale = Math.Min(screenWidth / (_levelCompleteTexture.Width * 2f),
-                               screenHeight / (_levelCompleteTexture.Height * 2f));
+                Texture2D texture = _isGameOver ? _gameOverTexture : _levelCompleteTexture;
+
+                float scale = Math.Min(screenWidth / (texture.Width * 2f),
+                               screenHeight / (texture.Height * 2f));
 
                 Vector2 centerScreen = new Vector2(screenWidth / 2f, screenHeight / 2f);
 
@@ -184,12 +213,12 @@ namespace PirateAdventures.Scenes
                 Core.SpriteBatch.Draw(pixel, new Rectangle(0,0,screenWidth, screenHeight), new Color(0, 0, 0, 128));
 
                 Core.SpriteBatch.Draw(
-                    _levelCompleteTexture,
+                    texture,
                     centerScreen,
                     null,
                     Color.White,
                     0f,
-                    new Vector2(_levelCompleteTexture.Width / 2f, _levelCompleteTexture.Height / 2f),
+                    new Vector2(texture.Width / 2f, texture.Height / 2f),
                     scale,
                     SpriteEffects.None,
                     0f
@@ -209,7 +238,7 @@ namespace PirateAdventures.Scenes
                     0f
                 );
 
-                Vector2 playAgainPos = centerScreen + new Vector2(0, _levelCompleteTexture.Height * scale / 2f + 14*scale);
+                Vector2 playAgainPos = centerScreen + new Vector2(0, texture.Height * scale / 2f + 14*scale);
                 Vector2 playAgainOrigin = new Vector2(_playAgainSrcRect.Width / 2f, _playAgainSrcRect.Height / 2f);
 
                 Core.SpriteBatch.Draw(
