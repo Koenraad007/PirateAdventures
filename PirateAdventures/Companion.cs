@@ -48,7 +48,7 @@ public class Companion : IGameObject, ICollidable
 
         var direction = input.ReadBirdInput();
 
-        Debug.WriteLine(Vector2.Distance(heroPos, Position));
+        //Debug.WriteLine(Vector2.Distance(heroPos, Position));
         if (direction == Vector2.Zero && hero != null && Vector2.Distance(heroPos, Position) > 20f)
         {
             // move towards hero if no input is given

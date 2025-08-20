@@ -40,9 +40,8 @@ namespace PirateAdventures.GameObjects
             if (!Reached && heroBoundsSmall.Intersects(Bounds))
             {
                 
-                    Reached = true;
-                    Core.ChangeScene(new Startscreen());
-                
+                    Reached = true;      
+                    Debug.WriteLine("EndPoint reached!");
             }
 
             if (Vector2.Distance(hero.BoundingBox.Center.ToVector2(), Bounds.Center.ToVector2()) < 100f)
