@@ -26,7 +26,7 @@ namespace PirateAdventures.Scenes
         private InputSettings _inputSettings;
         private Texture2D _tileset, _enemyTexture;
         private float _cameraZoom = 2f;
-        private Texture2D _gameOverTexture, _playAgainTexture;
+        private Texture2D _gameOverTexture, _buttonsTexture, _levelCompleteTexture;
         private Rectangle _playAgainSrcRect;
         private bool _isGameOver = false;
         private SpriteFont font;
@@ -58,7 +58,8 @@ namespace PirateAdventures.Scenes
             _tiledMap.LoadContent(Core.Content);
 
             _gameOverTexture = Core.Content.Load<Texture2D>("Menu/GameOver");
-            _playAgainTexture = Core.Content.Load<Texture2D>("BrownButtons");
+            _levelCompleteTexture = Core.Content.Load<Texture2D>("Menu/LevelComplete");
+            _buttonsTexture = Core.Content.Load<Texture2D>("BrownButtons");
 
             font = Core.Content.Load<SpriteFont>("Fonts/Pixellari");
 
@@ -85,10 +86,10 @@ namespace PirateAdventures.Scenes
                 int screenWidth = Core.GraphicsDevice.Viewport.Width;
                 int screenHeight = Core.GraphicsDevice.Viewport.Height;
                 Vector2 centerScreen = new Vector2(screenWidth / 2f, screenHeight / 2f);
-                float scale = Math.Min(screenWidth / (_gameOverTexture.Width * 2f),
-                               screenHeight / (_gameOverTexture.Height * 2f));
+                float scale = Math.Min(screenWidth / (_levelCompleteTexture.Width * 2f),
+                               screenHeight / (_levelCompleteTexture.Height * 2f));
 
-                Vector2 playAgainPos = centerScreen + new Vector2(0, _gameOverTexture.Height * scale / 2f + 14*scale);
+                Vector2 playAgainPos = centerScreen + new Vector2(0, _levelCompleteTexture.Height * scale / 2f + 14*scale);
                 Rectangle playAgainBounds = new Rectangle((int)(playAgainPos.X - _playAgainSrcRect.Width * scale / 2), (int)(playAgainPos.Y - _playAgainSrcRect.Height * scale / 2), (int)(_playAgainSrcRect.Width * scale), (int)(_playAgainSrcRect.Height * scale));
                
                 if (playAgainBounds.Contains(Core.Input.Mouse.Position))
@@ -172,8 +173,8 @@ namespace PirateAdventures.Scenes
                 int screenWidth = Core.GraphicsDevice.Viewport.Width;
                 int screenHeight = Core.GraphicsDevice.Viewport.Height;
 
-                float scale = Math.Min(screenWidth / (_gameOverTexture.Width * 2f),
-                               screenHeight / (_gameOverTexture.Height * 2f));
+                float scale = Math.Min(screenWidth / (_levelCompleteTexture.Width * 2f),
+                               screenHeight / (_levelCompleteTexture.Height * 2f));
 
                 Vector2 centerScreen = new Vector2(screenWidth / 2f, screenHeight / 2f);
 
@@ -183,12 +184,12 @@ namespace PirateAdventures.Scenes
                 Core.SpriteBatch.Draw(pixel, new Rectangle(0,0,screenWidth, screenHeight), new Color(0, 0, 0, 128));
 
                 Core.SpriteBatch.Draw(
-                    _gameOverTexture,
+                    _levelCompleteTexture,
                     centerScreen,
                     null,
                     Color.White,
                     0f,
-                    new Vector2(_gameOverTexture.Width / 2f, _gameOverTexture.Height / 2f),
+                    new Vector2(_levelCompleteTexture.Width / 2f, _levelCompleteTexture.Height / 2f),
                     scale,
                     SpriteEffects.None,
                     0f
@@ -208,11 +209,11 @@ namespace PirateAdventures.Scenes
                     0f
                 );
 
-                Vector2 playAgainPos = centerScreen + new Vector2(0, _gameOverTexture.Height * scale / 2f + 14*scale);
+                Vector2 playAgainPos = centerScreen + new Vector2(0, _levelCompleteTexture.Height * scale / 2f + 14*scale);
                 Vector2 playAgainOrigin = new Vector2(_playAgainSrcRect.Width / 2f, _playAgainSrcRect.Height / 2f);
 
                 Core.SpriteBatch.Draw(
-                    _playAgainTexture,
+                    _buttonsTexture,
                     playAgainPos,
                     _playAgainSrcRect,
                     _playAgainColor,
