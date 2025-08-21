@@ -13,56 +13,11 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin Adventures-2-1-2025 (1).png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Adventures-2-1-2025 (1).png;AdventuresText.png
-
 #begin bigguy-atlas.xml
 /copy:bigguy-atlas.xml
 
-#begin bluebird20fps.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:bluebird20fps.png
-
-#begin Bomb.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Bomb.png
-
-#begin Brown_Buttons_Pixel.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Brown_Buttons_Pixel.png;BrownButtons.png
+#begin bomb-atlas.xml
+/copy:bomb-atlas.xml
 
 #begin collectables-atlas.xml
 /copy:collectables-atlas.xml
@@ -104,6 +59,30 @@
 /processorParam:TextureFormat=Color
 /build:hero2.png
 
+#begin Menu/AdventuresText.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Menu/AdventuresText.png
+
+#begin Menu/BrownButtons.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Menu/BrownButtons.png
+
 #begin Menu/GameOver.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -140,6 +119,18 @@
 /processorParam:TextureFormat=Color
 /build:Menu/LevelComplete.png
 
+#begin Menu/PirateText.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Menu/PirateText.png
+
 #begin Menu/Score.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -151,6 +142,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Menu/Score.png
+
+#begin Menu/start_bg.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Menu/start_bg.png
 
 #begin Music/Background/backgroundMusic.mp3
 /importer:Mp3Importer
@@ -170,29 +173,11 @@
 /processorParam:Quality=Best
 /build:Music/SoundFx/walking.mp3
 
-#begin Pirate-2-1-2025 (1).png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Pirate-2-1-2025 (1).png;PirateText.png
-
-#begin Shooter.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Shooter.png;enemy_shooter.png
+#begin Music/SoundFx/walkingGrass.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/SoundFx/walkingGrass.mp3
 
 #begin Sprites/Bigguy/enemy_bigguy.png
 /importer:TextureImporter
@@ -206,6 +191,18 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Bigguy/enemy_bigguy.png
 
+#begin Sprites/Bomb/Bomb.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Bomb/Bomb.png
+
 #begin Sprites/Collectables/Collectables.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -217,6 +214,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Sprites/Collectables/Collectables.png
+
+#begin Sprites/Companion/bluebird20fps.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Companion/bluebird20fps.png
 
 #begin Sprites/Endpoint/openingDoor.png
 /importer:TextureImporter
@@ -242,7 +251,7 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Hero/cptclownnose20fps.png
 
-#begin start_bg.png
+#begin Sprites/Shooter/Shooter.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -252,7 +261,19 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:start_bg.png
+/build:Sprites/Shooter/Shooter.png
+
+#begin Sprites/Windowguy/WindowGuy.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Windowguy/WindowGuy.png
 
 #begin Tile-Sets (64-64).png
 /importer:TextureImporter
@@ -278,15 +299,6 @@
 /processorParam:TextureFormat=Color
 /build:Tileset32.png
 
-#begin WindowGuy.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:WindowGuy.png;enemy_windowguy.png
+#begin windowguy-atlas.xml
+/copy:windowguy-atlas.xml
 

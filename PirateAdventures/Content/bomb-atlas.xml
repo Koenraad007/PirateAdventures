@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas>
+	<Texture>Sprites/Bomb/Bomb</Texture>
+	<Regions>
+		<Region name="off1" x="0" y="0" width="176" height="160" />
+		<Region name="on1" x="176" y="0" width="176" height="160" />
+		<Region name="on2" x="352" y="0" width="176" height="160" />
+		<Region name="on3" x="528" y="0" width="176" height="160" />
+		<Region name="on4" x="704" y="0" width="176" height="160" />
+		<Region name="on5" x="880" y="0" width="176" height="160" />
+		<Region name="on6" x="1056" y="0" width="176" height="160" />
+		<Region name="on7" x="1232" y="0" width="176" height="160" />
+		<Region name="on8" x="1408" y="0" width="176" height="160" />
+		<Region name="on9" x="1584" y="0" width="176" height="160" />
+		<Region name="on10" x="1760" y="0" width="176" height="160" />
+		<Region name="explode1" x="1936" y="0" width="176" height="160" />
+		<Region name="explode2" x="2112" y="0" width="176" height="160" />
+		<Region name="explode3" x="2288" y="0" width="176" height="160" />
+		<Region name="explode4" x="2464" y="0" width="176" height="160" />
+		<Region name="explode5" x="2640" y="0" width="176" height="160" />
+		<Region name="explode6" x="2816" y="0" width="176" height="160" />
+		<Region name="explode7" x="2992" y="0" width="176" height="160" />
+		<Region name="explode8" x="3168" y="0" width="176" height="160" />
+		<Region name="explode9" x="3344" y="0" width="176" height="160" />
+	</Regions>
+	<Animations>
+		<Animation name="off" delay="50">
+			<Frame region="off1" />
+		</Animation>
+		<Animation name="on" delay="50">
+			<Frame region="on1" />
+			<Frame region="on2" />
+			<Frame region="on3" />
+			<Frame region="on4" />
+			<Frame region="on5" />
+			<Frame region="on6" />
+			<Frame region="on7" />
+			<Frame region="on8" />
+			<Frame region="on9" />
+			<Frame region="on10" />
+		</Animation>
+		<Animation name="explode" delay="50">
+			<Frame region="explode1" />
+			<Frame region="explode2" />
+			<Frame region="explode3" />
+			<Frame region="explode4" />
+			<Frame region="explode5" />
+			<Frame region="explode6" />
+			<Frame region="explode7" />
+			<Frame region="explode8" />
+			<Frame region="explode9" />
+		</Animation>
+	</Animations>
+</TextureAtlas>
