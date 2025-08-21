@@ -185,6 +185,9 @@
 /processorParam:Quality=Best
 /build:Music/SoundFx/walkingGrass.mp3
 
+#begin shooter-atlas.xml
+/copy:shooter-atlas.xml
+
 #begin Sprites/Bigguy/enemy_bigguy.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -208,6 +211,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Sprites/Bomb/Bomb.png
+
+#begin Sprites/Bullet/bullet.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Bullet/bullet.png
 
 #begin Sprites/Collectables/Collectables.png
 /importer:TextureImporter

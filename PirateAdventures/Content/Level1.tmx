@@ -80,7 +80,7 @@
   <object id="7" name="endpoint" x="6272" y="512">
    <point/>
   </object>
-  <object id="10" name="big" x="320" y="512">
+  <object id="10" name="shoot" x="320" y="512">
    <point/>
   </object>
  </objectgroup>

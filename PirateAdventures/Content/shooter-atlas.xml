@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas>
+	<Texture>Sprites/Shooter/Shooter</Texture>
+	<Regions>
+		<Region name="idle1" x="0" y="0" width="63" height="67" />
+		<Region name="idle2" x="63" y="0" width="63" height="67" />
+		<Region name="idle3" x="126" y="0" width="63" height="67" />
+		<Region name="idle4" x="189" y="0" width="63" height="67" />
+		<Region name="idle5" x="252" y="0" width="63" height="67" />
+		<Region name="idle6" x="315" y="0" width="63" height="67" />
+		<Region name="idle7" x="378" y="0" width="63" height="67" />
+		<Region name="idle8" x="441" y="0" width="63" height="67" />
+		<Region name="idle9" x="504" y="0" width="63" height="67" />
+		<Region name="idle10" x="567" y="0" width="63" height="67" />
+		<Region name="idle11" x="630" y="0" width="63" height="67" />
+		<Region name="idle12" x="693" y="0" width="63" height="67" />
+		<Region name="idle13" x="756" y="0" width="63" height="67" />
+		<Region name="idle14" x="819" y="0" width="63" height="67" />
+		<Region name="idle15" x="882" y="0" width="63" height="67" />
+		<Region name="idle16" x="945" y="0" width="63" height="67" />
+		<Region name="idle17" x="1008" y="0" width="63" height="67" />
+		<Region name="idle18" x="1071" y="0" width="63" height="67" />
+		<Region name="idle19" x="1134" y="0" width="63" height="67" />
+		<Region name="idle20" x="1197" y="0" width="63" height="67" />
+		<Region name="idle21" x="1260" y="0" width="63" height="67" />
+		<Region name="idle22" x="1323" y="0" width="63" height="67" />
+		<Region name="idle23" x="1386" y="0" width="63" height="67" />
+		<Region name="idle24" x="1449" y="0" width="63" height="67" />
+		<Region name="idle25" x="1512" y="0" width="63" height="67" />
+		<Region name="idle26" x="1575" y="0" width="63" height="67" />
+		<Region name="idle27" x="1638" y="0" width="63" height="67" />
+		<Region name="idle28" x="1701" y="0" width="63" height="67" />
+		<Region name="idle29" x="1764" y="0" width="63" height="67" />
+		<Region name="idle30" x="1827" y="0" width="63" height="67" />
+		<Region name="idle31" x="1890" y="0" width="63" height="67" />
+		<Region name="idle32" x="1953" y="0" width="63" height="67" />
+		<Region name="idle33" x="2016" y="0" width="63" height="67" />
+		<Region name="idle34" x="2079" y="0" width="63" height="67" />
+		<Region name="attack-body" x="5544" y="0" width="63" height="67" />
+		<Region name="attack-arm" x="5607" y="0" width="63" height="67" />
+	</Regions>
+	<Animations>
+		<Animation name="idle" delay="50">
+			<Frame region="idle1" />
+			<Frame region="idle2" />
+			<Frame region="idle3" />
+			<Frame region="idle4" />
+			<Frame region="idle5" />
+			<Frame region="idle6" />
+			<Frame region="idle7" />
+			<Frame region="idle8" />
+			<Frame region="idle9" />
+			<Frame region="idle10" />
+			<Frame region="idle11" />
+			<Frame region="idle12" />
+			<Frame region="idle13" />
+			<Frame region="idle14" />
+			<Frame region="idle15" />
+			<Frame region="idle16" />
+			<Frame region="idle17" />
+			<Frame region="idle18" />
+			<Frame region="idle19" />
+			<Frame region="idle20" />
+			<Frame region="idle21" />
+			<Frame region="idle22" />
+			<Frame region="idle23" />
+			<Frame region="idle24" />
+			<Frame region="idle25" />
+			<Frame region="idle26" />
+			<Frame region="idle27" />
+			<Frame region="idle28" />
+			<Frame region="idle29" />
+			<Frame region="idle30" />
+			<Frame region="idle31" />
+			<Frame region="idle32" />
+			<Frame region="idle33" />
+			<Frame region="idle34" />
+		</Animation>
+	</Animations>
+</TextureAtlas>

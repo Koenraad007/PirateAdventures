@@ -21,7 +21,7 @@ namespace PirateAdventures
     {
         private TmxMap _map;
         private Texture2D _heroTexture, _companionTexture, _tilesetTexture, _shooterTexture, _windowGuyTexture, _bombTexture, _endpointTexture;
-        private TextureAtlas _heroAtlas, _endpointAtlas, _bigguyAtlas, _collectableAtlas, _windowguyAtlas;
+        private TextureAtlas _heroAtlas, _endpointAtlas, _bigguyAtlas, _collectableAtlas, _windowguyAtlas, _shooterAtlas;
 
         public List<IGameObject> CollisionObjects { get; private set; } = new List<IGameObject>();
         public int Width { get; private set; }
@@ -44,6 +44,7 @@ namespace PirateAdventures
             _companionTexture = contentManager.Load<Texture2D>("Sprites/Companion/bluebird20fps");
             _heroAtlas = TextureAtlas.FromFile(contentManager, "hero-atlas.xml");
             _bigguyAtlas = TextureAtlas.FromFile(contentManager, "bigguy-atlas.xml");
+            _shooterAtlas = TextureAtlas.FromFile(contentManager, "shooter-atlas.xml");
             _collectableAtlas = TextureAtlas.FromFile(contentManager, "collectables-atlas.xml");
             _tilesetTexture = contentManager.Load<Texture2D>("Tileset32");
             _shooterTexture = contentManager.Load<Texture2D>("Sprites/Shooter/Shooter");
@@ -174,7 +175,7 @@ namespace PirateAdventures
 
                         case "shoot":
                             var shooter = new Shooter(
-                                _shooterTexture
+                                _shooterAtlas
                             )
                             {
                                 Position = new Vector2((float)gameObject.X, (float)gameObject.Y - Shooter.SPRITE_HEIGHT)

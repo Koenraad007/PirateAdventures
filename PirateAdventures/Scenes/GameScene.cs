@@ -29,7 +29,7 @@ namespace PirateAdventures.Scenes
         private InputSettings _inputSettings;
         private Texture2D _tileset, _enemyTexture;
         private float _cameraZoom = 2f;
-        private Texture2D _gameOverTexture, _buttonsTexture, _levelCompleteTexture, _healthBarTexture, _scoreTexture, _bombTexture;
+        private Texture2D _gameOverTexture, _buttonsTexture, _levelCompleteTexture, _healthBarTexture, _scoreTexture, _bombTexture, _bulletTexture;
         private Rectangle _playAgainSrcRect;
         private bool _isGameOver = false, _isLevelComplete = false;
         private SpriteFont font;
@@ -77,6 +77,7 @@ namespace PirateAdventures.Scenes
             _scoreTexture = Core.Content.Load<Texture2D>("Menu/Score");
 
             _bombTexture = Core.Content.Load<Texture2D>("Sprites/Bomb/Bomb");
+            _bulletTexture = Core.Content.Load<Texture2D>("Sprites/Bullet/bullet");
 
             font = Core.Content.Load<SpriteFont>("Fonts/Pixellari");
 
@@ -112,6 +113,10 @@ namespace PirateAdventures.Scenes
             foreach (var windowGuy in _gameObjects.OfType<WindowGuy>())
             {
                 windowGuy.SpawnBomb += HandleSpawnBomb;
+            }
+            foreach (var shooter in _gameObjects.OfType<Shooter>())
+            {
+                shooter.Shoot += HandleShot;
             }
         }
 
@@ -161,6 +166,7 @@ namespace PirateAdventures.Scenes
 
                 _gameObjects.RemoveAll(obj => obj is Collectable collectable && collectable.IsCollected);
                 _gameObjects.RemoveAll(obj => obj is Bomb bomb && bomb.HasExploded == true);
+                _gameObjects.RemoveAll(obj => obj is Bullet bullet && bullet.IsHit == true);
             }
 
             base.Update(gameTime);
@@ -208,6 +214,11 @@ namespace PirateAdventures.Scenes
         {
             Bomb bomb = new Bomb(_bombTexture, position, _bombAtlas, soundEffects["explosion"]);
             toAdd.Add(bomb);
+        }
+
+        private void HandleShot(Shooter enemy, Vector2 position, Vector2 direction, float speed)
+        {
+            toAdd.Add(new Bullet(_bulletTexture, position, direction, speed));
         }
 
         private void UpdateCamera()
