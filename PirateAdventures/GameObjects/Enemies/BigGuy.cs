@@ -37,7 +37,7 @@ namespace PirateAdventures.GameObjects.Enemies
         public Rectangle BoundingBox { get; set; }
         private SpriteEffects spriteEffects = SpriteEffects.None;
         private float scale = .5f;
-        public event Action<IEnemy, int> Attack;
+        public event Action<IEnemy, int, Vector2> Attack;
 
         public BigGuy(TextureAtlas ta)
         {
@@ -70,7 +70,8 @@ namespace PirateAdventures.GameObjects.Enemies
                 else spriteEffects = SpriteEffects.None;
                 if (currentAnimation.CurrentFrame == currentAnimation.Animation.Frames.Count-1 && currentAnimation.CurrentFrame != prevFrame)
                 {
-                    Attack?.Invoke(this, 10);
+                    var attackDirection = hero.BoundingBox.Center - BoundingBox.Center;
+                    Attack?.Invoke(this, 10, attackDirection.ToVector2());
                 }
                 prevFrame = currentAnimation.CurrentFrame;
             }

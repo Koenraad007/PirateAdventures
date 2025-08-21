@@ -173,17 +173,13 @@ namespace PirateAdventures.Scenes
             Debug.WriteLine("Game Over! Hero died.");
         }
 
-        private void HandleAttack(IEnemy enemy, int damage)
+        private void HandleAttack(IEnemy enemy, int damage, Vector2 attackDirection)
         {
             Hero hero = _gameObjects.OfType<Hero>().FirstOrDefault();
             if (hero != null)
             {
                 Debug.WriteLine($"Hero attacked by {enemy.GetType().Name} for {damage} damage.");
-                hero.Health -= damage;
-                if (hero.Health <= 0)
-                {
-                    HandleGameOver(hero);
-                }
+                hero.TakeDamage(damage, attackDirection);
             }
         }
 

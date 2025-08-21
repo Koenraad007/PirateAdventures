@@ -41,11 +41,11 @@ public class Bomb : IEnemy, ICollidable
     private float scale = 0.5f;
     private TextureAtlas _textureAtlas;
     private AnimatedSprite _currentAnimation;
-    private bool isGrounded = false;
+    private bool isGrounded = false, _damageDealt = false;
     public bool HasExploded = false;
     private double timer = 0;
 
-    public event Action<IEnemy, int> Attack;
+    public event Action<IEnemy, int, Vector2> Attack;
 
     public Bomb(Texture2D texture, Vector2 position, TextureAtlas ta)
     {
@@ -89,19 +89,28 @@ public class Bomb : IEnemy, ICollidable
             timer = 0;
         }
 
-        if (BombState == 2 && _currentAnimation.CurrentFrame >= _currentAnimation.Animation.Frames.Count-1)
+        if (BombState == 2)
         {
-            var hero = collisionObjects.OfType<Hero>().FirstOrDefault();
-            var explosionBox = new Rectangle(
-                (int)(BoundingBox.X - 32),
-                (int)(BoundingBox.Y - 16),
-                (int)(BoundingBox.Width + 32 * 2),
-                (int)(BoundingBox.Height + 16 * 2));
-            if (hero != null && explosionBox.Intersects(hero.BoundingBox))
+            if (_currentAnimation.CurrentFrame >= _currentAnimation.Animation.Frames.Count/2 && !_damageDealt)
             {
-                Attack?.Invoke(this, 20);
+                var hero = collisionObjects.OfType<Hero>().FirstOrDefault();
+                var explosionBox = new Rectangle(
+                    (int)(BoundingBox.X - 16),
+                    (int)(BoundingBox.Y - 8),
+                    (int)(BoundingBox.Width + 16 * 2),
+                    (int)(BoundingBox.Height + 8 * 2));
+                if (hero != null && explosionBox.Intersects(hero.BoundingBox))
+                {
+                    var attackDirection = hero.BoundingBox.Center.ToVector2() - BoundingBox.Center.ToVector2();
+                    Attack?.Invoke(this, 20, attackDirection);
+                    _damageDealt = true;
+                }
+            } 
+            
+            if (_currentAnimation.CurrentFrame >= _currentAnimation.Animation.Frames.Count - 1)
+            {
+                HasExploded = true;
             }
-            HasExploded = true;
         }
     }
 

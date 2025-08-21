@@ -37,7 +37,7 @@ public class WindowGuy : IEnemy
     private bool hasAttacked = false;
 
     public event Action<WindowGuy, Vector2> SpawnBomb;
-    public event Action<IEnemy, int> Attack;
+    public event Action<IEnemy, int, Vector2> Attack;
 
     public WindowGuy(Texture2D texture, Texture2D dynamiteTexture, TextureAtlas ta)
     {
@@ -91,7 +91,7 @@ public class WindowGuy : IEnemy
     public void Update(List<IGameObject> collisionObjects, GameTime gameTime)
     {
         var hero = collisionObjects.OfType<Hero>().First();
-        if (hero.Position.X > Position.X && hero.Position.X < Position.X + SPRITE_WIDTH)
+        if (hero.BoundingBox.Center.X > Position.X && hero.BoundingBox.Center.X < Position.X + SPRITE_WIDTH*scale)
         {
             System.Console.WriteLine("Same X coords");
             EnemyState = 1;

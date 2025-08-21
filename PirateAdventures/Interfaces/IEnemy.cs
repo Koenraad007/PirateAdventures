@@ -1,3 +1,4 @@
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace PirateAdventures.Interfaces
     {
         public int EnemyState { get; set; }
         public int EnemyType { get; set; }
-        public event Action<IEnemy, int> Attack;
+        public event Action<IEnemy, int, Vector2> Attack;
     }
 }

@@ -31,7 +31,19 @@
 		<Region name="hero-jumping5" x="2080" y="0" width="80" height="80" />
 		<Region name="hero-jumping6" x="2160" y="0" width="80" height="80" />
 		<Region name="hero-falling1" x="2240" y="0" width="80" height="80" />
-		<Region name="hero-falling2" x="2320" y="0" width="80" height="80" />		
+		<Region name="hero-falling2" x="2320" y="0" width="80" height="80" />
+		<Region name="hero-ground1" x="2400" y="0" width="80" height="80" />
+		<Region name="hero-ground2" x="2480" y="0" width="80" height="80" />
+		<Region name="hero-ground3" x="2560" y="0" width="80" height="80" />
+		<Region name="hero-ground4" x="2640" y="0" width="80" height="80" />
+		<Region name="hero-hit1" x="2720" y="0" width="80" height="80" />
+		<Region name="hero-hit2" x="2800" y="0" width="80" height="80" />
+		<Region name="hero-hit3" x="2880" y="0" width="80" height="80" />
+		<Region name="hero-hit4" x="2960" y="0" width="80" height="80" />
+		<Region name="hero-hit5" x="3040" y="0" width="80" height="80" />
+		<Region name="hero-hit6" x="3120" y="0" width="80" height="80" />
+		<Region name="hero-hit7" x="3200" y="0" width="80" height="80" />
+		<Region name="hero-hit8" x="3280" y="0" width="80" height="80" />
 	</Regions>
 	<Animations>
 		<Animation name="hero-idle" delay="50">
@@ -71,6 +83,22 @@
 		<Animation name="hero-falling" delay="50">
 			<Frame region="hero-falling1" />
 			<Frame region="hero-falling2" />
+		</Animation>
+		<Animation name="hero-ground" delay="50">
+			<Frame region="hero-ground1" />
+			<Frame region="hero-ground2" />
+			<Frame region="hero-ground3" />
+			<Frame region="hero-ground4" />
+		</Animation>
+		<Animation name="hero-hit" delay="50">
+			<Frame region="hero-hit1" />
+			<Frame region="hero-hit2" />
+			<Frame region="hero-hit3" />
+			<Frame region="hero-hit4" />
+			<Frame region="hero-hit5" />
+			<Frame region="hero-hit6" />
+			<Frame region="hero-hit7" />
+			<Frame region="hero-hit8" />
 		</Animation>
 	</Animations>
 </TextureAtlas>

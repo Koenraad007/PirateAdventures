@@ -7,6 +7,7 @@ using PirateAdventures.Interfaces;
 using PirateAdventures.Level;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace PirateAdventures.GameObjects
 {
@@ -93,17 +94,25 @@ namespace PirateAdventures.GameObjects
 
             // if the hero is not moving, the state is IDLE (0), else it's RUNNING (1)
             if (speed.X != 0 && Math.Abs(speed.Y) < 1) currentState = HeroState.RUNNING;
-            else if (speed.Y <= -1)
+            else if (currentState != HeroState.HIT && speed.Y <= -1)
             {
                 currentState = HeroState.JUMPING;
             }
-            else if (speed.Y >= 1) currentState = HeroState.FALLING;
-            else currentState = HeroState.IDLE;
+            else if (currentState != HeroState.HIT && speed.Y >= 1) currentState = HeroState.FALLING;
+            else if (currentState != HeroState.HIT) currentState = HeroState.IDLE;
 
             if (currentState != prevState)
             {
                 string animationName = $"hero-{currentState.ToString().ToLower()}";
                 currentAnimation = textureAtlas.CreateAnimatedSprite(animationName);
+                if (currentState == HeroState.HIT)
+                {
+                    currentAnimation.PlayOnce = true;
+                }
+                else
+                {
+                    currentAnimation.PlayOnce = false;
+                }
                 prevState = currentState;
             }
 
@@ -239,6 +248,19 @@ namespace PirateAdventures.GameObjects
             //spriteBatch.Draw(pixel, BoundingBox, Color.Green * 0.5f);
         }
 
+        public void TakeDamage(int damage, Vector2 hitPos)
+        {
+            Health -= damage;
+            hitPos.Normalize();
+            speed += new Vector2(2, 2) * hitPos + new Vector2(4,-4);
+            isGrounded = false;
+            currentState = HeroState.HIT;
+            if (Health <= 0)
+            {
+                OnDeath?.Invoke(this);
+            }
+        }
+
     }
 
     enum HeroState
@@ -246,6 +268,7 @@ namespace PirateAdventures.GameObjects
         IDLE,
         RUNNING,
         JUMPING,
-        FALLING
+        FALLING,
+        HIT
     }
 }
