@@ -68,7 +68,7 @@ namespace PirateAdventures.GameObjects.Enemies
                 currentState = BigGuyState.Attacking;
                 if (hero.Position.X < _pos.X + SPRITE_WIDTH*scale / 2) spriteEffects = SpriteEffects.FlipHorizontally;
                 else spriteEffects = SpriteEffects.None;
-                if (currentAnimation.CurrentFrame == currentAnimation.Animation.Frames.Count-1 && currentAnimation.CurrentFrame != prevFrame)
+                if (currentAnimation.CurrentFrame == currentAnimation.Animation.Frames.Count/2 && currentAnimation.CurrentFrame != prevFrame)
                 {
                     var attackDirection = hero.BoundingBox.Center - BoundingBox.Center;
                     Attack?.Invoke(this, 10, attackDirection.ToVector2());

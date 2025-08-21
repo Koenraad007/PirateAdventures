@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLib;
 using MonoGameLib.Graphics;
@@ -44,15 +45,22 @@ public class Bomb : IEnemy, ICollidable
     private bool isGrounded = false, _damageDealt = false;
     public bool HasExploded = false;
     private double timer = 0;
+    private SoundEffect _explosionSound;
+    private SoundEffectInstance _explosionSoundInstance;
 
     public event Action<IEnemy, int, Vector2> Attack;
 
-    public Bomb(Texture2D texture, Vector2 position, TextureAtlas ta)
+    public Bomb(Texture2D texture, Vector2 position, TextureAtlas ta, SoundEffect explosionSound)
     {
         texture2D = texture;
         _textureAtlas = ta;
         _currentAnimation = _textureAtlas.CreateAnimatedSprite("on");
         Position = position;
+        _explosionSound = explosionSound;
+        _explosionSoundInstance = _explosionSound.CreateInstance();
+        _explosionSoundInstance.IsLooped = false;
+        _explosionSoundInstance.Volume = 0.2f;
+
     }
 
     public void Draw(SpriteBatch spriteBatch)
@@ -91,6 +99,8 @@ public class Bomb : IEnemy, ICollidable
 
         if (BombState == 2)
         {
+            _explosionSoundInstance.Play();
+
             if (_currentAnimation.CurrentFrame >= _currentAnimation.Animation.Frames.Count/2 && !_damageDealt)
             {
                 var hero = collisionObjects.OfType<Hero>().FirstOrDefault();
@@ -102,6 +112,7 @@ public class Bomb : IEnemy, ICollidable
                 if (hero != null && explosionBox.Intersects(hero.BoundingBox))
                 {
                     var attackDirection = hero.BoundingBox.Center.ToVector2() - BoundingBox.Center.ToVector2();
+                    Debug.WriteLine($"Bomb explosion at {BoundingBox.Center} with direction {attackDirection}");
                     Attack?.Invoke(this, 20, attackDirection);
                     _damageDealt = true;
                 }

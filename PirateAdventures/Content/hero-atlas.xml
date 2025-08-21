@@ -44,6 +44,12 @@
 		<Region name="hero-hit6" x="3120" y="0" width="80" height="80" />
 		<Region name="hero-hit7" x="3200" y="0" width="80" height="80" />
 		<Region name="hero-hit8" x="3280" y="0" width="80" height="80" />
+		<Region name="hero-attack1" x="3360" y="0" width="80" height="80" />
+		<Region name="hero-attack2" x="3440" y="0" width="80" height="80" />
+		<Region name="hero-attack3" x="3520" y="0" width="80" height="80" />
+		<Region name="hero-attack4" x="3600" y="0" width="80" height="80" />
+		<Region name="hero-attack5" x="3680" y="0" width="80" height="80" />
+		<Region name="hero-attack6" x="3760" y="0" width="80" height="80" />
 	</Regions>
 	<Animations>
 		<Animation name="hero-idle" delay="50">
@@ -99,6 +105,14 @@
 			<Frame region="hero-hit6" />
 			<Frame region="hero-hit7" />
 			<Frame region="hero-hit8" />
+		</Animation>
+		<Animation name="hero-attack" delay="50">
+			<Frame region="hero-attack1" />
+			<Frame region="hero-attack2" />
+			<Frame region="hero-attack3" />
+			<Frame region="hero-attack4" />
+			<Frame region="hero-attack5" />
+			<Frame region="hero-attack6" />
 		</Animation>
 	</Animations>
 </TextureAtlas>

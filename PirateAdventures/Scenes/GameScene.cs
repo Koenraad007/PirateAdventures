@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLib;
@@ -36,6 +37,7 @@ namespace PirateAdventures.Scenes
         private string _levelPath;
         private List<IGameObject> toAdd = new List<IGameObject>();
         public int Score { get; set; } = 0;
+        private Dictionary<string, SoundEffect> soundEffects = new Dictionary<string, SoundEffect>();
 
         public GameScene(string levelPath)
         {
@@ -77,6 +79,8 @@ namespace PirateAdventures.Scenes
             _bombTexture = Core.Content.Load<Texture2D>("Sprites/Bomb/Bomb");
 
             font = Core.Content.Load<SpriteFont>("Fonts/Pixellari");
+
+            soundEffects["explosion"] = Core.Content.Load<SoundEffect>("Music/SoundFx/explosion");
 
         }
 
@@ -202,7 +206,7 @@ namespace PirateAdventures.Scenes
 
         private void HandleSpawnBomb(WindowGuy windowGuy, Vector2 position)
         {
-            Bomb bomb = new Bomb(_bombTexture, position, _bombAtlas);
+            Bomb bomb = new Bomb(_bombTexture, position, _bombAtlas, soundEffects["explosion"]);
             toAdd.Add(bomb);
         }
 

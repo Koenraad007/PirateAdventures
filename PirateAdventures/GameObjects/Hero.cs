@@ -94,18 +94,18 @@ namespace PirateAdventures.GameObjects
 
             // if the hero is not moving, the state is IDLE (0), else it's RUNNING (1)
             if (speed.X != 0 && Math.Abs(speed.Y) < 1) currentState = HeroState.RUNNING;
-            else if (currentState != HeroState.HIT && speed.Y <= -1)
+            else if (currentState <= HeroState.HIT && speed.Y <= -1)
             {
                 currentState = HeroState.JUMPING;
             }
-            else if (currentState != HeroState.HIT && speed.Y >= 1) currentState = HeroState.FALLING;
-            else if (currentState != HeroState.HIT) currentState = HeroState.IDLE;
+            else if (currentState <= HeroState.HIT && speed.Y >= 1) currentState = HeroState.FALLING;
+            else if (currentState <= HeroState.HIT) currentState = HeroState.IDLE;
 
             if (currentState != prevState)
             {
                 string animationName = $"hero-{currentState.ToString().ToLower()}";
                 currentAnimation = textureAtlas.CreateAnimatedSprite(animationName);
-                if (currentState == HeroState.HIT)
+                if (currentState >= HeroState.HIT)
                 {
                     currentAnimation.PlayOnce = true;
                 }
@@ -252,7 +252,7 @@ namespace PirateAdventures.GameObjects
         {
             Health -= damage;
             hitPos.Normalize();
-            speed += new Vector2(2, 2) * hitPos + new Vector2(4,-4);
+            speed += new Vector2(6*hitPos.X, -4);
             isGrounded = false;
             currentState = HeroState.HIT;
             if (Health <= 0)
