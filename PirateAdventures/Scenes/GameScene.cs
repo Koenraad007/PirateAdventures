@@ -39,6 +39,7 @@ namespace PirateAdventures.Scenes
         private List<IGameObject> toAdd = new List<IGameObject>();
         public int Score { get; set; } = 0;
         private Dictionary<string, SoundEffect> soundEffects = new Dictionary<string, SoundEffect>();
+        private int skullCollected = 0;
 
         public GameScene(string levelPath)
         {
@@ -170,6 +171,7 @@ namespace PirateAdventures.Scenes
                 _gameObjects.RemoveAll(obj => obj is Collectable collectable && collectable.IsCollected);
                 _gameObjects.RemoveAll(obj => obj is Bomb bomb && bomb.HasExploded == true);
                 _gameObjects.RemoveAll(obj => obj is Bullet bullet && bullet.IsHit == true);
+                _gameObjects.RemoveAll(obj => obj is IKillable killable && killable.Health <= 0 && !(obj is Hero));
             }
 
             base.Update(gameTime);
@@ -205,6 +207,10 @@ namespace PirateAdventures.Scenes
                     break;
                 case CollectableType.GoldCoin:
                     Score += 20;
+                    break;
+
+                case CollectableType.Skull:
+                    skullCollected++;
                     break;
 
                 default:

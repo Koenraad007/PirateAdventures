@@ -17,6 +17,7 @@ public class InputSettings
             { EGameAction.MoveLeft, Keys.Q },
             { EGameAction.MoveRight, Keys.D },
             { EGameAction.Jump, Keys.Space },
+            { EGameAction.Attack, Keys.Z },
             { EGameAction.BirdUp, Keys.I },
             { EGameAction.BirdDown, Keys.K },
             { EGameAction.BirdLeft, Keys.J },

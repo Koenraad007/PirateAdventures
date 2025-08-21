@@ -14,6 +14,7 @@ namespace PirateAdventures.Input
     public class KeyboardInputReader : IInputReader
     {
         private readonly InputSettings inputSettings;
+        public bool AttackPressed => Core.Input.Keyboard.WasKeyDown(inputSettings.KeyBindings[EGameAction.Attack]);
 
         public KeyboardInputReader(InputSettings inputSettings)
         {
@@ -25,11 +26,13 @@ namespace PirateAdventures.Input
             var direction = Vector2.Zero;
 
             if (Core.Input.Keyboard.IsKeyDown(inputSettings.KeyBindings[EGameAction.MoveLeft]))
-                direction.X = -1;
+                direction.X -= 1;
             if (Core.Input.Keyboard.IsKeyDown(inputSettings.KeyBindings[EGameAction.MoveRight]))
-                direction.X = 1;
+                direction.X += 1;
             if (Core.Input.Keyboard.IsKeyDown(inputSettings.KeyBindings[EGameAction.Jump]))
-                direction.Y = -1;
+                direction.Y -= 1;
+
+            //direction.Normalize();
 
             return direction;
         }

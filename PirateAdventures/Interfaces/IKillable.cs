@@ -9,5 +9,10 @@ namespace PirateAdventures.Interfaces
     public interface IKillable
     {
         public int Health { get; set; }
+        public bool isDead => Health <= 0;
+        public void TakeDamage(int damage)
+        {
+            Health -= damage;
+        }
     }
 }

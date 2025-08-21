@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLib;
 using MonoGameLib.Graphics;
+using PirateAdventures.Input;
 using PirateAdventures.Interfaces;
 using PirateAdventures.Level;
 using System;
@@ -22,8 +23,8 @@ namespace PirateAdventures.GameObjects
         private Vector2 speed = Vector2.Zero;
         private Vector2 acceleration = new Vector2(0.1f, 0.3f);
         private SpriteEffects spriteFx = SpriteEffects.None;
-        private float scale = 1f;
-        private IInputReader input;
+        private readonly float scale = 1f;
+        private KeyboardInputReader input;
         private HeroState currentState, prevState = HeroState.IDLE;
         private bool isGrounded = false;
         private Vector2 collision = Vector2.Zero;
@@ -39,10 +40,13 @@ namespace PirateAdventures.GameObjects
         private Dictionary<string, SoundEffect> _soundFx;
         private SoundEffectInstance jumpSound;
         private SoundEffectInstance walkSound;
+        private SoundEffectInstance hurtSound;
+        private SoundEffectInstance sliceSound;
+        private bool attackAnimtionPlaying => currentState == HeroState.ATTACK && currentAnimation.CurrentFrame < currentAnimation.Animation.Frames.Count-1;
 
         public event Action<Hero> OnDeath;
 
-        public Hero(Texture2D texture, IInputReader inputReader, TextureAtlas ta, Dictionary<string, SoundEffect> soundFx)
+        public Hero(Texture2D texture, KeyboardInputReader inputReader, TextureAtlas ta, Dictionary<string, SoundEffect> soundFx)
         {
             textureAtlas = ta;
             heroTexture = texture;
@@ -64,6 +68,18 @@ namespace PirateAdventures.GameObjects
                 walkSound = _soundFx["walk1"].CreateInstance();
                 walkSound.IsLooped = true;
                 walkSound.Volume = 0.1f;
+            }
+            if (_soundFx.ContainsKey("oof"))
+            {
+                hurtSound = _soundFx["oof"].CreateInstance();
+                hurtSound.IsLooped = false;
+                hurtSound.Volume = 0.3f;
+            }
+            if (_soundFx.ContainsKey("slice"))
+            {
+                sliceSound = _soundFx["slice"].CreateInstance();
+                sliceSound.IsLooped = false;
+                sliceSound.Volume = 0.3f;
             }
         }
 
@@ -87,25 +103,44 @@ namespace PirateAdventures.GameObjects
             if (speed.Y > 0) isGrounded = false;
             Position = new Vector2(BoundingBox.X, BoundingBox.Y);
 
-            // Make sure the hero doesn't go out of the screen
-            // if (Position.X > 800 - SPRITE_WIDTH) Position = new Vector2(800 - SPRITE_WIDTH, Position.Y);
-            // if (Position.X < 0) Position = new Vector2(0, Position.Y);
-            // if (Position.Y > 460 - SPRITE_HEIGHT) Position = new Vector2(Position.X, 460 - SPRITE_HEIGHT);
-
             // if the hero is not moving, the state is IDLE (0), else it's RUNNING (1)
-            if (speed.X != 0 && Math.Abs(speed.Y) < 1) currentState = HeroState.RUNNING;
-            else if (currentState != HeroState.HIT && speed.Y <= -1)
+            if (!attackAnimtionPlaying)
             {
-                currentState = HeroState.JUMPING;
+                if (speed.X != 0 && Math.Abs(speed.Y) < 1) currentState = HeroState.RUNNING;
+                else if (currentState != HeroState.HIT && speed.Y <= -1)
+                {
+                    currentState = HeroState.JUMPING;
+                }
+                else if (currentState != HeroState.HIT && speed.Y >= 1) currentState = HeroState.FALLING;
+                else if (currentState != HeroState.HIT) currentState = HeroState.IDLE;
             }
-            else if (currentState != HeroState.HIT && speed.Y >= 1) currentState = HeroState.FALLING;
-            else if (currentState != HeroState.HIT) currentState = HeroState.IDLE;
+
+            if (input.AttackPressed && currentState < HeroState.HIT)
+            {
+                sliceSound?.Play();
+                currentState = HeroState.ATTACK;
+                var enemyObjects = objects.FindAll(obj => obj is IEnemy);
+                foreach (var enemy in enemyObjects)
+                {
+                    var attackBox = new Rectangle(
+                        (int)Position.X - BoundingBox.Width/2,
+                        (int)Position.Y - BoundingBox.Height / 2,
+                        (int)(BoundingBox.Width * 2),
+                        (int)(BoundingBox.Height * 2)
+                    );
+                    if (enemy is ICollidable collidable && attackBox.Intersects(collidable.BoundingBox))
+                    {
+                        //var hitPos = collidable.BoundingBox.Center.ToVector2() - BoundingBox.Center.ToVector2();
+                        ((IKillable)enemy).TakeDamage(50);
+                    }
+                }
+            }
 
             if (currentState != prevState)
             {
                 string animationName = $"hero-{currentState.ToString().ToLower()}";
                 currentAnimation = textureAtlas.CreateAnimatedSprite(animationName);
-                if (currentState == HeroState.HIT)
+                if (currentState >= HeroState.HIT)
                 {
                     currentAnimation.PlayOnce = true;
                 }
@@ -255,6 +290,7 @@ namespace PirateAdventures.GameObjects
             speed += new Vector2(6*hitPos.X, -4);
             isGrounded = false;
             currentState = HeroState.HIT;
+            hurtSound?.Play();
             if (Health <= 0)
             {
                 OnDeath?.Invoke(this);
@@ -269,6 +305,7 @@ namespace PirateAdventures.GameObjects
         RUNNING,
         JUMPING,
         FALLING,
-        HIT
+        HIT,
+        ATTACK
     }
 }

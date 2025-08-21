@@ -58,6 +58,9 @@ namespace PirateAdventures
             soundEffects["jump"] = contentManager.Load<SoundEffect>("Music/SoundFx/jumpSound");
             soundEffects["walk1"] = contentManager.Load<SoundEffect>("Music/SoundFx/walkingGrass");
             soundEffects["walk2"] = contentManager.Load<SoundEffect>("Music/SoundFx/walking");
+            soundEffects["oof"] = contentManager.Load<SoundEffect>("Music/SoundFx/oof");
+            soundEffects["slice"] = contentManager.Load<SoundEffect>("Music/SoundFx/slice");
+            soundEffects["coin"] = contentManager.Load<SoundEffect>("Music/SoundFx/coin");
 
         }
 
@@ -202,9 +205,17 @@ namespace PirateAdventures
                         case "silver":
                             var silver = new Collectable(_collectableAtlas,
                                 new Vector2((float)gameObject.X, (float)gameObject.Y - Collectable.SPRITE_HEIGHT),
-                                CollectableType.SilverCoin
+                                CollectableType.SilverCoin, soundEffects["coin"]
                             );
                             gameObjects.Add(silver);
+                            break;
+
+                        case "skull":
+                            var skull = new Collectable(_collectableAtlas,
+                                new Vector2((float)gameObject.X, (float)gameObject.Y - Collectable.SPRITE_HEIGHT),
+                                CollectableType.Skull, soundEffects["coin"]
+                            );
+                            gameObjects.Add(skull);
                             break;
 
                         default:

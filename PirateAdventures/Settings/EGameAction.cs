@@ -11,6 +11,7 @@ namespace PirateAdventures.Settings
         MoveLeft,
         MoveRight,
         Jump,
+        Attack,
         BirdUp,
         BirdDown,
         BirdLeft,
