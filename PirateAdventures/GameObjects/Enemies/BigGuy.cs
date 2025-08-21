@@ -37,7 +37,7 @@ namespace PirateAdventures.GameObjects.Enemies
         public Rectangle BoundingBox { get; set; }
         private SpriteEffects spriteEffects = SpriteEffects.None;
         private float scale = .5f;
-        public event Action<BigGuy, int> Attack;
+        public event Action<IEnemy, int> Attack;
 
         public BigGuy(TextureAtlas ta)
         {

@@ -9,5 +9,6 @@ namespace PirateAdventures.Interfaces
     {
         public int EnemyState { get; set; }
         public int EnemyType { get; set; }
+        public event Action<IEnemy, int> Attack;
     }
 }

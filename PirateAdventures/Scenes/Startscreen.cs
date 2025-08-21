@@ -30,10 +30,10 @@ public class Startscreen: Scene
 
     public override void LoadContent()
     {
-        backgroundTexture = Core.Content.Load<Texture2D>("start_bg");
-        titlePirateTexture = Core.Content.Load<Texture2D>("PirateText");
-        titleAdventuresTexture = Core.Content.Load<Texture2D>("AdventuresText");
-        buttonsTexture = Core.Content.Load<Texture2D>("BrownButtons");
+        backgroundTexture = Core.Content.Load<Texture2D>("Menu/start_bg");
+        titlePirateTexture = Core.Content.Load<Texture2D>("Menu/PirateText");
+        titleAdventuresTexture = Core.Content.Load<Texture2D>("Menu/AdventuresText");
+        buttonsTexture = Core.Content.Load<Texture2D>("Menu/BrownButtons");
 
         font = Core.Content.Load<SpriteFont>("Fonts/Pixellari");
     }
@@ -48,7 +48,7 @@ public class Startscreen: Scene
             if (startBtnPressed)
             {
                 // Start game
-                Core.ChangeScene(new GameScene("./../../../Content/Level2.tmx"));
+                Core.ChangeScene(new GameScene("./../../../Content/Level1.tmx"));
                 startBtnPressed = false;
             }
 

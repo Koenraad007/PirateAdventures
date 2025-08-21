@@ -7,7 +7,6 @@ using PirateAdventures.Interfaces;
 using PirateAdventures.Level;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace PirateAdventures.GameObjects
 {
@@ -36,7 +35,7 @@ namespace PirateAdventures.GameObjects
         private TextureAtlas textureAtlas;
         private AnimatedSprite currentAnimation;
 
-        private Dictionary<string,SoundEffect> _soundFx;
+        private Dictionary<string, SoundEffect> _soundFx;
         private SoundEffectInstance jumpSound;
         private SoundEffectInstance walkSound;
 
@@ -57,13 +56,13 @@ namespace PirateAdventures.GameObjects
             {
                 jumpSound = _soundFx["jump"].CreateInstance();
                 jumpSound.IsLooped = false;
-                jumpSound.Volume = 0.3f; 
+                jumpSound.Volume = 0.3f;
             }
-            if (_soundFx.ContainsKey("walk"))
+            if (_soundFx.ContainsKey("walk1"))
             {
-                walkSound = _soundFx["walk"].CreateInstance();
+                walkSound = _soundFx["walk1"].CreateInstance();
                 walkSound.IsLooped = true;
-                walkSound.Volume = 0.1f; 
+                walkSound.Volume = 0.1f;
             }
         }
 
@@ -159,7 +158,7 @@ namespace PirateAdventures.GameObjects
                     walkSound.Stop();
             }
 
-                speed.Y += acceleration.Y;
+            speed.Y += acceleration.Y;
 
 
         }
@@ -237,7 +236,7 @@ namespace PirateAdventures.GameObjects
             // draw bounding box for debugging
             //var pixel = new Texture2D(Core.GraphicsDevice, 1, 1);
             //pixel.SetData(new[] { Color.Red });
-            //spriteBatch.Draw(pixel, BoundingBox, Color.Red * 0.5f);
+            //spriteBatch.Draw(pixel, BoundingBox, Color.Green * 0.5f);
         }
 
     }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLib;
 using MonoGameLib.Graphics;
@@ -18,7 +19,7 @@ namespace PirateAdventures.Scenes
 {
     public class GameScene : Scene
     {
-        private TextureAtlas _heroAtlas;
+        private TextureAtlas _heroAtlas, _bombAtlas;
         private List<IGameObject> _gameObjects;
         private List<IGameObject> _blocks;
         private TiledMap _tiledMap;
@@ -27,12 +28,13 @@ namespace PirateAdventures.Scenes
         private InputSettings _inputSettings;
         private Texture2D _tileset, _enemyTexture;
         private float _cameraZoom = 2f;
-        private Texture2D _gameOverTexture, _buttonsTexture, _levelCompleteTexture, _healthBarTexture, _scoreTexture;
+        private Texture2D _gameOverTexture, _buttonsTexture, _levelCompleteTexture, _healthBarTexture, _scoreTexture, _bombTexture;
         private Rectangle _playAgainSrcRect;
         private bool _isGameOver = false, _isLevelComplete = false;
         private SpriteFont font;
         private Color _playAgainColor = Color.White;
         private string _levelPath;
+        private List<IGameObject> toAdd = new List<IGameObject>();
         public int Score { get; set; } = 0;
 
         public GameScene(string levelPath)
@@ -56,6 +58,7 @@ namespace PirateAdventures.Scenes
         public override void LoadContent()
         {
             _heroAtlas = TextureAtlas.FromFile(Core.Content, "hero-atlas.xml");
+            _bombAtlas = TextureAtlas.FromFile(Core.Content, "bomb-atlas.xml");
 
             _enemyTexture = Core.Content.Load<Texture2D>("enemy_bigguy");
 
@@ -67,9 +70,11 @@ namespace PirateAdventures.Scenes
 
             _gameOverTexture = Core.Content.Load<Texture2D>("Menu/GameOver");
             _levelCompleteTexture = Core.Content.Load<Texture2D>("Menu/LevelComplete");
-            _buttonsTexture = Core.Content.Load<Texture2D>("BrownButtons");
+            _buttonsTexture = Core.Content.Load<Texture2D>("Menu/BrownButtons");
             _healthBarTexture = Core.Content.Load<Texture2D>("Menu/HeroHealth");
             _scoreTexture = Core.Content.Load<Texture2D>("Menu/Score");
+
+            _bombTexture = Core.Content.Load<Texture2D>("Sprites/Bomb/Bomb");
 
             font = Core.Content.Load<SpriteFont>("Fonts/Pixellari");
 
@@ -92,13 +97,17 @@ namespace PirateAdventures.Scenes
             {
                 hero.OnDeath += HandleGameOver;
             }
-            foreach (var enemy in _gameObjects.OfType<BigGuy>())
+            foreach (var enemy in _gameObjects.OfType<IEnemy>())
             {
                 enemy.Attack += HandleAttack;
             }
             foreach (var collectable in _gameObjects.OfType<Collectable>())
             {
                 collectable.OnPickup += HandleCollectablePickup;
+            }
+            foreach (var windowGuy in _gameObjects.OfType<WindowGuy>())
+            {
+                windowGuy.SpawnBomb += HandleSpawnBomb;
             }
         }
 
@@ -136,7 +145,18 @@ namespace PirateAdventures.Scenes
                     gameObject.Update(_gameObjects, gameTime);
                 }
 
+                if (toAdd.Count > 0)
+                {
+                    foreach (var enemy in toAdd.OfType<IEnemy>())
+                    {
+                        enemy.Attack += HandleAttack;
+                    }
+                    _gameObjects.AddRange(toAdd);
+                    toAdd.Clear();
+                }
+
                 _gameObjects.RemoveAll(obj => obj is Collectable collectable && collectable.IsCollected);
+                _gameObjects.RemoveAll(obj => obj is Bomb bomb && bomb.HasExploded == true);
             }
 
             base.Update(gameTime);
@@ -182,6 +202,12 @@ namespace PirateAdventures.Scenes
                     Debug.WriteLine($"Unknown collectable type: {type}");
                     break;
             }
+        }
+
+        private void HandleSpawnBomb(WindowGuy windowGuy, Vector2 position)
+        {
+            Bomb bomb = new Bomb(_bombTexture, position, _bombAtlas);
+            toAdd.Add(bomb);
         }
 
         private void UpdateCamera()

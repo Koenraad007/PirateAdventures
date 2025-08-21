@@ -28,6 +28,8 @@ class Shooter : IEnemy, ICollidable
     private double secondCtr = 0, msCtr = 0;
     private Color laserColor = Color.Red;
 
+    public event Action<IEnemy, int> Attack;
+
     public Shooter(Texture2D texture)
     {
         texture2D = texture;

@@ -21,7 +21,7 @@ namespace PirateAdventures
     {
         private TmxMap _map;
         private Texture2D _heroTexture, _companionTexture, _tilesetTexture, _shooterTexture, _windowGuyTexture, _bombTexture, _endpointTexture;
-        private TextureAtlas _heroAtlas, _endpointAtlas, _bigguyAtlas, _collectableAtlas;
+        private TextureAtlas _heroAtlas, _endpointAtlas, _bigguyAtlas, _collectableAtlas, _windowguyAtlas;
 
         public List<IGameObject> CollisionObjects { get; private set; } = new List<IGameObject>();
         public int Width { get; private set; }
@@ -41,20 +41,22 @@ namespace PirateAdventures
         public void LoadContent(ContentManager contentManager)
         {
             _heroTexture = contentManager.Load<Texture2D>("Sprites/Hero/cptclownnose20fps");
-            _companionTexture = contentManager.Load<Texture2D>("bluebird20fps");
+            _companionTexture = contentManager.Load<Texture2D>("Sprites/Companion/bluebird20fps");
             _heroAtlas = TextureAtlas.FromFile(contentManager, "hero-atlas.xml");
             _bigguyAtlas = TextureAtlas.FromFile(contentManager, "bigguy-atlas.xml");
             _collectableAtlas = TextureAtlas.FromFile(contentManager, "collectables-atlas.xml");
             _tilesetTexture = contentManager.Load<Texture2D>("Tileset32");
-            _shooterTexture = contentManager.Load<Texture2D>("enemy_shooter");
-            _windowGuyTexture = contentManager.Load<Texture2D>("enemy_windowguy");
-            _bombTexture = contentManager.Load<Texture2D>("Bomb");
+            _shooterTexture = contentManager.Load<Texture2D>("Sprites/Shooter/Shooter");
+            _windowGuyTexture = contentManager.Load<Texture2D>("Sprites/Windowguy/WindowGuy");
+            _bombTexture = contentManager.Load<Texture2D>("Sprites/Bomb/Bomb");
             _endpointTexture = contentManager.Load<Texture2D>("Sprites/Endpoint/openingDoor");
             _endpointAtlas = TextureAtlas.FromFile(contentManager, "endpoint-atlas.xml");
+            _windowguyAtlas = TextureAtlas.FromFile(contentManager, "windowguy-atlas.xml");
 
             // Load sound effects
             soundEffects["jump"] = contentManager.Load<SoundEffect>("Music/SoundFx/jumpSound");
-            soundEffects["walk"] = contentManager.Load<SoundEffect>("Music/SoundFx/walking");
+            soundEffects["walk1"] = contentManager.Load<SoundEffect>("Music/SoundFx/walkingGrass");
+            soundEffects["walk2"] = contentManager.Load<SoundEffect>("Music/SoundFx/walking");
 
         }
 
@@ -181,7 +183,7 @@ namespace PirateAdventures
                             break;
 
                         case "window":
-                            var windowGuy = new WindowGuy(_windowGuyTexture, _bombTexture)
+                            var windowGuy = new WindowGuy(_windowGuyTexture, _bombTexture, _windowguyAtlas)
                             {
                                 Position = new Vector2((float)gameObject.X, (float)gameObject.Y - WindowGuy.SPRITE_HEIGHT)
                             };
