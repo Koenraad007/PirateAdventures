@@ -152,6 +152,24 @@
 /processorParam:TextureFormat=Color
 /build:Menu/Score.png
 
+#begin Music/Background/backgroundMusic.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Music/Background/backgroundMusic.mp3
+
+#begin Music/SoundFx/jumpSound.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/SoundFx/jumpSound.mp3
+
+#begin Music/SoundFx/walking.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/SoundFx/walking.mp3
+
 #begin Pirate-2-1-2025 (1).png
 /importer:TextureImporter
 /processor:TextureProcessor

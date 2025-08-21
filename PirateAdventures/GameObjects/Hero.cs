@@ -1,16 +1,13 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLib;
 using MonoGameLib.Graphics;
-using PirateAdventures.Animations;
 using PirateAdventures.Interfaces;
 using PirateAdventures.Level;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace PirateAdventures.GameObjects
 {
@@ -39,9 +36,13 @@ namespace PirateAdventures.GameObjects
         private TextureAtlas textureAtlas;
         private AnimatedSprite currentAnimation;
 
+        private Dictionary<string,SoundEffect> _soundFx;
+        private SoundEffectInstance jumpSound;
+        private SoundEffectInstance walkSound;
+
         public event Action<Hero> OnDeath;
 
-        public Hero(Texture2D texture, IInputReader inputReader, TextureAtlas ta)
+        public Hero(Texture2D texture, IInputReader inputReader, TextureAtlas ta, Dictionary<string, SoundEffect> soundFx)
         {
             textureAtlas = ta;
             heroTexture = texture;
@@ -50,6 +51,20 @@ namespace PirateAdventures.GameObjects
             BoundingBox = new Rectangle((int)Position.X, (int)Position.Y, (int)(SPRITE_WIDTH * scale), (int)(SPRITE_HEIGHT * scale));
 
             currentAnimation = textureAtlas.CreateAnimatedSprite("hero-idle");
+
+            _soundFx = soundFx;
+            if (_soundFx.ContainsKey("jump"))
+            {
+                jumpSound = _soundFx["jump"].CreateInstance();
+                jumpSound.IsLooped = false;
+                jumpSound.Volume = 0.3f; 
+            }
+            if (_soundFx.ContainsKey("walk"))
+            {
+                walkSound = _soundFx["walk"].CreateInstance();
+                walkSound.IsLooped = true;
+                walkSound.Volume = 0.1f; 
+            }
         }
 
         public void Update(List<IGameObject> objects, GameTime gameTime)
@@ -79,7 +94,10 @@ namespace PirateAdventures.GameObjects
 
             // if the hero is not moving, the state is IDLE (0), else it's RUNNING (1)
             if (speed.X != 0 && Math.Abs(speed.Y) < 1) currentState = HeroState.RUNNING;
-            else if (speed.Y <= -1) currentState = HeroState.JUMPING;
+            else if (speed.Y <= -1)
+            {
+                currentState = HeroState.JUMPING;
+            }
             else if (speed.Y >= 1) currentState = HeroState.FALLING;
             else currentState = HeroState.IDLE;
 
@@ -127,9 +145,21 @@ namespace PirateAdventures.GameObjects
             {
                 speed.Y = -6;
                 isGrounded = false;
+                jumpSound?.Play();
             }
 
-            speed.Y += acceleration.Y;
+            if (speed.X != 0 && Math.Abs(speed.Y) < 1f)
+            {
+                if (walkSound.State != SoundState.Playing)
+                    walkSound.Play();
+            }
+            else
+            {
+                if (walkSound.State == SoundState.Playing)
+                    walkSound.Stop();
+            }
+
+                speed.Y += acceleration.Y;
 
 
         }
@@ -202,7 +232,7 @@ namespace PirateAdventures.GameObjects
             currentAnimation.Effects = spriteFx;
             currentAnimation.Origin = new Vector2(16 * (spriteFx == SpriteEffects.FlipHorizontally ? 1 : -1), -32);
             currentAnimation.Scale = new Vector2(scale, scale);
-            currentAnimation.Draw(spriteBatch, Position + new Vector2(-24,-48));
+            currentAnimation.Draw(spriteBatch, Position + new Vector2(-24, -48));
 
             // draw bounding box for debugging
             //var pixel = new Texture2D(Core.GraphicsDevice, 1, 1);

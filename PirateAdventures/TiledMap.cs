@@ -1,6 +1,8 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 using MonoGameLib.Graphics;
 using PirateAdventures.GameObjects;
 using PirateAdventures.GameObjects.Enemies;
@@ -26,6 +28,7 @@ namespace PirateAdventures
         public int Height { get; private set; }
         private float scale = 2f;
         public const int TileSize = 32;
+        private Dictionary<string, SoundEffect> soundEffects = new Dictionary<string, SoundEffect>();
 
         public void Initialize(string filePath)
         {
@@ -48,6 +51,10 @@ namespace PirateAdventures
             _bombTexture = contentManager.Load<Texture2D>("Bomb");
             _endpointTexture = contentManager.Load<Texture2D>("Sprites/Endpoint/openingDoor");
             _endpointAtlas = TextureAtlas.FromFile(contentManager, "endpoint-atlas.xml");
+
+            // Load sound effects
+            soundEffects["jump"] = contentManager.Load<SoundEffect>("Music/SoundFx/jumpSound");
+            soundEffects["walk"] = contentManager.Load<SoundEffect>("Music/SoundFx/walking");
 
         }
 
@@ -133,7 +140,8 @@ namespace PirateAdventures
                             var hero = new Hero(
                                     _heroTexture,
                                     kir,
-                                    _heroAtlas
+                                    _heroAtlas,
+                                    soundEffects
                                     )
                             {
                                 Position = new Vector2((float)gameObject.X, (float)gameObject.Y - Hero.SPRITE_HEIGHT),
@@ -217,7 +225,8 @@ namespace PirateAdventures
                     return new Hero(
                         texture,
                         kir,
-                        ta
+                        ta,
+                        soundEffects
                         )
                     {
                         Position = new Vector2((float)heroObject.X, (float)heroObject.Y - Hero.SPRITE_HEIGHT),

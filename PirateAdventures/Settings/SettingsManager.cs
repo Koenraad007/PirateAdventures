@@ -8,6 +8,7 @@ namespace PirateAdventures.Settings;
 public static class SettingsManager
 {
     private static readonly string FilePath = Path.Combine(AppContext.BaseDirectory, "input.json");  // ./bin/Debug/net8.0-windows/input.json
+    public static float Volume { get; set; } = 0.1f;
 
     public static void SaveSettings(InputSettings settings)
     {
