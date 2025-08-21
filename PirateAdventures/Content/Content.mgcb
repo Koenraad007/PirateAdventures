@@ -173,6 +173,12 @@
 /processorParam:Quality=Best
 /build:Music/Background/backgroundMusic.mp3
 
+#begin Music/SoundFx/coin.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/SoundFx/coin.mp3
+
 #begin Music/SoundFx/explosion.mp3
 /importer:Mp3Importer
 /processor:SoundEffectProcessor
@@ -184,6 +190,18 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Music/SoundFx/jumpSound.mp3
+
+#begin Music/SoundFx/oof.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/SoundFx/oof.mp3
+
+#begin Music/SoundFx/slice.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/SoundFx/slice.mp3
 
 #begin Music/SoundFx/walking.mp3
 /importer:Mp3Importer

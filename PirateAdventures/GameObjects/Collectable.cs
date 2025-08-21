@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLib.Graphics;
 using PirateAdventures.Interfaces;
@@ -21,10 +22,11 @@ namespace PirateAdventures.GameObjects
         private bool _collected = false;
         private CollectableType type;
         public Rectangle BoundingBox;
+        SoundEffectInstance _pickupSound = null;
 
         public event Action<Collectable, CollectableType> OnPickup;
 
-        public Collectable(TextureAtlas ta, Vector2 pos, CollectableType type) 
+        public Collectable(TextureAtlas ta, Vector2 pos, CollectableType type, SoundEffect sfx) 
         { 
             _textureAtlas = ta;
             _position = new Vector2(pos.X+SPRITE_WIDTH/4f, pos.Y+SPRITE_HEIGHT/4f);
@@ -33,6 +35,15 @@ namespace PirateAdventures.GameObjects
 
             var typeString = type.ToString();
             _currentAnimation = _textureAtlas.CreateAnimatedSprite(char.ToLower(typeString[0])+typeString.Substring(1));
+
+            var sound = sfx;
+            if (sound != null)
+            {
+                _pickupSound = sound.CreateInstance();
+                _pickupSound.IsLooped = false;
+                _pickupSound.Volume = 0.5f;
+            }
+
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -46,12 +57,25 @@ namespace PirateAdventures.GameObjects
             if (hero != null && hero.BoundingBox.Intersects(BoundingBox) && !_collected)
             {
                 _collected = true;
+                _pickupSound?.Play();
                 OnPickup?.Invoke(this, type);
                 switch (type)
                 {
                     case CollectableType.SilverCoin:
                     case CollectableType.GoldCoin:
                         _currentAnimation = _textureAtlas.CreateAnimatedSprite("coinPickup");
+                        break;
+                    case CollectableType.RedGem:
+                    case CollectableType.BlueGem:
+                    case CollectableType.GreenGem:
+                        _currentAnimation = _textureAtlas.CreateAnimatedSprite("gemPickup");
+                        break;
+                    case CollectableType.ManaPotion:
+                    case CollectableType.HealthPotion:
+                        _currentAnimation = _textureAtlas.CreateAnimatedSprite("potionPickup");
+                        break;
+                    case CollectableType.Skull:
+                        _currentAnimation = _textureAtlas.CreateAnimatedSprite("skullPickup");
                         break;
 
                     default:
