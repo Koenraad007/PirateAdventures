@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-class Shooter : IEnemy, ICollidable
+class Shooter : IEnemy, ICollidable, IKillable
 {
     public const int SPRITE_HEIGHT = 67, SPRITE_WIDTH = 63;
     public int EnemyState { get; set; } = 0;
@@ -26,6 +26,8 @@ class Shooter : IEnemy, ICollidable
         }
     }
     public Rectangle BoundingBox { get; set; }
+    public int Health { get; set; } = 100;
+
     private Texture2D texture2D, laser;
     private List<PirateAdventures.Animations.Animation> animations = new();
     private SpriteEffects spriteEffects = SpriteEffects.None;

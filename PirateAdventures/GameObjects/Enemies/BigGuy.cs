@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace PirateAdventures.GameObjects.Enemies
 {
-    public class BigGuy : IEnemy, ICollidable
+    public class BigGuy : IEnemy, ICollidable, IKillable
     {
         public const int SPRITE_WIDTH = 77;
         public const int SPRITE_HEIGHT = 74;
@@ -38,6 +38,7 @@ namespace PirateAdventures.GameObjects.Enemies
         private SpriteEffects spriteEffects = SpriteEffects.None;
         private float scale = .5f;
         public event Action<IEnemy, int, Vector2> Attack;
+        public int Health { get; set; } = 50;
 
         public BigGuy(TextureAtlas ta)
         {

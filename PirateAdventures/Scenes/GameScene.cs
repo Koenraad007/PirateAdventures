@@ -11,6 +11,7 @@ using PirateAdventures.Input;
 using PirateAdventures.Interfaces;
 using PirateAdventures.Level;
 using PirateAdventures.Settings;
+using SharpDX.Direct2D1;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -29,7 +30,7 @@ namespace PirateAdventures.Scenes
         private InputSettings _inputSettings;
         private Texture2D _tileset, _enemyTexture;
         private float _cameraZoom = 2f;
-        private Texture2D _gameOverTexture, _buttonsTexture, _levelCompleteTexture, _healthBarTexture, _scoreTexture, _bombTexture, _bulletTexture;
+        private Texture2D _gameOverTexture, _buttonsTexture, _levelCompleteTexture, _healthBarTexture, _scoreTexture, _bombTexture, _bulletTexture, _enemyHealth;
         private Rectangle _playAgainSrcRect;
         private bool _isGameOver = false, _isLevelComplete = false;
         private SpriteFont font;
@@ -78,6 +79,8 @@ namespace PirateAdventures.Scenes
 
             _bombTexture = Core.Content.Load<Texture2D>("Sprites/Bomb/Bomb");
             _bulletTexture = Core.Content.Load<Texture2D>("Sprites/Bullet/bullet");
+            _enemyHealth = Core.Content.Load<Texture2D>("Menu/EnemyHealth");
+
 
             font = Core.Content.Load<SpriteFont>("Fonts/Pixellari");
 
@@ -267,6 +270,27 @@ namespace PirateAdventures.Scenes
             {
                 if (gameObject.GetType() == typeof(Block) || gameObject.GetType() == typeof(Hero)) continue;
                 gameObject.Draw(Core.SpriteBatch);
+                if (gameObject is IKillable killable && gameObject is ICollidable collidable)
+                {
+                    var healthBarPos = new Vector2(
+                        collidable.BoundingBox.Center.X - _enemyHealth.Width/2, 
+                        collidable.BoundingBox.Y - 16
+                        );
+                    Core.SpriteBatch.Draw(
+                        _enemyHealth,
+                        healthBarPos,
+                        null,
+                        Color.White,
+                        0f,
+                        Vector2.Zero,
+                        1f,
+                        SpriteEffects.None,
+                        0f
+                    );
+                    var pixel = new Texture2D(Core.GraphicsDevice, 1, 1);
+                    pixel.SetData(new[] { Color.Red });
+                    Core.SpriteBatch.Draw(pixel, healthBarPos + new Vector2(3, 3), null, Color.White, 0f, Vector2.Zero, new Vector2((_enemyHealth.Width - 6) * killable.Health / 100, 1), SpriteEffects.None, 0);
+                }
             }
 
             _gameObjects.OfType<Hero>().FirstOrDefault()?.Draw(Core.SpriteBatch); // Draw hero last to ensure it is on top of other objects

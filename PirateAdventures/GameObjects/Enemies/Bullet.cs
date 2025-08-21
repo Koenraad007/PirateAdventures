@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PirateAdventures.GameObjects
+namespace PirateAdventures.GameObjects.Enemies
 {
     public class Bullet : IGameObject, ICollidable, IEnemy
     {

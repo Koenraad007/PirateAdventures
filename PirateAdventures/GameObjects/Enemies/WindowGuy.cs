@@ -26,6 +26,7 @@ public class WindowGuy : IEnemy
     public Rectangle BoundingBox { get; set; }
     public int EnemyState { get; set; } = 0;
     public int EnemyType { get; set; } = 2;
+
     private List<PirateAdventures.Animations.Animation> animations = new();
     private double mSecondCtr = 0;
     private bool dynamiteThrown = false;

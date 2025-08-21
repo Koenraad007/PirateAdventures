@@ -27,7 +27,7 @@ Minimal requirements:
 
 Optional requirements:
 
--[ ] Enemy can shoot, Hero needs to dodge bullets
+-[X] Enemy can shoot, Hero needs to dodge bullets
 -[ ] Powerups
 -[ ] Coins to collect for extra score (certain score = victory)
 -[ ] Enemies can only be killed by stomping them
@@ -36,7 +36,7 @@ Optional requirements:
 -[ ] Fog of war (the whole level isn't visible all at once)
 -[ ] Companion that follows and helps the Hero
 -[ ] Momentum when colliding with objects (like slime blocks)
--[ ] Music and sound effects
+-[X] Music and sound effects
 
 ## Textures
 
