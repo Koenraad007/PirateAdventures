@@ -213,18 +213,21 @@ namespace PirateAdventures.Managers
             );
 
             // draw next level button
-            Vector2 nextLevelOrigin = new Vector2(_nextLevelSrcRect.Width / 2f, _nextLevelSrcRect.Height / 2f);
-            spriteBatch.Draw(
-                buttonsTexture,
-                nextLevelPos,
-                _nextLevelSrcRect,
-                _nextLevelColor,
-                0f,
-                nextLevelOrigin,
-                scale,
-                SpriteEffects.None,
-                0f
-            );
+            if (!isGameOver)
+            {
+                Vector2 nextLevelOrigin = new Vector2(_nextLevelSrcRect.Width / 2f, _nextLevelSrcRect.Height / 2f);
+                spriteBatch.Draw(
+                    buttonsTexture,
+                    nextLevelPos,
+                    _nextLevelSrcRect,
+                    _nextLevelColor,
+                    0f,
+                    nextLevelOrigin,
+                    scale,
+                    SpriteEffects.None,
+                    0f
+                );
+            }
         }
     }
 }
