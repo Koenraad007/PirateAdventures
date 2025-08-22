@@ -14,12 +14,13 @@ using SharpDX.Direct2D1.Effects;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using PirateAdventures.Scenes;
 
 namespace PirateAdventures;
 
 public class Game1 : Core
 {
-    public Game1(): base("Pirate Adventures", 1200, 600, false) { }
+    public Game1() : base("Pirate Adventures", 1200, 600, false) { }
 
     protected override void Initialize()
     {
