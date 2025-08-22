@@ -26,15 +26,14 @@ namespace PirateAdventures.Scenes
         private List<IGameObject> _blocks;
         private TiledMap _tiledMap;
         private InputSettings _inputSettings;
-        private Rectangle _playAgainSrcRect;
         private bool _isGameOver = false, _isLevelComplete = false;
         private SpriteFont font;
-        private Color _playAgainColor = Color.White;
         private string _levelPath;
-        private List<IGameObject> toAdd = new List<IGameObject>();
         public int Score { get; set; } = 0;
         private int skullCollected = 0;
         private Camera _camera;
+        private GameObjectManager _gameObjectManager;
+        private UIManager _uiManager;
 
         public GameScene(string levelPath)
         {
@@ -49,11 +48,12 @@ namespace PirateAdventures.Scenes
             _tiledMap.Initialize(_levelPath);
             _blocks = new List<IGameObject>();
 
-            _playAgainSrcRect = new Rectangle(144, 32, 16, 16);
-
             _camera = new Camera(Core.GraphicsDevice);
 
             InitializeGameObjects();
+            _gameObjectManager = new GameObjectManager(_gameObjects);
+
+            _uiManager = new UIManager(font, _levelPath);
         }
 
         public override void LoadContent()
@@ -109,54 +109,13 @@ namespace PirateAdventures.Scenes
             if (_isGameOver || _isLevelComplete)
             {
                 SoundManager.Instance.StopAllSounds();
-
-                int screenWidth = Core.GraphicsDevice.Viewport.Width;
-                int screenHeight = Core.GraphicsDevice.Viewport.Height;
-                Vector2 centerScreen = new Vector2(screenWidth / 2f, screenHeight / 2f);
-
-                Texture2D texture = _isGameOver ? TextureManager.Instance.GetTexture("gameOver") : TextureManager.Instance.GetTexture("levelComplete");
-
-                float scale = Math.Min(screenWidth / (texture.Width * 2f),
-                               screenHeight / (texture.Height * 2f));
-
-                Vector2 playAgainPos = centerScreen + new Vector2(0, texture.Height * scale / 2f + 14 * scale);
-                Rectangle playAgainBounds = new Rectangle((int)(playAgainPos.X - _playAgainSrcRect.Width * scale / 2), (int)(playAgainPos.Y - _playAgainSrcRect.Height * scale / 2), (int)(_playAgainSrcRect.Width * scale), (int)(_playAgainSrcRect.Height * scale));
-
-                if (playAgainBounds.Contains(Core.Input.Mouse.Position))
-                {
-                    _playAgainColor = Color.Yellow;
-                    if (Core.Input.Mouse.WasButtonDown(MonoGameLib.Input.MouseButton.Left))
-                    {
-                        Core.ChangeScene(new GameScene(_levelPath));
-                    }
-                }
-                else
-                {
-                    _playAgainColor = Color.White;
-                }
             }
             else
             {
-                foreach (IGameObject gameObject in _gameObjects)
-                {
-                    gameObject.Update(_gameObjects, gameTime);
-                }
-
-                if (toAdd.Count > 0)
-                {
-                    foreach (var enemy in toAdd.OfType<IEnemy>())
-                    {
-                        enemy.Attack += HandleAttack;
-                    }
-                    _gameObjects.AddRange(toAdd);
-                    toAdd.Clear();
-                }
-
-                _gameObjects.RemoveAll(obj => obj is Collectable collectable && collectable.IsCollected);
-                _gameObjects.RemoveAll(obj => obj is Bomb bomb && bomb.HasExploded);
-                _gameObjects.RemoveAll(obj => obj is Bullet bullet && bullet.IsHit);
-                _gameObjects.RemoveAll(obj => obj is IKillable killable && killable.Health <= 0 && !(obj is Hero));
+                _gameObjectManager.Update(gameTime);
             }
+
+            _uiManager.Update(_isGameOver, _isLevelComplete);
 
             base.Update(gameTime);
         }
@@ -174,7 +133,7 @@ namespace PirateAdventures.Scenes
 
         private void HandleAttack(IEnemy enemy, int damage, Vector2 attackDirection)
         {
-            Hero hero = _gameObjects.OfType<Hero>().FirstOrDefault();
+            Hero hero = _gameObjectManager.GetGameObjects<Hero>().FirstOrDefault();
             if (hero != null)
             {
                 Debug.WriteLine($"Hero attacked by {enemy.GetType().Name} for {damage} damage.");
@@ -206,12 +165,12 @@ namespace PirateAdventures.Scenes
         private void HandleSpawnBomb(WindowGuy windowGuy, Vector2 position)
         {
             Bomb bomb = new Bomb(position);
-            toAdd.Add(bomb);
+            _gameObjectManager.Add(bomb);
         }
 
         private void HandleShot(Shooter enemy, Vector2 position, Vector2 direction, float speed)
         {
-            toAdd.Add(new Bullet(position, direction, speed));
+            _gameObjectManager.Add(new Bullet(position, direction, speed));
         }
 
         public override void Draw(GameTime gameTime)
@@ -220,6 +179,8 @@ namespace PirateAdventures.Scenes
 
             var transform = _camera.GetViewMatrix();
 
+            // ----- Game Objects --------------
+
             Core.SpriteBatch.Begin(
                     samplerState: SamplerState.PointClamp,
                     transformMatrix: transform
@@ -227,35 +188,7 @@ namespace PirateAdventures.Scenes
 
             _tiledMap.Draw(Core.SpriteBatch);
 
-            foreach (IGameObject gameObject in _gameObjects)
-            {
-                if (gameObject.GetType() == typeof(Block) || gameObject.GetType() == typeof(Hero)) continue;
-                gameObject.Draw(Core.SpriteBatch);
-                if (gameObject is IKillable killable && gameObject is ICollidable collidable)
-                {
-                    var healthBar = TextureManager.Instance.GetTexture("enemyHealth");
-                    var healthBarPos = new Vector2(
-                        collidable.BoundingBox.Center.X - healthBar.Width / 2,
-                        collidable.BoundingBox.Y - 16
-                        );
-                    Core.SpriteBatch.Draw(
-                        healthBar,
-                        healthBarPos,
-                        null,
-                        Color.White,
-                        0f,
-                        Vector2.Zero,
-                        1f,
-                        SpriteEffects.None,
-                        0f
-                    );
-                    var pixel = new Texture2D(Core.GraphicsDevice, 1, 1);
-                    pixel.SetData(new[] { Color.Red });
-                    Core.SpriteBatch.Draw(pixel, healthBarPos + new Vector2(3, 3), null, Color.White, 0f, Vector2.Zero, new Vector2((healthBar.Width - 6) * killable.Health / 100, 1), SpriteEffects.None, 0);
-                }
-            }
-
-            _gameObjects.OfType<Hero>().FirstOrDefault()?.Draw(Core.SpriteBatch); // Draw hero last to ensure it is on top of other objects
+            _gameObjectManager.Draw(Core.SpriteBatch);
 
             Core.SpriteBatch.End();
 
@@ -265,127 +198,10 @@ namespace PirateAdventures.Scenes
                     samplerState: SamplerState.PointClamp
                 );
 
-            // draw health bar
             Hero hero = _gameObjects.OfType<Hero>().FirstOrDefault();
-            if (hero != null)
-            {
-                var healthBarTexture = TextureManager.Instance.GetTexture("heroHealth");
-                int healthBarWidth = (int)(hero.Health * 2.14f);
-                Vector2 healthBarPosition = new Vector2(16, 16);
-                var pixel = new Texture2D(Core.GraphicsDevice, 1, 1);
-                pixel.SetData(new[] { Color.Red });
-
-                Core.SpriteBatch.Draw(
-                    healthBarTexture,
-                    healthBarPosition,
-                    null,
-                    Color.White,
-                    0f,
-                    Vector2.Zero,
-                    2f,
-                    SpriteEffects.None,
-                    0f
-                );
-
-                Core.SpriteBatch.Draw(
-                    pixel,
-                    healthBarPosition + new Vector2(17 * 2, 14 * 2),
-                    new Rectangle(0, 0, healthBarWidth, 4),
-                    Color.White
-                );
-            }
-
-            // draw score
-            var scoreTexture = TextureManager.Instance.GetTexture("score");
-            Vector2 scorePos = new Vector2(Core.GraphicsDevice.Viewport.Width - (scoreTexture.Width * 2) - 16, 16);
-            Core.SpriteBatch.Draw(
-                scoreTexture,
-                new Vector2(Core.GraphicsDevice.Viewport.Width - (scoreTexture.Width * 2) - 16, 16),
-                null,
-                Color.White,
-                0f,
-                Vector2.Zero,
-                2f,
-                SpriteEffects.None,
-                0f
-            );
-            Core.SpriteBatch.DrawString(
-                font,
-                Score.ToString("D7"),
-                scorePos + new Vector2(scoreTexture.Width - 10, 10),
-                new Color(51, 50, 61),
-                0f,
-                Vector2.Zero,
-                1.6f,
-                SpriteEffects.None,
-                0f
-            );
-
-            if (_isGameOver || _isLevelComplete)
-            {
-                int screenWidth = Core.GraphicsDevice.Viewport.Width;
-                int screenHeight = Core.GraphicsDevice.Viewport.Height;
-
-                string textureName = _isGameOver ? "gameOver" : "levelComplete";
-                var texture = TextureManager.Instance.GetTexture(textureName);
-
-                float scale = Math.Min(screenWidth / (texture.Width * 2f),
-                               screenHeight / (texture.Height * 2f));
-
-                Vector2 centerScreen = new Vector2(screenWidth / 2f, screenHeight / 2f);
-
-                // darken the background
-                var pixel = new Texture2D(Core.GraphicsDevice, 1, 1);
-                pixel.SetData(new[] { Color.White });
-                Core.SpriteBatch.Draw(pixel, new Rectangle(0, 0, screenWidth, screenHeight), new Color(0, 0, 0, 128));
-
-                Core.SpriteBatch.Draw(
-                    texture,
-                    centerScreen,
-                    null,
-                    Color.White,
-                    0f,
-                    new Vector2(texture.Width / 2f, texture.Height / 2f),
-                    scale,
-                    SpriteEffects.None,
-                    0f
-                );
-
-                // draw the score
-                Core.SpriteBatch.DrawString(
-                    font,
-                    "Score: " + Score.ToString("D7"),
-                    centerScreen + new Vector2(0, 6f * scale),
-                    Color.LightYellow,
-                    0f,
-                    font.MeasureString("Score: 0000000") / 2f,
-                    scale / 2,
-                    SpriteEffects.None,
-                    0f
-                );
-
-                Vector2 playAgainPos = centerScreen + new Vector2(0, texture.Height * scale / 2f + 14 * scale);
-                Vector2 playAgainOrigin = new Vector2(_playAgainSrcRect.Width / 2f, _playAgainSrcRect.Height / 2f);
-
-                var buttonsTexture = TextureManager.Instance.GetTexture("buttons");
-                Core.SpriteBatch.Draw(
-                    buttonsTexture,
-                    playAgainPos,
-                    _playAgainSrcRect,
-                    _playAgainColor,
-                    0f,
-                    playAgainOrigin,
-                    scale,
-                    SpriteEffects.None,
-                    0f
-                );
-
-
-            }
+            _uiManager.Draw(Core.SpriteBatch, hero, Score, _isGameOver, _isLevelComplete);
 
             Core.SpriteBatch.End();
-
-
 
             base.Draw(gameTime);
         }
