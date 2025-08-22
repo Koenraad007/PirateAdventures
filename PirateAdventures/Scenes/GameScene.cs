@@ -169,8 +169,8 @@ namespace PirateAdventures.Scenes
                 }
 
                 _gameObjects.RemoveAll(obj => obj is Collectable collectable && collectable.IsCollected);
-                _gameObjects.RemoveAll(obj => obj is Bomb bomb && bomb.HasExploded == true);
-                _gameObjects.RemoveAll(obj => obj is Bullet bullet && bullet.IsHit == true);
+                _gameObjects.RemoveAll(obj => obj is Bomb bomb && bomb.HasExploded);
+                _gameObjects.RemoveAll(obj => obj is Bullet bullet && bullet.IsHit);
                 _gameObjects.RemoveAll(obj => obj is IKillable killable && killable.Health <= 0 && !(obj is Hero));
             }
 

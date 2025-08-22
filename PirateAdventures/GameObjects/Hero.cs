@@ -287,7 +287,7 @@ namespace PirateAdventures.GameObjects
         {
             Health -= damage;
             hitPos.Normalize();
-            speed += new Vector2(6*hitPos.X, -4);
+            speed += new Vector2(4*hitPos.X, -4);
             isGrounded = false;
             currentState = HeroState.HIT;
             hurtSound?.Play();

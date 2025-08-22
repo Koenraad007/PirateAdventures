@@ -170,7 +170,6 @@ namespace PirateAdventures.GameObjects.Enemies
                     // collision on the X axis
                     if (intersection.Width < intersection.Height)
                     {
-                        Debug.WriteLine("Collision on X axis");
                         if (block.BlockType == BlockType.FULL)
                         {
                             if (BoundingBox.Center.X < block.BoundingBox.Center.X)
@@ -183,7 +182,6 @@ namespace PirateAdventures.GameObjects.Enemies
                     // collision on the Y axis
                     else
                     {
-                        Debug.WriteLine("Collision on Y axis");
                         if (BoundingBox.Center.Y < block.BoundingBox.Center.Y && speed.Y > 0)
                         {
                             _pos = new Vector2(_pos.X, _pos.Y - intersection.Height);

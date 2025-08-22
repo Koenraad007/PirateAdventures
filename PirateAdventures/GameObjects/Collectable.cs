@@ -53,8 +53,19 @@ namespace PirateAdventures.GameObjects
 
         public void Update(List<IGameObject> collisionObjects, GameTime gameTime)
         {
-            var hero = collisionObjects.FirstOrDefault(obj => obj is Hero) as Hero;
-            if (hero != null && hero.BoundingBox.Intersects(BoundingBox) && !_collected)
+            var collectableHeroes = collisionObjects.Where(obj => obj is Hero || obj is Companion).ToList();
+            bool coinIntersected = false;
+            foreach (var obj in collectableHeroes)
+            {
+                var collidable = obj as ICollidable;
+                if (collidable != null && collidable.BoundingBox.Intersects(BoundingBox))
+                {
+                    coinIntersected = true;
+                    break;
+                }
+            }
+
+            if (coinIntersected && !_collected)
             {
                 _collected = true;
                 _pickupSound?.Play();

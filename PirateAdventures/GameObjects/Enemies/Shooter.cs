@@ -31,7 +31,7 @@ class Shooter : IEnemy, ICollidable, IKillable
     private Texture2D texture2D, laser;
     private List<PirateAdventures.Animations.Animation> animations = new();
     private SpriteEffects spriteEffects = SpriteEffects.None;
-    private float rotation = 0, laserLength = 300;
+    private float rotation = 0, laserLength = 150;
     private Vector2 rotationOrigin = new Vector2(13, 40);
     private Vector2 armPos = Vector2.Zero;
     private Vector2 lockedPos = Vector2.Zero;
@@ -156,7 +156,7 @@ class Shooter : IEnemy, ICollidable, IKillable
         Vector2 laserStart = BoundingBox.Center.ToVector2();
         Vector2 laserDirection = new Vector2(hero.BoundingBox.X, hero.BoundingBox.Y) - Position;
 
-        var hitResult = Raycast(laserStart, laserDirection, 300, collisionObjects);
+        var hitResult = Raycast(laserStart, laserDirection, 150, collisionObjects);
 
         return hitResult != null && hitResult == hero;
     }
