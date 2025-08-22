@@ -13,15 +13,16 @@ using System.Diagnostics;
 
 namespace PirateAdventures.GameObjects
 {
-    public class Hero : IGameObject, ICollidable, IKillable
+    public class Hero : IGameObject, ICollidable, IKillable, IMovable
     {
         public const int SPRITE_WIDTH = 32;
         public const int SPRITE_HEIGHT = 32;
         public const int MAX_SPEED = 3;
 
+        public Vector2 Position { get; set; }
+        public Vector2 Speed { get; set; } = Vector2.Zero;
+        public Vector2 Acceleration { get; set; } = new Vector2(0.1f, 0.3f);
 
-        private Vector2 speed = Vector2.Zero;
-        private Vector2 acceleration = new Vector2(0.1f, 0.3f);
         private SpriteEffects spriteFx = SpriteEffects.None;
         private readonly float scale = 1f;
         private KeyboardInputReader input;
@@ -31,13 +32,13 @@ namespace PirateAdventures.GameObjects
         public int Health { get; set; } = 100;
 
         public bool Passable { get; set; } = true;
-        public Vector2 Position { get; set; }
+
         public Rectangle BoundingBox { get; set; }
 
         private TextureAtlas textureAtlas;
         private AnimatedSprite currentAnimation;
 
-        private bool attackAnimtionPlaying => currentState == HeroState.ATTACK && currentAnimation.CurrentFrame < currentAnimation.Animation.Frames.Count-1;
+        private bool attackAnimtionPlaying => currentState == HeroState.ATTACK && currentAnimation.CurrentFrame < currentAnimation.Animation.Frames.Count - 1;
 
         public event Action<Hero> OnDeath;
 
@@ -58,7 +59,7 @@ namespace PirateAdventures.GameObjects
             // change speed according to direction input
             Move(direction);
 
-            Position += speed;
+            Position += Speed;
             BoundingBox = new Rectangle(
                 (int)Position.X,
                 (int)Position.Y,
@@ -68,18 +69,18 @@ namespace PirateAdventures.GameObjects
 
             CheckCollision(objects);   // check if next position doesn't collide
 
-            if (speed.Y > 0) isGrounded = false;
+            if (Speed.Y > 0) isGrounded = false;
             Position = new Vector2(BoundingBox.X, BoundingBox.Y);
 
             // if the hero is not moving, the state is IDLE (0), else it's RUNNING (1)
             if (!attackAnimtionPlaying)
             {
-                if (speed.X != 0 && Math.Abs(speed.Y) < 1) currentState = HeroState.RUNNING;
-                else if (currentState != HeroState.HIT && speed.Y <= -1)
+                if (Speed.X != 0 && Math.Abs(Speed.Y) < 1) currentState = HeroState.RUNNING;
+                else if (currentState != HeroState.HIT && Speed.Y <= -1)
                 {
                     currentState = HeroState.JUMPING;
                 }
-                else if (currentState != HeroState.HIT && speed.Y >= 1) currentState = HeroState.FALLING;
+                else if (currentState != HeroState.HIT && Speed.Y >= 1) currentState = HeroState.FALLING;
                 else if (currentState != HeroState.HIT) currentState = HeroState.IDLE;
             }
 
@@ -91,7 +92,7 @@ namespace PirateAdventures.GameObjects
                 foreach (var enemy in enemyObjects)
                 {
                     var attackBox = new Rectangle(
-                        (int)Position.X - BoundingBox.Width/2,
+                        (int)Position.X - BoundingBox.Width / 2,
                         (int)Position.Y - BoundingBox.Height / 2,
                         (int)(BoundingBox.Width * 2),
                         (int)(BoundingBox.Height * 2)
@@ -122,44 +123,44 @@ namespace PirateAdventures.GameObjects
             currentAnimation.Update(gameTime);
         }
 
-        private void Move(Vector2 direction)
+        public void Move(Vector2 direction)
         {
             // TODO: put movement logic in IMovable interface and MovementManager class
 
             // if left/right keys are pressed
             if (direction.X != 0)
             {
-                direction.X *= acceleration.X;
+                direction.X *= Acceleration.X;
 
                 // check if speed is below max speed
-                if (Math.Abs(speed.X) < MAX_SPEED) speed.X += direction.X;
+                if (Math.Abs(Speed.X) < MAX_SPEED) Speed = new Vector2(Speed.X + direction.X, Speed.Y);
             }
             // if left/right keys aren't pressed
             else if (direction.X == 0)
             {
                 // if hero is moving left
-                if (speed.X < 0)
+                if (Speed.X < 0)
                 {
-                    speed.X += acceleration.X * 2;
-                    if (speed.X > 0) speed.X = 0;
+                    Speed = new Vector2(Speed.X + Acceleration.X * 2, Speed.Y);
+                    if (Speed.X > 0) Speed = new Vector2(0, Speed.Y);
                 }
                 // if hero is moving right
-                else if (speed.X > 0)
+                else if (Speed.X > 0)
                 {
-                    speed.X -= acceleration.X * 2;
-                    if (speed.X < 0) speed.X = 0;
+                    Speed = new Vector2(Speed.X - Acceleration.X * 2, Speed.Y);
+                    if (Speed.X < 0) Speed = new Vector2(0, Speed.Y);
                 }
             }
 
             // if jump key is pressed
             if (direction.Y < 0 && isGrounded)
             {
-                speed.Y = -6;
+                Speed = new Vector2(Speed.X, Speed.Y - 6);
                 isGrounded = false;
                 SoundManager.Instance.PlaySound("jump", 0.3f, false);
             }
 
-            if (speed.X != 0 && Math.Abs(speed.Y) < 1f)
+            if (Speed.X != 0 && Math.Abs(Speed.Y) < 1f)
             {
                 SoundManager.Instance.PlaySound("walk1", .2f, true);
             }
@@ -168,8 +169,7 @@ namespace PirateAdventures.GameObjects
                 SoundManager.Instance.StopSound("walk1");
             }
 
-            speed.Y += acceleration.Y;
-
+            Speed = new Vector2(Speed.X, Speed.Y + Acceleration.Y);
 
         }
 
@@ -201,24 +201,24 @@ namespace PirateAdventures.GameObjects
                                         Position = new Vector2(Position.X - intersection.Width, Position.Y);
                                     else
                                         Position = new Vector2(Position.X + intersection.Width, Position.Y);
-                                    speed.X = 0;
+                                    Speed = new Vector2(0, Speed.Y);
                                 }
                             }
                             // collision on the Y axis
                             else
                             {
-                                if (BoundingBox.Center.Y < collisionObj.BoundingBox.Center.Y && speed.Y > 0)
+                                if (BoundingBox.Center.Y < collisionObj.BoundingBox.Center.Y && Speed.Y > 0)
                                 {
                                     Position = new Vector2(Position.X, Position.Y - intersection.Height);
                                     isGrounded = true;
-                                    speed.Y = 0;
+                                    Speed = new Vector2(Speed.X, 0);
                                 }
                                 else
                                 {
                                     if (collBlock.BlockType == BlockType.FULL)
                                     {
                                         Position = new Vector2(Position.X, Position.Y + intersection.Height);
-                                        speed.Y = 0;
+                                        Speed = new Vector2(Speed.X, 0);
                                     }
                                 }
 
@@ -235,8 +235,8 @@ namespace PirateAdventures.GameObjects
         public void Draw(SpriteBatch spriteBatch)
         {
             // face sprite in right direction
-            if (speed.X < 0) spriteFx = SpriteEffects.FlipHorizontally;
-            if (speed.X > 0) spriteFx = SpriteEffects.None;
+            if (Speed.X < 0) spriteFx = SpriteEffects.FlipHorizontally;
+            if (Speed.X > 0) spriteFx = SpriteEffects.None;
 
             currentAnimation.Effects = spriteFx;
             currentAnimation.Origin = new Vector2(16 * (spriteFx == SpriteEffects.FlipHorizontally ? 1 : -1), -32);
@@ -253,7 +253,7 @@ namespace PirateAdventures.GameObjects
         {
             Health -= damage;
             hitPos.Normalize();
-            speed += new Vector2(4*hitPos.X, -4);
+            Speed += new Vector2(4 * hitPos.X, -4);
             isGrounded = false;
             currentState = HeroState.HIT;
             SoundManager.Instance.PlaySound("oof", 0.3f, false);

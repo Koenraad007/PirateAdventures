@@ -8,6 +8,7 @@ using PirateAdventures.GameObjects.Enemies;
 using PirateAdventures.Input;
 using PirateAdventures.Interfaces;
 using PirateAdventures.Level;
+using PirateAdventures.Managers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,9 +19,7 @@ namespace PirateAdventures
     public class TiledMap
     {
         private TmxMap _map;
-        private Texture2D _companionTexture, _tilesetTexture, _windowGuyTexture;
-        private TextureAtlas _heroAtlas, _endpointAtlas, _bigguyAtlas, _collectableAtlas, _windowguyAtlas, _shooterAtlas;
-
+       
         public List<IGameObject> CollisionObjects { get; private set; } = new List<IGameObject>();
         public int Width { get; private set; }
         public int Height { get; private set; }
@@ -41,15 +40,6 @@ namespace PirateAdventures
 
         public void LoadContent(ContentManager contentManager)
         {
-            _companionTexture = contentManager.Load<Texture2D>("Sprites/Companion/bluebird20fps");
-            _heroAtlas = TextureAtlas.FromFile(contentManager, "hero-atlas.xml");
-            _bigguyAtlas = TextureAtlas.FromFile(contentManager, "bigguy-atlas.xml");
-            _shooterAtlas = TextureAtlas.FromFile(contentManager, "shooter-atlas.xml");
-            _collectableAtlas = TextureAtlas.FromFile(contentManager, "collectables-atlas.xml");
-            _tilesetTexture = contentManager.Load<Texture2D>("Tileset32");
-            _windowGuyTexture = contentManager.Load<Texture2D>("Sprites/Windowguy/WindowGuy");
-            _endpointAtlas = TextureAtlas.FromFile(contentManager, "endpoint-atlas.xml");
-            _windowguyAtlas = TextureAtlas.FromFile(contentManager, "windowguy-atlas.xml");
         }
 
         private void CreateCollisionObjects()
@@ -73,7 +63,7 @@ namespace PirateAdventures
                                 var srcRect = CalculateTileSourceRectangle(tileId);
                                 var block = new Block(
                                     new Vector2(x * _map.TileWidth, y * _map.TileHeight),
-                                    _tilesetTexture,
+                                    TextureManager.Instance.GetTexture("tileset"),
                                     new Vector2(srcRect.X / TileSize, srcRect.Y / TileSize),
                                     TileSize,
                                     BlockType.FULL
@@ -88,7 +78,7 @@ namespace PirateAdventures
                                 var srcRect = CalculateTileSourceRectangle(tileId);
                                 var block = new Block(
                                     new Vector2(x * _map.TileWidth, y * _map.TileHeight),
-                                    _tilesetTexture,
+                                    TextureManager.Instance.GetTexture("tileset"),
                                     new Vector2(srcRect.X / TileSize, srcRect.Y / TileSize),
                                     TileSize,
                                     BlockType.PLATFORM
@@ -102,7 +92,7 @@ namespace PirateAdventures
                                 var srcRect = CalculateTileSourceRectangle(tileId);
                                 var block = new Block(
                                     new Vector2(x * _map.TileWidth, y * _map.TileHeight),
-                                    _tilesetTexture,
+                                    TextureManager.Instance.GetTexture("tileset"),
                                     new Vector2(srcRect.X / TileSize, srcRect.Y / TileSize),
                                     TileSize,
                                     BlockType.DEATH
@@ -154,7 +144,7 @@ namespace PirateAdventures
                             Rectangle sourceRect = CalculateTileSourceRectangle(tileId);
 
                             spriteBatch.Draw(
-                                _tilesetTexture,
+                                TextureManager.Instance.GetTexture("tileset"),
                                 new Vector2(x * _map.TileWidth, y * _map.TileHeight),
                                 sourceRect,
                                 Color.White
@@ -168,7 +158,7 @@ namespace PirateAdventures
 
         private Rectangle CalculateTileSourceRectangle(int tileId)
         {
-            int tilesPerRow = _tilesetTexture.Width / _map.TileWidth;
+            int tilesPerRow = TextureManager.Instance.GetTexture("tileset").Width / _map.TileWidth;
             int tileX = (tileId - 1) % tilesPerRow;
             int tileY = (tileId - 1) / tilesPerRow;
 

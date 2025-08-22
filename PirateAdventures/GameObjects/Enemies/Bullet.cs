@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLib;
 using PirateAdventures.Interfaces;
+using PirateAdventures.Managers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -27,9 +28,9 @@ namespace PirateAdventures.GameObjects.Enemies
         private float scale = .5f;
         public event Action<IEnemy, int, Vector2> Attack;
 
-        public Bullet(Texture2D texture, Vector2 position, Vector2 direction, float speed)
+        public Bullet(Vector2 position, Vector2 direction, float speed)
         {
-            this.texture = texture;
+            this.texture = TextureManager.Instance.GetTexture("bullet");
             Position = position;
             BoundingBox = new Rectangle((int)position.X, (int)position.Y, (int)(SPRITE_WIDTH * scale), (int)(SPRITE_HEIGHT * scale));
             this.direction = direction;

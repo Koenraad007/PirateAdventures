@@ -12,21 +12,21 @@ using System.Linq;
 
 namespace PirateAdventures.GameObjects;
 
-public class Companion : IGameObject, ICollidable
+public class Companion : IGameObject, ICollidable, IMovable
 {
     private Texture2D _texture;
     public const int SPRITE_WIDTH = 32;
     public const int SPRITE_HEIGHT = 32;
     public const float MAX_SPEED = 3f;
     private Animation _animation;
-    private Vector2 speed = Vector2.Zero;
-    private Vector2 acceleration = new Vector2(0.1f, 0.1f);
+    public Vector2 Position { get; set; }
+    public Vector2 Speed { get; set; } = Vector2.Zero;
+    public Vector2 Acceleration { get; set; } = new Vector2(0.1f, 0.1f);
     private SpriteEffects spriteFx = SpriteEffects.None;
     private float scale = .5f;
     private KeyboardInputReader input;
-
     public bool Passable { get; set; } = true;
-    public Vector2 Position { get; set; }
+
     public Rectangle BoundingBox { get; set; }
 
     public Companion(KeyboardInputReader input, Texture2D texture)
@@ -46,7 +46,7 @@ public class Companion : IGameObject, ICollidable
     public void Update(List<IGameObject> collisionObjects, GameTime gameTime)
     {
         var hero = collisionObjects.Find(obj => obj is Hero) as Hero;
-        var heroPos = hero != null ? hero.BoundingBox.Center.ToVector2()+new Vector2(0f,-32f) : Vector2.Zero;
+        var heroPos = hero != null ? hero.BoundingBox.Center.ToVector2() + new Vector2(0f, -32f) : Vector2.Zero;
 
         var direction = input.ReadBirdInput();
         if (direction.Length() > 0)
@@ -61,7 +61,7 @@ public class Companion : IGameObject, ICollidable
         }
         else
         {
-            speed *= 0.5f; 
+            Speed *= 0.5f;
         }
 
         if (direction.X > 0)
@@ -76,19 +76,19 @@ public class Companion : IGameObject, ICollidable
         _animation.Update(gameTime);
     }
 
-    private void Move(Vector2 direction)
+    public void Move(Vector2 direction)
     {
         if (direction.Length() > 0)
         {
             direction.Normalize();
-            speed += direction * acceleration;
-            if (speed.Length() > MAX_SPEED)
+            Speed += direction * Acceleration;
+            if (Speed.Length() > MAX_SPEED)
             {
-                speed = Vector2.Normalize(speed) * MAX_SPEED;
+                Speed = Vector2.Normalize(Speed) * MAX_SPEED;
             }
         }
-       
-        Position += speed;
+
+        Position += Speed;
         BoundingBox = new Rectangle(
             (int)Position.X,
             (int)Position.Y,

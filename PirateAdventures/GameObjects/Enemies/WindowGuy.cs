@@ -61,9 +61,9 @@ public class WindowGuy : IEnemy
             _attackAnimation.Draw(spriteBatch, Position);
         }
 
-        var pixel = new Texture2D(Core.GraphicsDevice, 1, 1);
-        pixel.SetData(new[] { Color.Red });
-        spriteBatch.Draw(pixel, BoundingBox, Color.Red * 0.5f);
+        // var pixel = new Texture2D(Core.GraphicsDevice, 1, 1);
+        // pixel.SetData(new[] { Color.Red });
+        // spriteBatch.Draw(pixel, BoundingBox, Color.Red * 0.5f);
 
         foreach (var bomb in bombs)
         {
@@ -74,7 +74,7 @@ public class WindowGuy : IEnemy
     public void Update(List<IGameObject> collisionObjects, GameTime gameTime)
     {
         var hero = collisionObjects.OfType<Hero>().First();
-        if (hero.BoundingBox.Center.X > Position.X && hero.BoundingBox.Center.X < Position.X + SPRITE_WIDTH*scale)
+        if (hero.BoundingBox.Center.X > Position.X && hero.BoundingBox.Center.X < Position.X + SPRITE_WIDTH * scale)
         {
             System.Console.WriteLine("Same X coords");
             EnemyState = 1;
@@ -94,7 +94,7 @@ public class WindowGuy : IEnemy
                 }
 
                 // if the attack animation is done, throw a bomb
-                if (!hasAttacked && _attackAnimation.CurrentFrame >= Math.Ceiling(_attackAnimation.Animation.Frames.Count/2f))
+                if (!hasAttacked && _attackAnimation.CurrentFrame >= Math.Ceiling(_attackAnimation.Animation.Frames.Count / 2f))
                 {
                     SpawnBomb?.Invoke(this, BoundingBox.Center.ToVector2());
                     hasAttacked = true;

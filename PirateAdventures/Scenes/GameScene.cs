@@ -22,7 +22,6 @@ namespace PirateAdventures.Scenes
 {
     public class GameScene : Scene
     {
-        private TextureAtlas _heroAtlas, _bombAtlas;
         private List<IGameObject> _gameObjects;
         private List<IGameObject> _blocks;
         private TiledMap _tiledMap;
@@ -30,7 +29,6 @@ namespace PirateAdventures.Scenes
         private const int CAMERA_MARGIN_X = 600, CAMERA_MARGIN_Y = 200;
         private InputSettings _inputSettings;
         private float _cameraZoom = 2f;
-        private Texture2D _gameOverTexture, _buttonsTexture, _levelCompleteTexture, _healthBarTexture, _scoreTexture, _bombTexture, _bulletTexture, _enemyHealth;
         private Rectangle _playAgainSrcRect;
         private bool _isGameOver = false, _isLevelComplete = false;
         private SpriteFont font;
@@ -38,7 +36,6 @@ namespace PirateAdventures.Scenes
         private string _levelPath;
         private List<IGameObject> toAdd = new List<IGameObject>();
         public int Score { get; set; } = 0;
-        private Dictionary<string, SoundEffect> soundEffects = new Dictionary<string, SoundEffect>();
         private int skullCollected = 0;
 
         public GameScene(string levelPath)
@@ -61,22 +58,9 @@ namespace PirateAdventures.Scenes
 
         public override void LoadContent()
         {
-            _heroAtlas = TextureAtlas.FromFile(Core.Content, "hero-atlas.xml");
-            _bombAtlas = TextureAtlas.FromFile(Core.Content, "bomb-atlas.xml");
-
             _tiledMap = new TiledMap();
 
             _tiledMap.LoadContent(Core.Content);
-
-            _gameOverTexture = Core.Content.Load<Texture2D>("Menu/GameOver");
-            _levelCompleteTexture = Core.Content.Load<Texture2D>("Menu/LevelComplete");
-            _buttonsTexture = Core.Content.Load<Texture2D>("Menu/BrownButtons");
-            _healthBarTexture = Core.Content.Load<Texture2D>("Menu/HeroHealth");
-            _scoreTexture = Core.Content.Load<Texture2D>("Menu/Score");
-
-            _bombTexture = Core.Content.Load<Texture2D>("Sprites/Bomb/Bomb");
-            _bulletTexture = Core.Content.Load<Texture2D>("Sprites/Bullet/bullet");
-            _enemyHealth = Core.Content.Load<Texture2D>("Menu/EnemyHealth");
 
             font = Core.Content.Load<SpriteFont>("Fonts/Pixellari");
         }
@@ -128,7 +112,7 @@ namespace PirateAdventures.Scenes
                 int screenHeight = Core.GraphicsDevice.Viewport.Height;
                 Vector2 centerScreen = new Vector2(screenWidth / 2f, screenHeight / 2f);
 
-                Texture2D texture = _isGameOver ? _gameOverTexture : _levelCompleteTexture;
+                Texture2D texture = _isGameOver ? TextureManager.Instance.GetTexture("gameOver") : TextureManager.Instance.GetTexture("levelComplete");
 
                 float scale = Math.Min(screenWidth / (texture.Width * 2f),
                                screenHeight / (texture.Height * 2f));
@@ -219,13 +203,13 @@ namespace PirateAdventures.Scenes
 
         private void HandleSpawnBomb(WindowGuy windowGuy, Vector2 position)
         {
-            Bomb bomb = new Bomb(_bombTexture, position, _bombAtlas);
+            Bomb bomb = new Bomb(position);
             toAdd.Add(bomb);
         }
 
         private void HandleShot(Shooter enemy, Vector2 position, Vector2 direction, float speed)
         {
-            toAdd.Add(new Bullet(_bulletTexture, position, direction, speed));
+            toAdd.Add(new Bullet(position, direction, speed));
         }
 
         private void UpdateCamera()
@@ -276,12 +260,13 @@ namespace PirateAdventures.Scenes
                 gameObject.Draw(Core.SpriteBatch);
                 if (gameObject is IKillable killable && gameObject is ICollidable collidable)
                 {
+                    var healthBar = TextureManager.Instance.GetTexture("enemyHealth");
                     var healthBarPos = new Vector2(
-                        collidable.BoundingBox.Center.X - _enemyHealth.Width/2, 
+                        collidable.BoundingBox.Center.X - healthBar.Width / 2,
                         collidable.BoundingBox.Y - 16
                         );
                     Core.SpriteBatch.Draw(
-                        _enemyHealth,
+                        healthBar,
                         healthBarPos,
                         null,
                         Color.White,
@@ -293,7 +278,7 @@ namespace PirateAdventures.Scenes
                     );
                     var pixel = new Texture2D(Core.GraphicsDevice, 1, 1);
                     pixel.SetData(new[] { Color.Red });
-                    Core.SpriteBatch.Draw(pixel, healthBarPos + new Vector2(3, 3), null, Color.White, 0f, Vector2.Zero, new Vector2((_enemyHealth.Width - 6) * killable.Health / 100, 1), SpriteEffects.None, 0);
+                    Core.SpriteBatch.Draw(pixel, healthBarPos + new Vector2(3, 3), null, Color.White, 0f, Vector2.Zero, new Vector2((healthBar.Width - 6) * killable.Health / 100, 1), SpriteEffects.None, 0);
                 }
             }
 
@@ -311,13 +296,14 @@ namespace PirateAdventures.Scenes
             Hero hero = _gameObjects.OfType<Hero>().FirstOrDefault();
             if (hero != null)
             {
+                var healthBarTexture = TextureManager.Instance.GetTexture("heroHealth");
                 int healthBarWidth = (int)(hero.Health * 2.14f);
                 Vector2 healthBarPosition = new Vector2(16, 16);
                 var pixel = new Texture2D(Core.GraphicsDevice, 1, 1);
                 pixel.SetData(new[] { Color.Red });
 
                 Core.SpriteBatch.Draw(
-                    _healthBarTexture,
+                    healthBarTexture,
                     healthBarPosition,
                     null,
                     Color.White,
@@ -330,17 +316,18 @@ namespace PirateAdventures.Scenes
 
                 Core.SpriteBatch.Draw(
                     pixel,
-                    healthBarPosition + new Vector2(17*2, 14*2),
+                    healthBarPosition + new Vector2(17 * 2, 14 * 2),
                     new Rectangle(0, 0, healthBarWidth, 4),
                     Color.White
                 );
             }
 
             // draw score
-            Vector2 scorePos = new Vector2(Core.GraphicsDevice.Viewport.Width - (_scoreTexture.Width * 2) - 16, 16);
+            var scoreTexture = TextureManager.Instance.GetTexture("score");
+            Vector2 scorePos = new Vector2(Core.GraphicsDevice.Viewport.Width - (scoreTexture.Width * 2) - 16, 16);
             Core.SpriteBatch.Draw(
-                _scoreTexture,
-                new Vector2(Core.GraphicsDevice.Viewport.Width-(_scoreTexture.Width*2)-16, 16),
+                scoreTexture,
+                new Vector2(Core.GraphicsDevice.Viewport.Width - (scoreTexture.Width * 2) - 16, 16),
                 null,
                 Color.White,
                 0f,
@@ -352,7 +339,7 @@ namespace PirateAdventures.Scenes
             Core.SpriteBatch.DrawString(
                 font,
                 Score.ToString("D7"),
-                scorePos + new Vector2(_scoreTexture.Width-10, 10),
+                scorePos + new Vector2(scoreTexture.Width - 10, 10),
                 new Color(51, 50, 61),
                 0f,
                 Vector2.Zero,
@@ -363,12 +350,11 @@ namespace PirateAdventures.Scenes
 
             if (_isGameOver || _isLevelComplete)
             {
-
-
                 int screenWidth = Core.GraphicsDevice.Viewport.Width;
                 int screenHeight = Core.GraphicsDevice.Viewport.Height;
 
-                Texture2D texture = _isGameOver ? _gameOverTexture : _levelCompleteTexture;
+                string textureName = _isGameOver ? "gameOver" : "levelComplete";
+                var texture = TextureManager.Instance.GetTexture(textureName);
 
                 float scale = Math.Min(screenWidth / (texture.Width * 2f),
                                screenHeight / (texture.Height * 2f));
@@ -408,8 +394,9 @@ namespace PirateAdventures.Scenes
                 Vector2 playAgainPos = centerScreen + new Vector2(0, texture.Height * scale / 2f + 14 * scale);
                 Vector2 playAgainOrigin = new Vector2(_playAgainSrcRect.Width / 2f, _playAgainSrcRect.Height / 2f);
 
+                var buttonsTexture = TextureManager.Instance.GetTexture("buttons");
                 Core.SpriteBatch.Draw(
-                    _buttonsTexture,
+                    buttonsTexture,
                     playAgainPos,
                     _playAgainSrcRect,
                     _playAgainColor,

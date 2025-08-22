@@ -13,7 +13,7 @@ using PirateAdventures.Interfaces;
 using PirateAdventures.Level;
 using PirateAdventures.Managers;
 
-public class Bomb : IEnemy, ICollidable
+public class Bomb : IEnemy, ICollidable, IMovable
 {
     public const int SPRITE_HEIGHT = 160, SPRITE_WIDTH = 176;
     public const int BOMB_WIDTH = 32, BOMB_HEIGHT = 64;
@@ -24,8 +24,8 @@ public class Bomb : IEnemy, ICollidable
         get => _pos;
         set
         {
-            _pos = new Vector2(value.X - SPRITE_WIDTH*scale/2, value.Y - SPRITE_HEIGHT*scale/2);
-            BoundingBox = new Rectangle((int)(_pos.X + (SPRITE_WIDTH-BOMB_WIDTH)*scale/2), (int)(_pos.Y + (SPRITE_HEIGHT - BOMB_HEIGHT)*scale / 2), (int)(BOMB_WIDTH * scale), (int)(BOMB_HEIGHT * scale));
+            _pos = new Vector2(value.X - SPRITE_WIDTH * scale / 2, value.Y - SPRITE_HEIGHT * scale / 2);
+            BoundingBox = new Rectangle((int)(_pos.X + (SPRITE_WIDTH - BOMB_WIDTH) * scale / 2), (int)(_pos.Y + (SPRITE_HEIGHT - BOMB_HEIGHT) * scale / 2), (int)(BOMB_WIDTH * scale), (int)(BOMB_HEIGHT * scale));
         }
     }
     public Vector2 Center
@@ -37,9 +37,9 @@ public class Bomb : IEnemy, ICollidable
     public int EnemyState { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     public int EnemyType { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-    private Texture2D texture2D;
-    private int BombState = 1;
-    private float speed = 0, acceleration = 0.3f;
+    private int currentState = 1, prevState = 1;
+    public Vector2 Speed { get; set; } = Vector2.Zero;
+    public Vector2 Acceleration { get; set; } = new Vector2(0, .3f);
     private float scale = 0.5f;
     private TextureAtlas _textureAtlas;
     private AnimatedSprite _currentAnimation;
@@ -49,10 +49,9 @@ public class Bomb : IEnemy, ICollidable
 
     public event Action<IEnemy, int, Vector2> Attack;
 
-    public Bomb(Texture2D texture, Vector2 position, TextureAtlas ta)
+    public Bomb(Vector2 position)
     {
-        texture2D = texture;
-        _textureAtlas = ta;
+        _textureAtlas = TextureManager.Instance.GetTextureAtlas("bombAtlas");
         _currentAnimation = _textureAtlas.CreateAnimatedSprite("on");
         Position = position;
 
@@ -64,39 +63,43 @@ public class Bomb : IEnemy, ICollidable
         _currentAnimation.Scale = new Vector2(scale, scale);
         _currentAnimation.Draw(spriteBatch, Position);
 
-        var pixel = new Texture2D(Core.GraphicsDevice, 1, 1);
-        pixel.SetData(new[] { Color.White });
-        spriteBatch.Draw(pixel, BoundingBox, Color.Red * 0.5f);
+        // var pixel = new Texture2D(Core.GraphicsDevice, 1, 1);
+        // pixel.SetData(new[] { Color.White });
+        // spriteBatch.Draw(pixel, BoundingBox, Color.Red * 0.5f);
 
-        var explosionBox = new Rectangle(
-               (int)(BoundingBox.X - 32),
-               (int)(BoundingBox.Y - 16),
-               (int)(BoundingBox.Width + 32*2),
-               (int)(BoundingBox.Height + 16 * 2));
-        spriteBatch.Draw(pixel, explosionBox, Color.Yellow * 0.5f);
+        // var explosionBox = new Rectangle(
+        //        (int)(BoundingBox.X - 32),
+        //        (int)(BoundingBox.Y - 16),
+        //        (int)(BoundingBox.Width + 32 * 2),
+        //        (int)(BoundingBox.Height + 16 * 2));
+        // spriteBatch.Draw(pixel, explosionBox, Color.Yellow * 0.5f);
     }
 
     public void Update(List<IGameObject> collisionObjects, GameTime gameTime)
     {
         _currentAnimation.Update(gameTime);
 
-        Move();
+        Move(new Vector2(0, 1));
         CheckCollision(collisionObjects);
 
         timer += gameTime.ElapsedGameTime.TotalSeconds;
         if (timer >= 3) // bomb explodes after 3 seconds
         {
-            BombState = 2;
+            currentState = 2;
             _currentAnimation = _textureAtlas.CreateAnimatedSprite("explode");
             _currentAnimation.PlayOnce = true;
             timer = 0;
         }
 
-        if (BombState == 2)
+        if (currentState == 2)
         {
-            SoundManager.Instance.PlaySound("explosion", .2f, false);
+            if (currentState != prevState)
+            {
+                SoundManager.Instance.PlaySound("explosion", .2f, false);
+                prevState = currentState;
+            }
 
-            if (_currentAnimation.CurrentFrame >= _currentAnimation.Animation.Frames.Count/2 && !_damageDealt)
+            if (_currentAnimation.CurrentFrame >= _currentAnimation.Animation.Frames.Count / 2 && !_damageDealt)
             {
                 var hero = collisionObjects.OfType<Hero>().FirstOrDefault();
                 var explosionBox = new Rectangle(
@@ -111,8 +114,8 @@ public class Bomb : IEnemy, ICollidable
                     Attack?.Invoke(this, 20, attackDirection);
                     _damageDealt = true;
                 }
-            } 
-            
+            }
+
             if (_currentAnimation.CurrentFrame >= _currentAnimation.Animation.Frames.Count - 1)
             {
                 HasExploded = true;
@@ -120,17 +123,18 @@ public class Bomb : IEnemy, ICollidable
         }
     }
 
-    public void Move()
+    public void Move(Vector2 direction)
     {
-        if (!isGrounded) { 
-            speed += acceleration;
-            _pos.Y += speed;
+        if (!isGrounded)
+        {
+            Speed += Acceleration;
+            _pos.Y += Speed.Y;
         }
 
         BoundingBox = new Rectangle(
-            (int)Math.Ceiling(_pos.X + (SPRITE_WIDTH - BOMB_WIDTH) * scale / 2), 
-            (int)Math.Ceiling(_pos.Y + (SPRITE_HEIGHT - BOMB_HEIGHT) * scale / 2), 
-            (int)(BOMB_WIDTH * scale), 
+            (int)Math.Ceiling(_pos.X + (SPRITE_WIDTH - BOMB_WIDTH) * scale / 2),
+            (int)Math.Ceiling(_pos.Y + (SPRITE_HEIGHT - BOMB_HEIGHT) * scale / 2),
+            (int)(BOMB_WIDTH * scale),
             (int)(BOMB_HEIGHT * scale));
     }
 
@@ -153,10 +157,10 @@ public class Bomb : IEnemy, ICollidable
                     {
                         Block collBlock = (Block)collisionObj;
 
-                        if (BoundingBox.Center.Y < collisionObj.BoundingBox.Center.Y && speed >= 0)
+                        if (BoundingBox.Center.Y < collisionObj.BoundingBox.Center.Y && Speed.Y >= 0)
                         {
                             _pos.Y -= intersection.Height;
-                            speed = 0;
+                            Speed = Vector2.Zero;
                             isGrounded = true;
                         }
                         else

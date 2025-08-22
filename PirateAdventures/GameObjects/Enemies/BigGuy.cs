@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace PirateAdventures.GameObjects.Enemies
 {
-    public class BigGuy : IEnemy, ICollidable, IKillable
+    public class BigGuy : IEnemy, ICollidable, IKillable, IMovable
     {
         public const int SPRITE_WIDTH = 77;
         public const int SPRITE_HEIGHT = 74;
@@ -38,8 +38,8 @@ namespace PirateAdventures.GameObjects.Enemies
         public Rectangle BoundingBox { get; set; }
         private SpriteEffects spriteEffects = SpriteEffects.None;
         private readonly float scale = .5f;
-        private Vector2 speed = new Vector2(2, 5);
-        private Vector2 acceleration = new Vector2(0.1f, 0.3f);
+        public Vector2 Speed { get; set; } = new Vector2(2, 5);
+        public Vector2 Acceleration { get; set; } = new Vector2(0.1f, 0.3f);
         public event Action<IEnemy, int, Vector2> Attack;
         public int Health { get; set; } = 100;
 
@@ -126,31 +126,31 @@ namespace PirateAdventures.GameObjects.Enemies
             // if left/right keys are pressed
             if (direction.X != 0)
             {
-                direction.X *= acceleration.X;
+                direction.X *= Acceleration.X;
 
                 // check if speed is below max speed
-                if (Math.Abs(speed.X) < MAX_SPEED) speed.X += direction.X;
+                if (Math.Abs(Speed.X) < MAX_SPEED) Speed = new Vector2(Speed.X + direction.X, Speed.Y);
             }
             // if left/right keys aren't pressed
             else if (direction.X == 0)
             {
                 // if hero is moving left
-                if (speed.X < 0)
+                if (Speed.X < 0)
                 {
-                    speed.X += acceleration.X * 2;
-                    if (speed.X > 0) speed.X = 0;
+                    Speed = new Vector2(Speed.X + Acceleration.X * 2, Speed.Y);
+                    if (Speed.X > 0) Speed = new Vector2(0, Speed.Y);
                 }
                 // if hero is moving right
-                else if (speed.X > 0)
+                else if (Speed.X > 0)
                 {
-                    speed.X -= acceleration.X * 2;
-                    if (speed.X < 0) speed.X = 0;
+                    Speed = new Vector2(Speed.X - Acceleration.X * 2, Speed.Y);
+                    if (Speed.X < 0) Speed = new Vector2(0, Speed.Y);
                 }
             }
 
-            speed.Y += acceleration.Y;
+            Speed = new Vector2(Speed.X, Speed.Y + Acceleration.Y);
 
-            _pos += speed;
+            _pos += Speed;
             BoundingBox = new Rectangle((int)_pos.X, (int)_pos.Y, BoundingBox.Width, BoundingBox.Height);
         }
 
@@ -176,23 +176,23 @@ namespace PirateAdventures.GameObjects.Enemies
                                 _pos = new Vector2(_pos.X - intersection.Width, _pos.Y);
                             else
                                 _pos = new Vector2(_pos.X + intersection.Width, _pos.Y);
-                            speed.X = 0;
+                            Speed = new Vector2(0, Speed.Y);
                         }
                     }
                     // collision on the Y axis
                     else
                     {
-                        if (BoundingBox.Center.Y < block.BoundingBox.Center.Y && speed.Y > 0)
+                        if (BoundingBox.Center.Y < block.BoundingBox.Center.Y && Speed.Y > 0)
                         {
                             _pos = new Vector2(_pos.X, _pos.Y - intersection.Height);
-                            speed.Y = 0;
+                            Speed = new Vector2(Speed.X, 0);
                         }
                         else
                         {
                             if (block.BlockType == BlockType.FULL)
                             {
                                 _pos = new Vector2(_pos.X, _pos.Y + intersection.Height);
-                                speed.Y = 0;
+                                Speed = new Vector2(Speed.X, 0);
                             }
                         }
 
