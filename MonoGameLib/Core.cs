@@ -11,7 +11,7 @@ namespace MonoGameLib
 {
     public class Core : Game
     {
-        internal static Core _instance;
+        private static Core _instance;
 
         public static Core Instance => _instance;
 
@@ -66,7 +66,7 @@ namespace MonoGameLib
 
             SpriteBatch = new SpriteBatch(GraphicsDevice);
 
-            Input = new InputManager();
+            Input = new InputManager(new KeyboardInfo(), new MouseInfo());
         }
 
         protected override void Update(GameTime gameTime)

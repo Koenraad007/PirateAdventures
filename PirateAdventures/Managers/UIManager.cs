@@ -3,21 +3,23 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGameLib;
 using PirateAdventures.GameObjects;
 using System;
+using System.Diagnostics;
 
 namespace PirateAdventures.Managers
 {
     public class UIManager
     {
         private readonly SpriteFont _font;
-        private Color _playAgainColor = Color.White;
-        private Rectangle _playAgainSrcRect;
-        private Vector2 playAgainPos = Vector2.Zero;
+        private Color _playAgainColor = Color.White, _nextLevelColor = Color.White;
+        private Rectangle _playAgainSrcRect, _nextLevelSrcRect;
+        private Vector2 playAgainPos = Vector2.Zero, nextLevelPos = Vector2.Zero;
         private float scale = 1f;
 
         public UIManager(SpriteFont font)
         {
             _font = font;
             _playAgainSrcRect = new Rectangle(144, 32, 16, 16);
+            _nextLevelSrcRect = new Rectangle(48, 80, 32, 16);
         }
 
         public void Update(bool isGameOver, bool isLevelComplete)
@@ -34,18 +36,59 @@ namespace PirateAdventures.Managers
 
                 playAgainPos = centerScreen + new Vector2(0, texture.Height * scale / 2f + 14 * scale);
                 Rectangle playAgainBounds = new Rectangle((int)(playAgainPos.X - _playAgainSrcRect.Width * scale / 2), (int)(playAgainPos.Y - _playAgainSrcRect.Height * scale / 2), (int)(_playAgainSrcRect.Width * scale), (int)(_playAgainSrcRect.Height * scale));
-
-                if (playAgainBounds.Contains(Core.Input.Mouse.Position))
+                var nextLevelBounds = new Rectangle();
+                if (isLevelComplete)
                 {
-                    _playAgainColor = Color.Yellow;
-                    if (Core.Input.Mouse.WasButtonDown(MonoGameLib.Input.MouseButton.Left))
-                    {
-                        Core.ChangeScene(new Scenes.GameScene());
-                    }
+                    playAgainPos += new Vector2(-_playAgainSrcRect.Width * scale, 0);
+                    nextLevelPos = centerScreen + new Vector2(_playAgainSrcRect.Width * scale, texture.Height * scale / 2f + 14 * scale);
+                    playAgainBounds = new Rectangle((int)(playAgainPos.X - _playAgainSrcRect.Width * scale / 2), (int)(playAgainPos.Y - _playAgainSrcRect.Height * scale / 2), (int)(_playAgainSrcRect.Width * scale), (int)(_playAgainSrcRect.Height * scale));
+                    nextLevelBounds = new Rectangle((int)(nextLevelPos.X - _nextLevelSrcRect.Width * scale / 2), (int)(nextLevelPos.Y - _nextLevelSrcRect.Height * scale / 2), (int)(_nextLevelSrcRect.Width * scale), (int)(_nextLevelSrcRect.Height * scale));
+                }
+
+                _playAgainColor = playAgainBounds.Contains(Core.Input.Mouse.Position) ? Color.Yellow : Color.White;
+                _nextLevelColor = isLevelComplete && nextLevelBounds.Contains(Core.Input.Mouse.Position) ? Color.Yellow : Color.White;
+
+                if (_playAgainColor == Color.Yellow && Core.Input.Mouse.IsButtonDown(MonoGameLib.Input.MouseButton.Left))
+                {
+                    HandlePlayAgainButton();
+                }
+
+                if (_nextLevelColor == Color.Yellow && Core.Input.Mouse.IsButtonDown(MonoGameLib.Input.MouseButton.Left))
+                {
+                    HandleNextLevelButton();
+                }
+
+            }
+        }
+
+        public void HandlePlayAgainButton()
+        {
+            if (_playAgainSrcRect.X == 144)
+            {
+                _playAgainSrcRect.X += 160;
+            }
+            else
+            {
+                Core.ChangeScene(new Scenes.GameScene());
+            }
+        }
+
+        public void HandleNextLevelButton()
+        {
+            if (_playAgainSrcRect.X == 48)
+            {
+                _playAgainSrcRect.X += 160;
+            }
+            else
+            {
+                if (LevelManager.Instance.HasNextLevel())
+                {
+                    LevelManager.Instance.GetNextLevel();
+                    Core.ChangeScene(new Scenes.GameScene());
                 }
                 else
                 {
-                    _playAgainColor = Color.White;
+                    Core.ChangeScene(new Scenes.Startscreen());
                 }
             }
         }
@@ -164,6 +207,20 @@ namespace PirateAdventures.Managers
                 _playAgainColor,
                 0f,
                 playAgainOrigin,
+                scale,
+                SpriteEffects.None,
+                0f
+            );
+
+            // draw next level button
+            Vector2 nextLevelOrigin = new Vector2(_nextLevelSrcRect.Width / 2f, _nextLevelSrcRect.Height / 2f);
+            spriteBatch.Draw(
+                buttonsTexture,
+                nextLevelPos,
+                _nextLevelSrcRect,
+                _nextLevelColor,
+                0f,
+                nextLevelOrigin,
                 scale,
                 SpriteEffects.None,
                 0f

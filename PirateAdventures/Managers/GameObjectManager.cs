@@ -33,6 +33,10 @@ namespace PirateAdventures.Managers
 
         public void AddRange(IEnumerable<IGameObject> gameObjects)
         {
+            foreach (var enemy in gameObjects.OfType<IEnemy>())
+            {
+                enemy.Attack += HandleAttack;
+            }
             _toAdd.AddRange(gameObjects);
         }
 
@@ -45,10 +49,6 @@ namespace PirateAdventures.Managers
 
             if (_toAdd.Count > 0)
             {
-                foreach (var enemy in _toAdd.OfType<IEnemy>())
-                {
-                    // handle events
-                }
                 _gameObjects.AddRange(_toAdd);
                 _toAdd.Clear();
             }

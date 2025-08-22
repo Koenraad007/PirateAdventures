@@ -12,10 +12,10 @@ namespace MonoGameLib.Input
         public KeyboardInfo Keyboard { get; private set; }
         public MouseInfo Mouse { get; private set; }
 
-        public InputManager()
+        public InputManager(KeyboardInfo keyboardInfo, MouseInfo mouseInfo)
         {
-            Keyboard = new KeyboardInfo();
-            Mouse = new MouseInfo();
+            Keyboard = keyboardInfo;
+            Mouse = mouseInfo;
         }
 
         public void Update()
