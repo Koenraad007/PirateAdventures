@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLib.Graphics;
 using PirateAdventures.Interfaces;
+using PirateAdventures.Managers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +27,7 @@ namespace PirateAdventures.GameObjects
 
         public event Action<Collectable, CollectableType> OnPickup;
 
-        public Collectable(TextureAtlas ta, Vector2 pos, CollectableType type, SoundEffect sfx) 
+        public Collectable(TextureAtlas ta, Vector2 pos, CollectableType type) 
         { 
             _textureAtlas = ta;
             _position = new Vector2(pos.X+SPRITE_WIDTH/4f, pos.Y+SPRITE_HEIGHT/4f);
@@ -35,14 +36,6 @@ namespace PirateAdventures.GameObjects
 
             var typeString = type.ToString();
             _currentAnimation = _textureAtlas.CreateAnimatedSprite(char.ToLower(typeString[0])+typeString.Substring(1));
-
-            var sound = sfx;
-            if (sound != null)
-            {
-                _pickupSound = sound.CreateInstance();
-                _pickupSound.IsLooped = false;
-                _pickupSound.Volume = 0.5f;
-            }
 
         }
 
@@ -68,7 +61,7 @@ namespace PirateAdventures.GameObjects
             if (coinIntersected && !_collected)
             {
                 _collected = true;
-                _pickupSound?.Play();
+                SoundManager.Instance.PlaySound("coin", .3f, false);
                 OnPickup?.Invoke(this, type);
                 switch (type)
                 {

@@ -58,9 +58,9 @@ namespace PirateAdventures.GameObjects.Enemies
             currentAnimation.Scale = new Vector2(scale, scale);
             currentAnimation.Draw(spriteBatch, Position);
 
-            var pixel = new Texture2D(Core.GraphicsDevice, 1, 1);
-            pixel.SetData(new[] { Color.Red });
-            spriteBatch.Draw(pixel, BoundingBox, Color.Red * 0.5f);
+            //var pixel = new Texture2D(Core.GraphicsDevice, 1, 1);
+            //pixel.SetData(new[] { Color.Red });
+            //spriteBatch.Draw(pixel, BoundingBox, Color.Red * 0.5f);
         }
 
         public void Update(List<IGameObject> collisionObjects, GameTime gameTime)

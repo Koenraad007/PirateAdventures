@@ -1,8 +1,6 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Media;
 using MonoGameLib.Graphics;
 using PirateAdventures.GameObjects;
 using PirateAdventures.GameObjects.Enemies;
@@ -11,7 +9,6 @@ using PirateAdventures.Interfaces;
 using PirateAdventures.Level;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using TiledSharp;
 
@@ -28,7 +25,6 @@ namespace PirateAdventures
         public int Height { get; private set; }
         private float scale = 2f;
         public const int TileSize = 32;
-        private Dictionary<string, SoundEffect> soundEffects = new Dictionary<string, SoundEffect>();
 
         public void Initialize(string filePath)
         {
@@ -53,15 +49,6 @@ namespace PirateAdventures
             _endpointTexture = contentManager.Load<Texture2D>("Sprites/Endpoint/openingDoor");
             _endpointAtlas = TextureAtlas.FromFile(contentManager, "endpoint-atlas.xml");
             _windowguyAtlas = TextureAtlas.FromFile(contentManager, "windowguy-atlas.xml");
-
-            // Load sound effects
-            soundEffects["jump"] = contentManager.Load<SoundEffect>("Music/SoundFx/jumpSound");
-            soundEffects["walk1"] = contentManager.Load<SoundEffect>("Music/SoundFx/walkingGrass");
-            soundEffects["walk2"] = contentManager.Load<SoundEffect>("Music/SoundFx/walking");
-            soundEffects["oof"] = contentManager.Load<SoundEffect>("Music/SoundFx/oof");
-            soundEffects["slice"] = contentManager.Load<SoundEffect>("Music/SoundFx/slice");
-            soundEffects["coin"] = contentManager.Load<SoundEffect>("Music/SoundFx/coin");
-
         }
 
         private void CreateCollisionObjects()
@@ -144,10 +131,8 @@ namespace PirateAdventures
                     {
                         case "hero":
                             var hero = new Hero(
-                                    _heroTexture,
                                     kir,
-                                    _heroAtlas,
-                                    soundEffects
+                                    _heroAtlas
                                     )
                             {
                                 Position = new Vector2((float)gameObject.X, (float)gameObject.Y - Hero.SPRITE_HEIGHT),
@@ -171,7 +156,7 @@ namespace PirateAdventures
                                     _bigguyAtlas
                                     )
                             {
-                                Position = new Vector2((float)gameObject.X, (float)gameObject.Y - BigGuy.SPRITE_HEIGHT),
+                                Position = new Vector2((float)gameObject.X - BigGuy.SPRITE_WIDTH / 2, (float)gameObject.Y - BigGuy.SPRITE_HEIGHT),
                             };
                             gameObjects.Add(bigGuy);
                             break;
@@ -181,7 +166,7 @@ namespace PirateAdventures
                                 _shooterAtlas
                             )
                             {
-                                Position = new Vector2((float)gameObject.X, (float)gameObject.Y - Shooter.SPRITE_HEIGHT)
+                                Position = new Vector2((float)gameObject.X - Shooter.SPRITE_WIDTH / 2, (float)gameObject.Y - Shooter.SPRITE_HEIGHT)
                             };
                             gameObjects.Add(shooter);
                             break;
@@ -205,15 +190,23 @@ namespace PirateAdventures
                         case "silver":
                             var silver = new Collectable(_collectableAtlas,
                                 new Vector2((float)gameObject.X, (float)gameObject.Y - Collectable.SPRITE_HEIGHT),
-                                CollectableType.SilverCoin, soundEffects["coin"]
+                                CollectableType.SilverCoin
                             );
                             gameObjects.Add(silver);
+                            break;
+
+                        case "gold":
+                            var gold = new Collectable(_collectableAtlas,
+                                new Vector2((float)gameObject.X, (float)gameObject.Y - Collectable.SPRITE_HEIGHT),
+                                CollectableType.GoldCoin
+                            );
+                            gameObjects.Add(gold);
                             break;
 
                         case "skull":
                             var skull = new Collectable(_collectableAtlas,
                                 new Vector2((float)gameObject.X, (float)gameObject.Y - Collectable.SPRITE_HEIGHT),
-                                CollectableType.Skull, soundEffects["coin"]
+                                CollectableType.Skull
                             );
                             gameObjects.Add(skull);
                             break;
@@ -237,11 +230,8 @@ namespace PirateAdventures
                 if (heroObject != null)
                 {
                     return new Hero(
-                        texture,
                         kir,
-                        ta,
-                        soundEffects
-                        )
+                        ta)
                     {
                         Position = new Vector2((float)heroObject.X, (float)heroObject.Y - Hero.SPRITE_HEIGHT),
                     };

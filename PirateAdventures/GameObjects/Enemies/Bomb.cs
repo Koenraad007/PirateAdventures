@@ -11,6 +11,7 @@ using PirateAdventures.Animations;
 using PirateAdventures.GameObjects;
 using PirateAdventures.Interfaces;
 using PirateAdventures.Level;
+using PirateAdventures.Managers;
 
 public class Bomb : IEnemy, ICollidable
 {
@@ -45,21 +46,15 @@ public class Bomb : IEnemy, ICollidable
     private bool isGrounded = false, _damageDealt = false;
     public bool HasExploded = false;
     private double timer = 0;
-    private SoundEffect _explosionSound;
-    private SoundEffectInstance _explosionSoundInstance;
 
     public event Action<IEnemy, int, Vector2> Attack;
 
-    public Bomb(Texture2D texture, Vector2 position, TextureAtlas ta, SoundEffect explosionSound)
+    public Bomb(Texture2D texture, Vector2 position, TextureAtlas ta)
     {
         texture2D = texture;
         _textureAtlas = ta;
         _currentAnimation = _textureAtlas.CreateAnimatedSprite("on");
         Position = position;
-        _explosionSound = explosionSound;
-        _explosionSoundInstance = _explosionSound.CreateInstance();
-        _explosionSoundInstance.IsLooped = false;
-        _explosionSoundInstance.Volume = 0.2f;
 
     }
 
@@ -99,7 +94,7 @@ public class Bomb : IEnemy, ICollidable
 
         if (BombState == 2)
         {
-            _explosionSoundInstance.Play();
+            SoundManager.Instance.PlaySound("explosion", .2f, false);
 
             if (_currentAnimation.CurrentFrame >= _currentAnimation.Animation.Frames.Count/2 && !_damageDealt)
             {

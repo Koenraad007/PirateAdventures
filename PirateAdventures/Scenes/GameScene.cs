@@ -11,6 +11,7 @@ using PirateAdventures.Input;
 using PirateAdventures.Interfaces;
 using PirateAdventures.Level;
 using PirateAdventures.Settings;
+using PirateAdventures.Managers;
 using SharpDX.Direct2D1;
 using System;
 using System.Collections.Generic;
@@ -82,11 +83,7 @@ namespace PirateAdventures.Scenes
             _bulletTexture = Core.Content.Load<Texture2D>("Sprites/Bullet/bullet");
             _enemyHealth = Core.Content.Load<Texture2D>("Menu/EnemyHealth");
 
-
             font = Core.Content.Load<SpriteFont>("Fonts/Pixellari");
-
-            soundEffects["explosion"] = Core.Content.Load<SoundEffect>("Music/SoundFx/explosion");
-
         }
 
         private void InitializeGameObjects()
@@ -130,6 +127,8 @@ namespace PirateAdventures.Scenes
 
             if (_isGameOver || _isLevelComplete)
             {
+                SoundManager.Instance.StopAllSounds();
+
                 int screenWidth = Core.GraphicsDevice.Viewport.Width;
                 int screenHeight = Core.GraphicsDevice.Viewport.Height;
                 Vector2 centerScreen = new Vector2(screenWidth / 2f, screenHeight / 2f);
@@ -145,6 +144,10 @@ namespace PirateAdventures.Scenes
                 if (playAgainBounds.Contains(Core.Input.Mouse.Position))
                 {
                     _playAgainColor = Color.Yellow;
+                    if (Core.Input.Mouse.WasButtonDown(MonoGameLib.Input.MouseButton.Left))
+                    {
+                        Core.ChangeScene(new GameScene(_levelPath));
+                    }
                 }
                 else
                 {
@@ -221,7 +224,7 @@ namespace PirateAdventures.Scenes
 
         private void HandleSpawnBomb(WindowGuy windowGuy, Vector2 position)
         {
-            Bomb bomb = new Bomb(_bombTexture, position, _bombAtlas, soundEffects["explosion"]);
+            Bomb bomb = new Bomb(_bombTexture, position, _bombAtlas);
             toAdd.Add(bomb);
         }
 
@@ -395,10 +398,9 @@ namespace PirateAdventures.Scenes
                 );
 
                 // draw the score
-                int score = 100;
                 Core.SpriteBatch.DrawString(
                     font,
-                    "Score: " + score.ToString("D7"),
+                    "Score: " + Score.ToString("D7"),
                     centerScreen + new Vector2(0, 6f * scale),
                     Color.LightYellow,
                     0f,

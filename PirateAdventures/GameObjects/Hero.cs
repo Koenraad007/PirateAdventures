@@ -6,6 +6,7 @@ using MonoGameLib.Graphics;
 using PirateAdventures.Input;
 using PirateAdventures.Interfaces;
 using PirateAdventures.Level;
+using PirateAdventures.Managers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -19,7 +20,6 @@ namespace PirateAdventures.GameObjects
         public const int MAX_SPEED = 3;
 
 
-        private Texture2D heroTexture;
         private Vector2 speed = Vector2.Zero;
         private Vector2 acceleration = new Vector2(0.1f, 0.3f);
         private SpriteEffects spriteFx = SpriteEffects.None;
@@ -37,50 +37,18 @@ namespace PirateAdventures.GameObjects
         private TextureAtlas textureAtlas;
         private AnimatedSprite currentAnimation;
 
-        private Dictionary<string, SoundEffect> _soundFx;
-        private SoundEffectInstance jumpSound;
-        private SoundEffectInstance walkSound;
-        private SoundEffectInstance hurtSound;
-        private SoundEffectInstance sliceSound;
         private bool attackAnimtionPlaying => currentState == HeroState.ATTACK && currentAnimation.CurrentFrame < currentAnimation.Animation.Frames.Count-1;
 
         public event Action<Hero> OnDeath;
 
-        public Hero(Texture2D texture, KeyboardInputReader inputReader, TextureAtlas ta, Dictionary<string, SoundEffect> soundFx)
+        public Hero(KeyboardInputReader inputReader, TextureAtlas ta)
         {
             textureAtlas = ta;
-            heroTexture = texture;
             input = inputReader;
             Position = new Vector2(200, 200);
             BoundingBox = new Rectangle((int)Position.X, (int)Position.Y, (int)(SPRITE_WIDTH * scale), (int)(SPRITE_HEIGHT * scale));
 
             currentAnimation = textureAtlas.CreateAnimatedSprite("hero-idle");
-
-            _soundFx = soundFx;
-            if (_soundFx.ContainsKey("jump"))
-            {
-                jumpSound = _soundFx["jump"].CreateInstance();
-                jumpSound.IsLooped = false;
-                jumpSound.Volume = 0.3f;
-            }
-            if (_soundFx.ContainsKey("walk1"))
-            {
-                walkSound = _soundFx["walk1"].CreateInstance();
-                walkSound.IsLooped = true;
-                walkSound.Volume = 0.1f;
-            }
-            if (_soundFx.ContainsKey("oof"))
-            {
-                hurtSound = _soundFx["oof"].CreateInstance();
-                hurtSound.IsLooped = false;
-                hurtSound.Volume = 0.3f;
-            }
-            if (_soundFx.ContainsKey("slice"))
-            {
-                sliceSound = _soundFx["slice"].CreateInstance();
-                sliceSound.IsLooped = false;
-                sliceSound.Volume = 0.3f;
-            }
         }
 
         public void Update(List<IGameObject> objects, GameTime gameTime)
@@ -117,7 +85,7 @@ namespace PirateAdventures.GameObjects
 
             if (input.AttackPressed && currentState < HeroState.HIT)
             {
-                sliceSound?.Play();
+                SoundManager.Instance.PlaySound("slice", 0.5f, false);
                 currentState = HeroState.ATTACK;
                 var enemyObjects = objects.FindAll(obj => obj is IEnemy);
                 foreach (var enemy in enemyObjects)
@@ -188,18 +156,16 @@ namespace PirateAdventures.GameObjects
             {
                 speed.Y = -6;
                 isGrounded = false;
-                jumpSound?.Play();
+                SoundManager.Instance.PlaySound("jump", 0.3f, false);
             }
 
             if (speed.X != 0 && Math.Abs(speed.Y) < 1f)
             {
-                if (walkSound.State != SoundState.Playing)
-                    walkSound.Play();
+                SoundManager.Instance.PlaySound("walk1", .2f, true);
             }
             else
             {
-                if (walkSound.State == SoundState.Playing)
-                    walkSound.Stop();
+                SoundManager.Instance.StopSound("walk1");
             }
 
             speed.Y += acceleration.Y;
@@ -290,7 +256,7 @@ namespace PirateAdventures.GameObjects
             speed += new Vector2(4*hitPos.X, -4);
             isGrounded = false;
             currentState = HeroState.HIT;
-            hurtSound?.Play();
+            SoundManager.Instance.PlaySound("oof", 0.3f, false);
             if (Health <= 0)
             {
                 OnDeath?.Invoke(this);
