@@ -29,7 +29,6 @@ namespace PirateAdventures.Scenes
         private Vector2 cameraOffset = Vector2.Zero;
         private const int CAMERA_MARGIN_X = 600, CAMERA_MARGIN_Y = 200;
         private InputSettings _inputSettings;
-        private Texture2D _tileset, _enemyTexture;
         private float _cameraZoom = 2f;
         private Texture2D _gameOverTexture, _buttonsTexture, _levelCompleteTexture, _healthBarTexture, _scoreTexture, _bombTexture, _bulletTexture, _enemyHealth;
         private Rectangle _playAgainSrcRect;
@@ -64,10 +63,6 @@ namespace PirateAdventures.Scenes
         {
             _heroAtlas = TextureAtlas.FromFile(Core.Content, "hero-atlas.xml");
             _bombAtlas = TextureAtlas.FromFile(Core.Content, "bomb-atlas.xml");
-
-            _enemyTexture = Core.Content.Load<Texture2D>("enemy_bigguy");
-
-            _tileset = Core.Content.Load<Texture2D>("tileset64");
 
             _tiledMap = new TiledMap();
 

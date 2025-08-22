@@ -12,7 +12,6 @@ using System.Linq;
 public class WindowGuy : IEnemy
 {
     public const int SPRITE_WIDTH = 64, SPRITE_HEIGHT = 64;
-    private Texture2D texture2D, bombTexture;
     public Vector2 Position
     {
         get => _pos;
@@ -27,7 +26,6 @@ public class WindowGuy : IEnemy
     public int EnemyState { get; set; } = 0;
     public int EnemyType { get; set; } = 2;
 
-    private List<PirateAdventures.Animations.Animation> animations = new();
     private double mSecondCtr = 0;
     private bool dynamiteThrown = false;
     private List<Bomb> bombs = new();
@@ -40,29 +38,13 @@ public class WindowGuy : IEnemy
     public event Action<WindowGuy, Vector2> SpawnBomb;
     public event Action<IEnemy, int, Vector2> Attack;
 
-    public WindowGuy(Texture2D texture, Texture2D dynamiteTexture, TextureAtlas ta)
+    public WindowGuy(TextureAtlas ta)
     {
-        texture2D = texture;
-        bombTexture = dynamiteTexture;
         BoundingBox = new Rectangle((int)_pos.X, (int)_pos.Y, (int)(SPRITE_WIDTH * scale), (int)(SPRITE_HEIGHT * scale));
         textureAtlas = ta;
         _staticSprite = textureAtlas.CreateSprite("attack1");
         _attackAnimation = textureAtlas.CreateAnimatedSprite("attack");
         _attackAnimation.PlayOnce = false;
-
-        animations.Add(new PirateAdventures.Animations.Animation());
-        animations[0].AddFrame(new AnimationFrame(new Rectangle(0, 0, SPRITE_WIDTH, SPRITE_HEIGHT)));
-
-        animations.Add(new PirateAdventures.Animations.Animation());
-        for (int i = 0; i < 35; i++)
-        {
-            animations[1].AddFrame(new AnimationFrame(new Rectangle(SPRITE_WIDTH * i, 0, SPRITE_WIDTH, SPRITE_HEIGHT)));
-        }
-        // add more frames so animation is 2 seconds (40 frames) long
-        for (int i = 0; i < 5; i++)
-        {
-            animations[1].AddFrame(new AnimationFrame(new Rectangle(SPRITE_WIDTH * 34, 0, SPRITE_WIDTH, SPRITE_HEIGHT)));
-        }
     }
 
     public void Draw(SpriteBatch spriteBatch)
@@ -120,17 +102,6 @@ public class WindowGuy : IEnemy
                 break;
             default:
                 break;
-        }
-
-        animations[EnemyState].Update(gameTime);
-        for (int i = 0; i < animations.Count; i++)
-        {
-            if (EnemyState != i) animations[i].ResetAnimation();
-        }
-
-        foreach (var bomb in bombs)
-        {
-            bomb.Update(collisionObjects, gameTime);
         }
     }
 }

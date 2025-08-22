@@ -31,6 +31,12 @@ public class Game1 : Core
 
     protected override void LoadContent()
     {
+        LoadSounds();
+        LoadTextures();
+    }
+
+    private void LoadSounds()
+    {
         SoundManager.Instance.AddBackgroundMusic("backgroundMusic", Content.Load<Song>("Music/Background/backgroundMusic"));
 
         SoundManager.Instance.AddSoundEffect("jump", Core.Content.Load<SoundEffect>("Music/SoundFx/jumpSound"));
@@ -40,5 +46,30 @@ public class Game1 : Core
         SoundManager.Instance.AddSoundEffect("slice", Core.Content.Load<SoundEffect>("Music/SoundFx/slice"));
         SoundManager.Instance.AddSoundEffect("coin", Core.Content.Load<SoundEffect>("Music/SoundFx/coin"));
         SoundManager.Instance.AddSoundEffect("explosion", Core.Content.Load<SoundEffect>("Music/SoundFx/explosion"));
+    }
+
+    private void LoadTextures()
+    {
+        TextureManager.Instance.AddTexture("start_bg", Core.Content.Load<Texture2D>("Menu/start_bg"));
+        TextureManager.Instance.AddTexture("titlePirateText", Core.Content.Load<Texture2D>("Menu/PirateText"));
+        TextureManager.Instance.AddTexture("titleAdventuresText", Core.Content.Load<Texture2D>("Menu/AdventuresText"));
+        TextureManager.Instance.AddTexture("buttons", Core.Content.Load<Texture2D>("Menu/BrownButtons"));
+        TextureManager.Instance.AddTexture("gameOver", Core.Content.Load<Texture2D>("Menu/GameOver"));
+        TextureManager.Instance.AddTexture("levelComplete", Core.Content.Load<Texture2D>("Menu/LevelComplete"));
+        TextureManager.Instance.AddTexture("heroHealth", Core.Content.Load<Texture2D>("Menu/HeroHealth"));
+        TextureManager.Instance.AddTexture("enemyHealth", Core.Content.Load<Texture2D>("Menu/EnemyHealth"));
+        TextureManager.Instance.AddTexture("score", Core.Content.Load<Texture2D>("Menu/Score"));
+        TextureManager.Instance.AddTexture("bomb", Core.Content.Load<Texture2D>("Sprites/Bomb/Bomb"));
+        TextureManager.Instance.AddTexture("bullet", Core.Content.Load<Texture2D>("Sprites/Bullet/bullet"));
+        TextureManager.Instance.AddTexture("companion", Core.Content.Load<Texture2D>("Sprites/Companion/bluebird20fps"));
+        TextureManager.Instance.AddTexture("tileset", Core.Content.Load<Texture2D>("Tileset32"));
+
+        TextureManager.Instance.AddTextureAtlas("heroAtlas", TextureAtlas.FromFile(Core.Content, "hero-atlas.xml"));
+        TextureManager.Instance.AddTextureAtlas("bigguyAtlas", TextureAtlas.FromFile(Core.Content, "bigguy-atlas.xml"));
+        TextureManager.Instance.AddTextureAtlas("shooterAtlas", TextureAtlas.FromFile(Core.Content, "shooter-atlas.xml"));
+        TextureManager.Instance.AddTextureAtlas("collectablesAtlas", TextureAtlas.FromFile(Core.Content, "collectables-atlas.xml"));
+        TextureManager.Instance.AddTextureAtlas("bombAtlas", TextureAtlas.FromFile(Core.Content, "bomb-atlas.xml"));
+        TextureManager.Instance.AddTextureAtlas("endpointAtlas", TextureAtlas.FromFile(Core.Content, "endpoint-atlas.xml"));
+        TextureManager.Instance.AddTextureAtlas("windowguyAtlas", TextureAtlas.FromFile(Core.Content, "windowguy-atlas.xml"));
     }
 }
