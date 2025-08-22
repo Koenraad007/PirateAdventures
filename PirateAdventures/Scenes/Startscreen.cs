@@ -19,9 +19,6 @@ namespace PirateAdventures.Scenes
         private Texture2D buttonsTexture;
         private Rectangle startButtonSrcRectangle, startButtonBounds;
         private Color startBtnColor = Color.White;
-        private bool startBtnPressed = false;
-
-        private SpriteFont font;
 
         public override void Initialize()
         {
@@ -33,12 +30,10 @@ namespace PirateAdventures.Scenes
 
         public override void LoadContent()
         {
-            backgroundTexture = Core.Content.Load<Texture2D>("Menu/start_bg");
-            titlePirateTexture = Core.Content.Load<Texture2D>("Menu/PirateText");
-            titleAdventuresTexture = Core.Content.Load<Texture2D>("Menu/AdventuresText");
-            buttonsTexture = Core.Content.Load<Texture2D>("Menu/BrownButtons");
-
-            font = Core.Content.Load<SpriteFont>("Fonts/Pixellari");
+            backgroundTexture = TextureManager.Instance.GetTexture("start_bg");
+            titlePirateTexture = TextureManager.Instance.GetTexture("titlePirateText");
+            titleAdventuresTexture = TextureManager.Instance.GetTexture("titleAdventuresText");
+            buttonsTexture = TextureManager.Instance.GetTexture("buttons");
         }
 
         public override void Update(GameTime gameTime)
@@ -48,18 +43,15 @@ namespace PirateAdventures.Scenes
             {
                 startBtnColor = Color.Yellow;
 
-                if (startBtnPressed)
+                if (startButtonSrcRectangle.X == 160)
                 {
                     // Start game
                     LevelManager.Instance.ResetToFirstLevel();
                     Core.ChangeScene(new GameScene());
-                    startBtnPressed = false;
                 }
-
-                if (mouseState.LeftButton == ButtonState.Pressed)
+                else if (mouseState.LeftButton == ButtonState.Pressed)
                 {
                     startButtonSrcRectangle = new Rectangle(160, 48, 32, 16);
-                    startBtnPressed = true;
                 }
 
             }

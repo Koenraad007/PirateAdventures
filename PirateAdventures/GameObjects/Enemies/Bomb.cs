@@ -7,165 +7,152 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLib;
 using MonoGameLib.Graphics;
-using PirateAdventures.Animations;
 using PirateAdventures.GameObjects;
 using PirateAdventures.Interfaces;
 using PirateAdventures.Level;
 using PirateAdventures.Managers;
 
-public class Bomb : IEnemy, ICollidable, IMovable
+namespace PirateAdventures.GameObjects.Enemies
 {
-    public const int SPRITE_HEIGHT = 160, SPRITE_WIDTH = 176;
-    public const int BOMB_WIDTH = 32, BOMB_HEIGHT = 64;
-    public bool Passable { get; set; } = true;
-    private Vector2 _pos = Vector2.Zero;
-    public Vector2 Position
+    public class Bomb : IEnemy, ICollidable, IMovable
     {
-        get => _pos;
-        set
+        public const int SPRITE_HEIGHT = 160, SPRITE_WIDTH = 176;
+        public const int BOMB_WIDTH = 32, BOMB_HEIGHT = 64;
+        public bool Passable { get; set; } = true;
+        private Vector2 _pos = Vector2.Zero;
+        public Vector2 Position
         {
-            _pos = new Vector2(value.X - SPRITE_WIDTH * scale / 2, value.Y - SPRITE_HEIGHT * scale / 2);
-            BoundingBox = new Rectangle((int)(_pos.X + (SPRITE_WIDTH - BOMB_WIDTH) * scale / 2), (int)(_pos.Y + (SPRITE_HEIGHT - BOMB_HEIGHT) * scale / 2), (int)(BOMB_WIDTH * scale), (int)(BOMB_HEIGHT * scale));
-        }
-    }
-    public Vector2 Center
-    {
-        get => Position - new Vector2(SPRITE_WIDTH / 2, SPRITE_HEIGHT / 2);
-        set => Position = value + new Vector2(SPRITE_WIDTH / 2, SPRITE_HEIGHT / 2);
-    }
-    public Rectangle BoundingBox { get; set; }
-    private int currentState = 1, prevState = 1;
-    public Vector2 Speed { get; set; } = Vector2.Zero;
-    public Vector2 Acceleration { get; set; } = new Vector2(0, .3f);
-    private float scale = 0.5f;
-    private TextureAtlas _textureAtlas;
-    private AnimatedSprite _currentAnimation;
-    private bool isGrounded = false, _damageDealt = false;
-    public bool HasExploded = false;
-    private double timer = 0;
-
-    public event Action<IEnemy, int, Vector2> Attack;
-
-    public Bomb(Vector2 position)
-    {
-        _textureAtlas = TextureManager.Instance.GetTextureAtlas("bombAtlas");
-        _currentAnimation = _textureAtlas.CreateAnimatedSprite("on");
-        Position = position;
-
-    }
-
-    public void Draw(SpriteBatch spriteBatch)
-    {
-        _currentAnimation.Effects = SpriteEffects.None;
-        _currentAnimation.Scale = new Vector2(scale, scale);
-        _currentAnimation.Draw(spriteBatch, Position);
-
-        // var pixel = new Texture2D(Core.GraphicsDevice, 1, 1);
-        // pixel.SetData(new[] { Color.White });
-        // spriteBatch.Draw(pixel, BoundingBox, Color.Red * 0.5f);
-
-        // var explosionBox = new Rectangle(
-        //        (int)(BoundingBox.X - 32),
-        //        (int)(BoundingBox.Y - 16),
-        //        (int)(BoundingBox.Width + 32 * 2),
-        //        (int)(BoundingBox.Height + 16 * 2));
-        // spriteBatch.Draw(pixel, explosionBox, Color.Yellow * 0.5f);
-    }
-
-    public void Update(List<IGameObject> collisionObjects, GameTime gameTime)
-    {
-        _currentAnimation.Update(gameTime);
-
-        Move(new Vector2(0, 1));
-        CheckCollision(collisionObjects);
-
-        timer += gameTime.ElapsedGameTime.TotalSeconds;
-        if (timer >= 3) // bomb explodes after 3 seconds
-        {
-            currentState = 2;
-            _currentAnimation = _textureAtlas.CreateAnimatedSprite("explode");
-            _currentAnimation.PlayOnce = true;
-            timer = 0;
-        }
-
-        if (currentState == 2)
-        {
-            if (currentState != prevState)
+            get => _pos;
+            set
             {
-                SoundManager.Instance.PlaySound("explosion", .2f, false);
-                prevState = currentState;
+                _pos = new Vector2(value.X - SPRITE_WIDTH * scale / 2, value.Y - SPRITE_HEIGHT * scale / 2);
+                BoundingBox = new Rectangle((int)(_pos.X + (SPRITE_WIDTH - BOMB_WIDTH) * scale / 2), (int)(_pos.Y + (SPRITE_HEIGHT - BOMB_HEIGHT) * scale / 2), (int)(BOMB_WIDTH * scale), (int)(BOMB_HEIGHT * scale));
+            }
+        }
+        public Vector2 Center
+        {
+            get => Position - new Vector2(SPRITE_WIDTH / 2, SPRITE_HEIGHT / 2);
+            set => Position = value + new Vector2(SPRITE_WIDTH / 2, SPRITE_HEIGHT / 2);
+        }
+        public Rectangle BoundingBox { get; set; }
+        private int currentState = 1, prevState = 1;
+        public Vector2 Speed { get; set; } = Vector2.Zero;
+        public Vector2 Acceleration { get; set; } = new Vector2(0, .3f);
+        private readonly float scale = 0.5f;
+        private readonly TextureAtlas _textureAtlas;
+        private AnimatedSprite _currentAnimation;
+        private bool isGrounded = false, _damageDealt = false;
+        public bool HasExploded { get; set; } = false;
+        private double timer = 0;
+
+        public event Action<IEnemy, int, Vector2> Attack;
+
+        public Bomb(Vector2 position)
+        {
+            _textureAtlas = TextureManager.Instance.GetTextureAtlas("bombAtlas");
+            _currentAnimation = _textureAtlas.CreateAnimatedSprite("on");
+            Position = position;
+
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            _currentAnimation.Effects = SpriteEffects.None;
+            _currentAnimation.Scale = new Vector2(scale, scale);
+            _currentAnimation.Draw(spriteBatch, Position);
+        }
+
+        public void Update(List<IGameObject> collisionObjects, GameTime gameTime)
+        {
+            _currentAnimation.Update(gameTime);
+
+            Move(new Vector2(0, 1));
+            CheckCollision(collisionObjects);
+
+            timer += gameTime.ElapsedGameTime.TotalSeconds;
+            if (timer >= 3) // bomb explodes after 3 seconds
+            {
+                currentState = 2;
+                _currentAnimation = _textureAtlas.CreateAnimatedSprite("explode");
+                _currentAnimation.PlayOnce = true;
+                timer = 0;
             }
 
-            if (_currentAnimation.CurrentFrame >= _currentAnimation.Animation.Frames.Count / 2 && !_damageDealt)
+            if (currentState == 2)
             {
-                var hero = collisionObjects.OfType<Hero>().FirstOrDefault();
-                var explosionBox = new Rectangle(
-                    (int)(BoundingBox.X - 16),
-                    (int)(BoundingBox.Y - 8),
-                    (int)(BoundingBox.Width + 16 * 2),
-                    (int)(BoundingBox.Height + 8 * 2));
-                if (hero != null && explosionBox.Intersects(hero.BoundingBox))
+                if (currentState != prevState)
                 {
-                    var attackDirection = hero.BoundingBox.Center.ToVector2() - BoundingBox.Center.ToVector2();
-                    Debug.WriteLine($"Bomb explosion at {BoundingBox.Center} with direction {attackDirection}");
-                    Attack?.Invoke(this, 20, attackDirection);
-                    _damageDealt = true;
+                    SoundManager.Instance.PlaySound("explosion", .2f, false);
+                    prevState = currentState;
+                }
+
+                if (_currentAnimation.CurrentFrame >= _currentAnimation.Animation.Frames.Count / 2 && !_damageDealt)
+                {
+                    var hero = collisionObjects.OfType<Hero>().FirstOrDefault();
+                    var explosionBox = new Rectangle(
+                        BoundingBox.X - 16,
+                        BoundingBox.Y - 8,
+                        BoundingBox.Width + 16 * 2,
+                        BoundingBox.Height + 8 * 2);
+                    if (hero != null && explosionBox.Intersects(hero.BoundingBox))
+                    {
+                        var attackDirection = hero.BoundingBox.Center.ToVector2() - BoundingBox.Center.ToVector2();
+                        Debug.WriteLine($"Bomb explosion at {BoundingBox.Center} with direction {attackDirection}");
+                        Attack?.Invoke(this, 20, attackDirection);
+                        _damageDealt = true;
+                    }
+                }
+
+                if (_currentAnimation.CurrentFrame >= _currentAnimation.Animation.Frames.Count - 1)
+                {
+                    HasExploded = true;
                 }
             }
+        }
 
-            if (_currentAnimation.CurrentFrame >= _currentAnimation.Animation.Frames.Count - 1)
+        public void Move(Vector2 direction)
+        {
+            if (!isGrounded)
             {
-                HasExploded = true;
+                Speed += Acceleration;
+                _pos.Y += Speed.Y;
             }
-        }
-    }
 
-    public void Move(Vector2 direction)
-    {
-        if (!isGrounded)
-        {
-            Speed += Acceleration;
-            _pos.Y += Speed.Y;
+            BoundingBox = new Rectangle(
+                (int)Math.Ceiling(_pos.X + (SPRITE_WIDTH - BOMB_WIDTH) * scale / 2),
+                (int)Math.Ceiling(_pos.Y + (SPRITE_HEIGHT - BOMB_HEIGHT) * scale / 2),
+                (int)(BOMB_WIDTH * scale),
+                (int)(BOMB_HEIGHT * scale));
         }
 
-        BoundingBox = new Rectangle(
-            (int)Math.Ceiling(_pos.X + (SPRITE_WIDTH - BOMB_WIDTH) * scale / 2),
-            (int)Math.Ceiling(_pos.Y + (SPRITE_HEIGHT - BOMB_HEIGHT) * scale / 2),
-            (int)(BOMB_WIDTH * scale),
-            (int)(BOMB_HEIGHT * scale));
-    }
-
-    private void CheckCollision(List<IGameObject> objects)
-    {
-        foreach (var block in objects)
+        private void CheckCollision(List<IGameObject> objects)
         {
-            if (block is ICollidable)
+            foreach (var block in objects)
             {
-                var collisionObj = block as ICollidable;
-
-                if (collisionObj.Passable) continue;
-
-                if (collisionObj.BoundingBox.Intersects(BoundingBox))
+                if (block is ICollidable collisionObj)
                 {
-                    System.Console.WriteLine("Collision");
-                    Rectangle intersection = Rectangle.Intersect(BoundingBox, collisionObj.BoundingBox);
+                    if (collisionObj.Passable) continue;
 
-                    if (collisionObj is Block)
+                    if (collisionObj.BoundingBox.Intersects(BoundingBox))
                     {
-                        Block collBlock = (Block)collisionObj;
+                        System.Console.WriteLine("Collision");
+                        Rectangle intersection = Rectangle.Intersect(BoundingBox, collisionObj.BoundingBox);
 
-                        if (BoundingBox.Center.Y < collisionObj.BoundingBox.Center.Y && Speed.Y >= 0)
+                        if (collisionObj is Block)
                         {
-                            _pos.Y -= intersection.Height;
-                            Speed = Vector2.Zero;
-                            isGrounded = true;
+                            if (BoundingBox.Center.Y < collisionObj.BoundingBox.Center.Y && Speed.Y >= 0)
+                            {
+                                _pos.Y -= intersection.Height;
+                                Speed = Vector2.Zero;
+                                isGrounded = true;
+                            }
+                            else
+                            {
+                                isGrounded = false;
+                            }
                         }
-                        else
-                        {
-                            isGrounded = false;
-                        }
+                        BoundingBox = new Rectangle((int)(_pos.X + (SPRITE_WIDTH - BOMB_WIDTH) * scale / 2f), (int)(_pos.Y + (SPRITE_HEIGHT - BOMB_HEIGHT) * scale / 2f), (int)(BOMB_WIDTH * scale), (int)(BOMB_HEIGHT * scale));
                     }
-                    BoundingBox = new Rectangle((int)(_pos.X + (SPRITE_WIDTH - BOMB_WIDTH) * scale / 2f), (int)(_pos.Y + (SPRITE_HEIGHT - BOMB_HEIGHT) * scale / 2f), (int)(BOMB_WIDTH * scale), (int)(BOMB_HEIGHT * scale));
                 }
             }
         }

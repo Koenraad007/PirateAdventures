@@ -28,7 +28,6 @@ class Shooter : IEnemy, ICollidable, IKillable
     public int Health { get; set; } = 100;
 
     private Texture2D texture2D, laser;
-    private List<PirateAdventures.Animations.Animation> animations = new();
     private SpriteEffects spriteEffects = SpriteEffects.None;
     private float rotation = 0, laserLength = 150;
     private Vector2 rotationOrigin = new Vector2(13, 40);

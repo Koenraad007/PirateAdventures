@@ -19,7 +19,7 @@ namespace PirateAdventures.Factories
 
         public IGameObject CreateGameObject(string objectType, Vector2 position)
         {
-            return new Companion(TextureManager.Instance.GetTexture("companion"))
+            return new Companion()
             {
                 Position = new Vector2(position.X, position.Y - Companion.SPRITE_HEIGHT)
             };

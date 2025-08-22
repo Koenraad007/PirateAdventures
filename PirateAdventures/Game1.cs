@@ -60,9 +60,7 @@ public class Game1 : Core
         TextureManager.Instance.AddTexture("heroHealth", Core.Content.Load<Texture2D>("Menu/HeroHealth"));
         TextureManager.Instance.AddTexture("enemyHealth", Core.Content.Load<Texture2D>("Menu/EnemyHealth"));
         TextureManager.Instance.AddTexture("score", Core.Content.Load<Texture2D>("Menu/Score"));
-        TextureManager.Instance.AddTexture("bomb", Core.Content.Load<Texture2D>("Sprites/Bomb/Bomb"));
         TextureManager.Instance.AddTexture("bullet", Core.Content.Load<Texture2D>("Sprites/Bullet/bullet"));
-        TextureManager.Instance.AddTexture("companion", Core.Content.Load<Texture2D>("Sprites/Companion/bluebird20fps"));
         TextureManager.Instance.AddTexture("tileset", Core.Content.Load<Texture2D>("Tileset32"));
 
         TextureManager.Instance.AddTextureAtlas("heroAtlas", TextureAtlas.FromFile(Core.Content, "hero-atlas.xml"));
@@ -72,5 +70,6 @@ public class Game1 : Core
         TextureManager.Instance.AddTextureAtlas("bombAtlas", TextureAtlas.FromFile(Core.Content, "bomb-atlas.xml"));
         TextureManager.Instance.AddTextureAtlas("endpointAtlas", TextureAtlas.FromFile(Core.Content, "endpoint-atlas.xml"));
         TextureManager.Instance.AddTextureAtlas("windowguyAtlas", TextureAtlas.FromFile(Core.Content, "windowguy-atlas.xml"));
+        TextureManager.Instance.AddTextureAtlas("companionAtlas", TextureAtlas.FromFile(Core.Content, "companion-atlas.xml"));
     }
 }

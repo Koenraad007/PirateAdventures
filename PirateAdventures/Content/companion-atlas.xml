@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas>
+    <Texture>Sprites/Companion/bluebird20fps</Texture>
+    <Regions>
+        <Region name="fly1" x="0" y="0" width="32" height="32" />
+        <Region name="fly2" x="32" y="0" width="32" height="32" />
+        <Region name="fly3" x="64" y="0" width="32" height="32" />
+        <Region name="fly4" x="96" y="0" width="32" height="32" />
+        <Region name="fly5" x="128" y="0" width="32" height="32" />
+        <Region name="fly6" x="160" y="0" width="32" height="32" />
+        <Region name="fly7" x="192" y="0" width="32" height="32" />
+        <Region name="fly8" x="224" y="0" width="32" height="32" />
+        <Region name="fly9" x="256" y="0" width="32" height="32" />
+    </Regions>
+    <Animations>
+        <Animation name="fly" delay="50">
+            <Frame region="fly1" />
+            <Frame region="fly2" />
+            <Frame region="fly3" />
+            <Frame region="fly4" />
+            <Frame region="fly5" />
+            <Frame region="fly6" />
+            <Frame region="fly7" />
+            <Frame region="fly8" />
+            <Frame region="fly9" />
+        </Animation>
+
+    </Animations>
+</TextureAtlas>
+	

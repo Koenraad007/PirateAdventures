@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using PirateAdventures.GameObjects.Enemies;
 using PirateAdventures.Interfaces;
 using PirateAdventures.Managers;
 using System;

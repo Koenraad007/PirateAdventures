@@ -55,10 +55,6 @@ namespace PirateAdventures.GameObjects.Enemies
             currentAnimation.Effects = spriteEffects;
             currentAnimation.Scale = new Vector2(scale, scale);
             currentAnimation.Draw(spriteBatch, Position);
-
-            //var pixel = new Texture2D(Core.GraphicsDevice, 1, 1);
-            //pixel.SetData(new[] { Color.Red });
-            //spriteBatch.Draw(pixel, BoundingBox, Color.Red * 0.5f);
         }
 
         public void Update(List<IGameObject> collisionObjects, GameTime gameTime)
@@ -118,24 +114,19 @@ namespace PirateAdventures.GameObjects.Enemies
 
         public void Move(Vector2 direction)
         {
-            // if left/right keys are pressed
-            if (direction.X != 0)
+            if (direction.X > 0.1 || direction.X < -0.1)
             {
                 direction.X *= Acceleration.X;
 
-                // check if speed is below max speed
                 if (Math.Abs(Speed.X) < MAX_SPEED) Speed = new Vector2(Speed.X + direction.X, Speed.Y);
             }
-            // if left/right keys aren't pressed
-            else if (direction.X == 0)
+            else if (direction.X <= 0.1 && direction.X >= -0.1)
             {
-                // if hero is moving left
                 if (Speed.X < 0)
                 {
                     Speed = new Vector2(Speed.X + Acceleration.X * 2, Speed.Y);
                     if (Speed.X > 0) Speed = new Vector2(0, Speed.Y);
                 }
-                // if hero is moving right
                 else if (Speed.X > 0)
                 {
                     Speed = new Vector2(Speed.X - Acceleration.X * 2, Speed.Y);
@@ -152,27 +143,22 @@ namespace PirateAdventures.GameObjects.Enemies
         private void CheckCollision(List<IGameObject> objects)
         {
             var blocks = objects.OfType<Block>().ToList();
+            blocks.RemoveAll(b => b.BlockType != BlockType.FULL);
 
             foreach (var block in blocks)
             {
-                if (block.BlockType != BlockType.FULL) continue;
-
                 if (block.BoundingBox.Intersects(BoundingBox))
                 {
                     Rectangle intersection = Rectangle.Intersect(BoundingBox, block.BoundingBox);
 
-
                     // collision on the X axis
                     if (intersection.Width < intersection.Height)
                     {
-                        if (block.BlockType == BlockType.FULL)
-                        {
-                            if (BoundingBox.Center.X < block.BoundingBox.Center.X)
-                                _pos = new Vector2(_pos.X - intersection.Width, _pos.Y);
-                            else
-                                _pos = new Vector2(_pos.X + intersection.Width, _pos.Y);
-                            Speed = new Vector2(0, Speed.Y);
-                        }
+                        if (BoundingBox.Center.X < block.BoundingBox.Center.X)
+                            _pos = new Vector2(_pos.X - intersection.Width, _pos.Y);
+                        else
+                            _pos = new Vector2(_pos.X + intersection.Width, _pos.Y);
+                        Speed = new Vector2(0, Speed.Y);
                     }
                     // collision on the Y axis
                     else
@@ -180,19 +166,12 @@ namespace PirateAdventures.GameObjects.Enemies
                         if (BoundingBox.Center.Y < block.BoundingBox.Center.Y && Speed.Y > 0)
                         {
                             _pos = new Vector2(_pos.X, _pos.Y - intersection.Height);
-                            Speed = new Vector2(Speed.X, 0);
                         }
                         else
                         {
-                            if (block.BlockType == BlockType.FULL)
-                            {
-                                _pos = new Vector2(_pos.X, _pos.Y + intersection.Height);
-                                Speed = new Vector2(Speed.X, 0);
-                            }
+                            _pos = new Vector2(_pos.X, _pos.Y + intersection.Height);
                         }
-
-
-
+                        Speed = new Vector2(Speed.X, 0);
                     }
                     BoundingBox = new Rectangle((int)_pos.X, (int)_pos.Y, BoundingBox.Width, BoundingBox.Height);
                 }

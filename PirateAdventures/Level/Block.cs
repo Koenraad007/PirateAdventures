@@ -35,10 +35,8 @@ namespace PirateAdventures.Level
             spriteBatch.Draw(Texture, Position * scale, SourceRect, Color, 0f, new Vector2(0, 0), new Vector2(scale, scale), SpriteEffects.None, 0f);
         }
 
-        public void Update(List<IGameObject> collidables, GameTime gameTime)
-        {
-            //
-        }
+        public void Update(List<IGameObject> collisionObjects, GameTime gameTime)
+        { }
     }
 
     public enum BlockType

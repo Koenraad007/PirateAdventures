@@ -16,7 +16,6 @@ namespace PirateAdventures.GameObjects
         public AnimatedSprite Texture { get; set; }
         public Rectangle Bounds => new Rectangle((int)Position.X, (int)Position.Y, (int)Texture.Width, (int)Texture.Height);
         public bool Reached { get; set; } = false;
-        private int animationCounter = -1;
 
         public event Action<EndPoint> OnReached;
 
@@ -31,13 +30,12 @@ namespace PirateAdventures.GameObjects
         {
             Hero hero = collisionObjects.Find(collisionObjects => collisionObjects is Hero) as Hero;
             var heroBoundsSmall = new Rectangle(
-                (int)hero.BoundingBox.Center.X - 1,
-                (int)hero.BoundingBox.Center.Y - 1,
+                hero.BoundingBox.Center.X - 1,
+                hero.BoundingBox.Center.Y - 1,
                 2, 2);
 
             if (!Reached && heroBoundsSmall.Intersects(Bounds))
             {
-
                 Reached = true;
                 Debug.WriteLine("EndPoint reached!");
                 OnReached?.Invoke(this);

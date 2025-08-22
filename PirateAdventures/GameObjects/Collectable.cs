@@ -16,26 +16,25 @@ namespace PirateAdventures.GameObjects
     {
         public const int SPRITE_WIDTH = 64;
         public const int SPRITE_HEIGHT = 64;
-        private TextureAtlas _textureAtlas;
+        private readonly TextureAtlas _textureAtlas;
         private Vector2 _position;
         private AnimatedSprite _currentAnimation;
-        public bool IsCollected = false;
+        public bool IsCollected { get; set; } = false;
         private bool _collected = false;
-        private CollectableType type;
-        public Rectangle BoundingBox;
-        SoundEffectInstance _pickupSound = null;
+        private readonly CollectableType type;
+        public Rectangle BoundingBox { get; set; }
 
         public event Action<Collectable, CollectableType> OnPickup;
 
-        public Collectable(TextureAtlas ta, Vector2 pos, CollectableType type) 
-        { 
+        public Collectable(TextureAtlas ta, Vector2 pos, CollectableType type)
+        {
             _textureAtlas = ta;
-            _position = new Vector2(pos.X+SPRITE_WIDTH/4f, pos.Y+SPRITE_HEIGHT/4f);
-            BoundingBox = new Rectangle((int)_position.X+SPRITE_WIDTH/2-2, (int)_position.Y+SPRITE_HEIGHT/2-2, 4, 4);
+            _position = new Vector2(pos.X + SPRITE_WIDTH / 4f, pos.Y + SPRITE_HEIGHT / 4f);
+            BoundingBox = new Rectangle((int)_position.X + SPRITE_WIDTH / 2 - 2, (int)_position.Y + SPRITE_HEIGHT / 2 - 2, 4, 4);
             this.type = type;
 
             var typeString = type.ToString();
-            _currentAnimation = _textureAtlas.CreateAnimatedSprite(char.ToLower(typeString[0])+typeString.Substring(1));
+            _currentAnimation = _textureAtlas.CreateAnimatedSprite(char.ToLower(typeString[0]) + typeString.Substring(1));
 
         }
 
@@ -87,8 +86,8 @@ namespace PirateAdventures.GameObjects
                 }
                 _currentAnimation.PlayOnce = true;
             }
-            
-            if (_collected && _currentAnimation.CurrentFrame == _currentAnimation.Animation.Frames.Count-1)
+
+            if (_collected && _currentAnimation.CurrentFrame == _currentAnimation.Animation.Frames.Count - 1)
             {
                 IsCollected = true;
                 return;

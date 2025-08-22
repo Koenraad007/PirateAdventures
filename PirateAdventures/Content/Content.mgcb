@@ -25,6 +25,9 @@
 #begin endpoint-atlas.xml
 /copy:endpoint-atlas.xml
 
+#begin companion-atlas.xml
+/copy:companion-atlas.xml
+
 #begin Fonts/Pixellari.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -34,30 +37,6 @@
 
 #begin hero-atlas.xml
 /copy:hero-atlas.xml
-
-#begin hero.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:hero.png
-
-#begin hero2.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:hero2.png
 
 #begin Menu/AdventuresText.png
 /importer:TextureImporter
@@ -325,18 +304,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Sprites/Windowguy/WindowGuy.png
-
-#begin Tile-Sets (64-64).png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Tile-Sets (64-64).png;tileset64.png
 
 #begin Tileset32.png
 /importer:TextureImporter

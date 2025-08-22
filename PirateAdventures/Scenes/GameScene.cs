@@ -1,9 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLib;
-using MonoGameLib.Graphics;
 using MonoGameLib.Scenes;
 using PirateAdventures.GameObjects;
 using PirateAdventures.GameObjects.Enemies;
@@ -12,8 +9,6 @@ using PirateAdventures.Interfaces;
 using PirateAdventures.Level;
 using PirateAdventures.Settings;
 using PirateAdventures.Managers;
-using SharpDX.Direct2D1;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -23,9 +18,7 @@ namespace PirateAdventures.Scenes
     public class GameScene : Scene
     {
         private List<IGameObject> _gameObjects;
-        private List<IGameObject> _blocks;
         private TiledMap _tiledMap;
-        private InputSettings _inputSettings;
         private bool _isGameOver = false, _isLevelComplete = false;
         private SpriteFont font;
         public int Score { get; set; } = 0;
@@ -42,9 +35,7 @@ namespace PirateAdventures.Scenes
         {
             base.Initialize();
 
-            _inputSettings = SettingsManager.LoadSettings();
             _tiledMap.Initialize(LevelManager.Instance.GetCurrentLevel());
-            _blocks = new List<IGameObject>();
 
             _camera = new Camera(Core.GraphicsDevice);
 
@@ -74,7 +65,7 @@ namespace PirateAdventures.Scenes
         {
             _gameObjects = _tiledMap.CreateGameObjects();
 
-            _blocks = _tiledMap.CollisionObjects;
+            var _blocks = _tiledMap.CollisionObjects;
             _gameObjects.AddRange(_blocks);
 
             foreach (var endPoint in _gameObjects.OfType<EndPoint>())
