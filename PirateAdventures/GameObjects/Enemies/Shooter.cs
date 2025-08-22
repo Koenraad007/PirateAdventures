@@ -4,6 +4,7 @@ using MonoGameLib;
 using MonoGameLib.Graphics;
 using PirateAdventures.GameObjects;
 using PirateAdventures.Interfaces;
+using PirateAdventures.Level;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,7 +62,7 @@ namespace PirateAdventures.GameObjects.Enemies
             var hero = collisionObjects.OfType<Hero>().First();
             var heroPos = new Vector2(hero.BoundingBox.X, hero.BoundingBox.Y);
 
-            if (DoesLaserHitHero(hero, collisionObjects))
+            if (DoesLaserHitHero(hero, collisionObjects) && Math.Abs(heroPos.X - Position.X) < 200)
             {
                 state = ShooterState.Shooting;
             }
@@ -166,6 +167,8 @@ namespace PirateAdventures.GameObjects.Enemies
                 if (!(obj is Hero) && (!(obj is ICollidable collidable) || collidable.Passable)) continue;
 
                 collidable = obj as ICollidable;
+
+                if (collidable is Block block && block.BlockType != BlockType.FULL) continue;
 
                 // Check if laser intersects with this object
                 if (LineIntersectsRectangle(start, end, collidable.BoundingBox))
