@@ -22,10 +22,7 @@ namespace PirateAdventures.Managers
         {
             get
             {
-                if (instance == null)
-                {
-                    instance = new SoundManager(new Dictionary<string, SoundEffect>(), new Dictionary<string, Song>());
-                }
+                instance ??= new SoundManager(new Dictionary<string, SoundEffect>(), new Dictionary<string, Song>());
                 return instance;
             }
         }
@@ -40,10 +37,6 @@ namespace PirateAdventures.Managers
             {
                 soundEffects[soundName] = soundEffect;
             }
-            else
-            {
-                Debug.WriteLine($"Sound '{soundName}' already exists in the sound manager.");
-            }
         }
 
         public void AddBackgroundMusic(string musicName, Song song)
@@ -51,10 +44,6 @@ namespace PirateAdventures.Managers
             if (!backgroundMusic.ContainsKey(musicName))
             {
                 backgroundMusic[musicName] = song;
-            }
-            else
-            {
-                Debug.WriteLine($"Background music '{musicName}' already exists in the sound manager.");
             }
         }
 
@@ -79,35 +68,16 @@ namespace PirateAdventures.Managers
                         sfxInstance.Play();
                         loopedSfxInstances[soundName] = sfxInstance;
                     }
-                    else
-                    {
-                        Debug.WriteLine($"Sound '{soundName}' is already playing in loop.");
-                    }
                 }
-            }
-            else
-            {
-                Debug.WriteLine($"Sound '{soundName}' not found in the sound manager.");
             }
         }
 
         public void StopSound(string soundName)
         {
-            if (soundEffects.ContainsKey(soundName))
+            if (soundEffects.ContainsKey(soundName) && loopedSfxInstances.ContainsKey(soundName))
             {
-                if (loopedSfxInstances.ContainsKey(soundName))
-                {
-                    loopedSfxInstances[soundName].Stop();
-                    loopedSfxInstances.Remove(soundName);
-                }
-                else
-                {
-                    Debug.WriteLine($"Sound '{soundName}' is not playing in loop.");
-                }
-            }
-            else
-            {
-                Debug.WriteLine($"Sound '{soundName}' not found in the sound manager.");
+                loopedSfxInstances[soundName].Stop();
+                loopedSfxInstances.Remove(soundName);
             }
         }
 
@@ -127,10 +97,6 @@ namespace PirateAdventures.Managers
                 MediaPlayer.IsRepeating = looped;
                 MediaPlayer.Volume = volume;
                 MediaPlayer.Play(backgroundMusic[musicName]);
-            }
-            else
-            {
-                Debug.WriteLine($"Background music '{musicName}' not found in the sound manager.");
             }
         }
 

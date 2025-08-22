@@ -9,7 +9,7 @@ using MonoGameLib.Scenes;
 using PirateAdventures.Managers;
 using PirateAdventures.Scenes;
 
-public class Startscreen: Scene
+public class Startscreen : Scene
 {
     private Texture2D backgroundTexture;
     private Texture2D titlePirateTexture;
@@ -49,7 +49,8 @@ public class Startscreen: Scene
             if (startBtnPressed)
             {
                 // Start game
-                Core.ChangeScene(new GameScene("./../../../Content/Level1.tmx"));
+                LevelManager.Instance.ResetToFirstLevel();
+                Core.ChangeScene(new GameScene());
                 startBtnPressed = false;
             }
 

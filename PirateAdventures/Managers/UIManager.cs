@@ -13,12 +13,10 @@ namespace PirateAdventures.Managers
         private Rectangle _playAgainSrcRect;
         private Vector2 playAgainPos = Vector2.Zero;
         private float scale = 1f;
-        private readonly string _levelPath;
 
-        public UIManager(SpriteFont font, string levelPath)
+        public UIManager(SpriteFont font)
         {
             _font = font;
-            _levelPath = levelPath;
             _playAgainSrcRect = new Rectangle(144, 32, 16, 16);
         }
 
@@ -42,7 +40,7 @@ namespace PirateAdventures.Managers
                     _playAgainColor = Color.Yellow;
                     if (Core.Input.Mouse.WasButtonDown(MonoGameLib.Input.MouseButton.Left))
                     {
-                        Core.ChangeScene(new Scenes.GameScene(_levelPath));
+                        Core.ChangeScene(new Scenes.GameScene());
                     }
                 }
                 else

@@ -28,24 +28,21 @@ namespace PirateAdventures.Scenes
         private InputSettings _inputSettings;
         private bool _isGameOver = false, _isLevelComplete = false;
         private SpriteFont font;
-        private string _levelPath;
         public int Score { get; set; } = 0;
         private int skullCollected = 0;
         private Camera _camera;
         private GameObjectManager _gameObjectManager;
         private UIManager _uiManager;
 
-        public GameScene(string levelPath)
-        {
-            _levelPath = levelPath;
-        }
+        public GameScene()
+        { }
 
         public override void Initialize()
         {
             base.Initialize();
 
             _inputSettings = SettingsManager.LoadSettings();
-            _tiledMap.Initialize(_levelPath);
+            _tiledMap.Initialize(LevelManager.Instance.GetCurrentLevel());
             _blocks = new List<IGameObject>();
 
             _camera = new Camera(Core.GraphicsDevice);
@@ -53,7 +50,7 @@ namespace PirateAdventures.Scenes
             InitializeGameObjects();
             _gameObjectManager = new GameObjectManager(_gameObjects);
 
-            _uiManager = new UIManager(font, _levelPath);
+            _uiManager = new UIManager(font);
         }
 
         public override void LoadContent()
@@ -153,6 +150,7 @@ namespace PirateAdventures.Scenes
                     break;
 
                 case CollectableType.Skull:
+                    Score += 50;
                     skullCollected++;
                     break;
 

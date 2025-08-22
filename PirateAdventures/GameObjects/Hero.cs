@@ -162,11 +162,11 @@ namespace PirateAdventures.GameObjects
 
             if (Speed.X != 0 && Math.Abs(Speed.Y) < 1f)
             {
-                SoundManager.Instance.PlaySound("walk1", .2f, true);
+                SoundManager.Instance.PlaySound("walk" + LevelManager.Instance.CurrentLevelNumber.ToString(), .2f, true);
             }
             else
             {
-                SoundManager.Instance.StopSound("walk1");
+                SoundManager.Instance.StopSound("walk" + LevelManager.Instance.CurrentLevelNumber.ToString());
             }
 
             Speed = new Vector2(Speed.X, Speed.Y + Acceleration.Y);
