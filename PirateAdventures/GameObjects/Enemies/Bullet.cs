@@ -18,8 +18,6 @@ namespace PirateAdventures.GameObjects.Enemies
         public bool Passable { get; set; } = true;
         public Vector2 Position { get; set; }
         public Rectangle BoundingBox { get; set; }
-        public int EnemyState { get; set; }
-        public int EnemyType { get; set; }
         public bool IsHit { get; set; } = false;
 
         private Texture2D texture;

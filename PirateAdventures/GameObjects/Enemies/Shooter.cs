@@ -11,10 +11,9 @@ using System.Linq;
 class Shooter : IEnemy, ICollidable, IKillable
 {
     public const int SPRITE_HEIGHT = 67, SPRITE_WIDTH = 63;
-    public int EnemyState { get; set; } = 0;
-    public int EnemyType { get; set; } = 1;
     public bool Passable { get; set; } = true;
     private float scale = .5f;
+    private ShooterState state = ShooterState.Idle;
     private Vector2 _pos = Vector2.Zero;
     public Vector2 Position
     {
@@ -63,21 +62,21 @@ class Shooter : IEnemy, ICollidable, IKillable
 
         if (DoesLaserHitHero(hero, collisionObjects))
         {
-            EnemyState = 1;
+            state = ShooterState.Shooting;
         }
         else
         {
-            EnemyState = 0;
+            state = ShooterState.Idle;
             secondCtr = 0;
             msCtr = 0;
             lockedPos = heroPos;
         }
 
-        switch (EnemyState)
+        switch (state)
         {
-            case 0:
+            case ShooterState.Idle:
                 break;
-            case 1:
+            case ShooterState.Shooting:
                 secondCtr += gameTime.ElapsedGameTime.TotalSeconds;
                 msCtr += gameTime.ElapsedGameTime.TotalMilliseconds;
 
@@ -125,13 +124,13 @@ class Shooter : IEnemy, ICollidable, IKillable
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        if (EnemyState == 0)
+        if (state == ShooterState.Idle)
         {
             currentAnimation.Effects = spriteEffects;
             currentAnimation.Scale = new Vector2(scale, scale);
             currentAnimation.Draw(spriteBatch, Position);
         }
-        if (EnemyState == 1)
+        if (state == ShooterState.Shooting)
         {
             attackBody.Effects = spriteEffects;
             attackBody.Scale = new Vector2(scale, scale);
@@ -230,4 +229,10 @@ class Shooter : IEnemy, ICollidable, IKillable
 
         return t >= 0 && t <= 1 && u >= 0 && u <= 1;
     }
+}
+
+public enum ShooterState
+{
+    Idle,
+    Shooting
 }

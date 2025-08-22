@@ -6,9 +6,8 @@ using Microsoft.Xna.Framework;
 
 namespace PirateAdventures.Interfaces
 {
-    public interface IInputReader
+    public interface IAttackable : IGameObject
     {
-        Vector2 ReadInput();
-        bool IsAttackPressed { get; }
+        public void Attack();
     }
 }

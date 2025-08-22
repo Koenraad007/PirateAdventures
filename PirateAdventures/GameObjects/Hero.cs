@@ -13,27 +13,39 @@ using System.Diagnostics;
 
 namespace PirateAdventures.GameObjects
 {
-    public class Hero : IGameObject, ICollidable, IKillable, IMovable
+    public class Hero : IGameObject, ICollidable, IKillable, IMovable, IAttackable
     {
         public const int SPRITE_WIDTH = 32;
         public const int SPRITE_HEIGHT = 32;
         public const int MAX_SPEED = 3;
 
-        public Vector2 Position { get; set; }
+        private Vector2 _position = Vector2.Zero;
+        public Vector2 Position
+        {
+            get => _position; set
+            {
+                _position = value;
+                BoundingBox = new Rectangle((int)value.X, (int)value.Y, (int)(SPRITE_WIDTH * scale), (int)(SPRITE_HEIGHT * scale));
+                _futureBoundingBox = BoundingBox;
+                _futurePosition = value;
+            }
+        }
         public Vector2 Speed { get; set; } = Vector2.Zero;
         public Vector2 Acceleration { get; set; } = new Vector2(0.1f, 0.3f);
 
         private SpriteEffects spriteFx = SpriteEffects.None;
         private readonly float scale = 1f;
-        private KeyboardInputReader input;
         private HeroState currentState, prevState = HeroState.IDLE;
         private bool isGrounded = false;
         private Vector2 collision = Vector2.Zero;
+        private List<IGameObject> enemies = new List<IGameObject>();
         public int Health { get; set; } = 100;
 
         public bool Passable { get; set; } = true;
 
         public Rectangle BoundingBox { get; set; }
+        private Rectangle _futureBoundingBox;
+        private Vector2 _futurePosition;
 
         private TextureAtlas textureAtlas;
         private AnimatedSprite currentAnimation;
@@ -42,30 +54,20 @@ namespace PirateAdventures.GameObjects
 
         public event Action<Hero> OnDeath;
 
-        public Hero(KeyboardInputReader inputReader, TextureAtlas ta)
+        public Hero(TextureAtlas ta)
         {
             textureAtlas = ta;
-            input = inputReader;
             Position = new Vector2(200, 200);
             BoundingBox = new Rectangle((int)Position.X, (int)Position.Y, (int)(SPRITE_WIDTH * scale), (int)(SPRITE_HEIGHT * scale));
+            _futureBoundingBox = BoundingBox;
+            _futurePosition = Position;
 
             currentAnimation = textureAtlas.CreateAnimatedSprite("hero-idle");
         }
 
         public void Update(List<IGameObject> objects, GameTime gameTime)
         {
-            var direction = input.ReadInput();
-
-            // change speed according to direction input
-            Move(direction);
-
-            Position += Speed;
-            BoundingBox = new Rectangle(
-                (int)Position.X,
-                (int)Position.Y,
-                BoundingBox.Width,
-                BoundingBox.Height
-            );
+            enemies = objects.FindAll(obj => obj is IEnemy);
 
             CheckCollision(objects);   // check if next position doesn't collide
 
@@ -82,27 +84,6 @@ namespace PirateAdventures.GameObjects
                 }
                 else if (currentState != HeroState.HIT && Speed.Y >= 1) currentState = HeroState.FALLING;
                 else if (currentState != HeroState.HIT) currentState = HeroState.IDLE;
-            }
-
-            if (input.AttackPressed && currentState < HeroState.HIT)
-            {
-                SoundManager.Instance.PlaySound("slice", 0.5f, false);
-                currentState = HeroState.ATTACK;
-                var enemyObjects = objects.FindAll(obj => obj is IEnemy);
-                foreach (var enemy in enemyObjects)
-                {
-                    var attackBox = new Rectangle(
-                        (int)Position.X - BoundingBox.Width / 2,
-                        (int)Position.Y - BoundingBox.Height / 2,
-                        (int)(BoundingBox.Width * 2),
-                        (int)(BoundingBox.Height * 2)
-                    );
-                    if (enemy is ICollidable collidable && attackBox.Intersects(collidable.BoundingBox))
-                    {
-                        //var hitPos = collidable.BoundingBox.Center.ToVector2() - BoundingBox.Center.ToVector2();
-                        ((IKillable)enemy).TakeDamage(50);
-                    }
-                }
             }
 
             if (currentState != prevState)
@@ -125,7 +106,8 @@ namespace PirateAdventures.GameObjects
 
         public void Move(Vector2 direction)
         {
-            // TODO: put movement logic in IMovable interface and MovementManager class
+            _futureBoundingBox = BoundingBox;
+            _futurePosition = Position;
 
             // if left/right keys are pressed
             if (direction.X != 0)
@@ -171,20 +153,27 @@ namespace PirateAdventures.GameObjects
 
             Speed = new Vector2(Speed.X, Speed.Y + Acceleration.Y);
 
+            _futurePosition += Speed;
+            _futureBoundingBox = new Rectangle(
+                (int)_futurePosition.X,
+                (int)_futurePosition.Y,
+                BoundingBox.Width,
+                BoundingBox.Height
+            );
+
         }
 
         private void CheckCollision(List<IGameObject> objects)
         {
             foreach (var block in objects)
             {
-                if (block is ICollidable)
+                if (block is ICollidable collisionObj)
                 {
-                    var collisionObj = block as ICollidable;
                     if (collisionObj.Passable) continue;
 
-                    if (collisionObj.BoundingBox.Intersects(BoundingBox))
+                    if (collisionObj.BoundingBox.Intersects(_futureBoundingBox))
                     {
-                        Rectangle intersection = Rectangle.Intersect(BoundingBox, collisionObj.BoundingBox);
+                        Rectangle intersection = Rectangle.Intersect(_futureBoundingBox, collisionObj.BoundingBox);
 
                         if (collisionObj is Block)
                         {
@@ -197,19 +186,19 @@ namespace PirateAdventures.GameObjects
                             {
                                 if (collBlock.BlockType == BlockType.FULL)
                                 {
-                                    if (BoundingBox.Center.X < collisionObj.BoundingBox.Center.X)
-                                        Position = new Vector2(Position.X - intersection.Width, Position.Y);
+                                    if (_futureBoundingBox.Center.X < collisionObj.BoundingBox.Center.X)
+                                        _futurePosition = new Vector2(_futurePosition.X - intersection.Width, _futurePosition.Y);
                                     else
-                                        Position = new Vector2(Position.X + intersection.Width, Position.Y);
+                                        _futurePosition = new Vector2(_futurePosition.X + intersection.Width, _futurePosition.Y);
                                     Speed = new Vector2(0, Speed.Y);
                                 }
                             }
                             // collision on the Y axis
                             else
                             {
-                                if (BoundingBox.Center.Y < collisionObj.BoundingBox.Center.Y && Speed.Y > 0)
+                                if (_futureBoundingBox.Center.Y < collisionObj.BoundingBox.Center.Y && Speed.Y > 0)
                                 {
-                                    Position = new Vector2(Position.X, Position.Y - intersection.Height);
+                                    _futurePosition = new Vector2(_futurePosition.X, _futurePosition.Y - intersection.Height);
                                     isGrounded = true;
                                     Speed = new Vector2(Speed.X, 0);
                                 }
@@ -217,7 +206,7 @@ namespace PirateAdventures.GameObjects
                                 {
                                     if (collBlock.BlockType == BlockType.FULL)
                                     {
-                                        Position = new Vector2(Position.X, Position.Y + intersection.Height);
+                                        _futurePosition = new Vector2(_futurePosition.X, _futurePosition.Y + intersection.Height);
                                         Speed = new Vector2(Speed.X, 0);
                                     }
                                 }
@@ -225,10 +214,12 @@ namespace PirateAdventures.GameObjects
 
                             }
                         }
-                        BoundingBox = new Rectangle((int)Position.X, (int)Position.Y, BoundingBox.Width, BoundingBox.Height);
+                        _futureBoundingBox = new Rectangle((int)_futurePosition.X, (int)_futurePosition.Y, _futureBoundingBox.Width, _futureBoundingBox.Height);
                     }
                 }
             }
+            Position = _futurePosition;
+            BoundingBox = _futureBoundingBox;
         }
 
 
@@ -260,6 +251,28 @@ namespace PirateAdventures.GameObjects
             if (Health <= 0)
             {
                 OnDeath?.Invoke(this);
+            }
+        }
+
+        public void Attack()
+        {
+            if (currentState < HeroState.HIT)
+            {
+                SoundManager.Instance.PlaySound("slice", 0.5f, false);
+                currentState = HeroState.ATTACK;
+                foreach (var enemy in enemies)
+                {
+                    var attackBox = new Rectangle(
+                        (int)Position.X - BoundingBox.Width / 2,
+                        (int)Position.Y - BoundingBox.Height / 2,
+                        (int)(BoundingBox.Width * 2),
+                        (int)(BoundingBox.Height * 2)
+                    );
+                    if (enemy is ICollidable collidable && attackBox.Intersects(collidable.BoundingBox))
+                    {
+                        ((IKillable)enemy).TakeDamage(50);
+                    }
+                }
             }
         }
 

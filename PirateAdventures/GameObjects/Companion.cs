@@ -24,14 +24,13 @@ public class Companion : IGameObject, ICollidable, IMovable
     public Vector2 Acceleration { get; set; } = new Vector2(0.1f, 0.1f);
     private SpriteEffects spriteFx = SpriteEffects.None;
     private float scale = .5f;
-    private KeyboardInputReader input;
     public bool Passable { get; set; } = true;
+    private Vector2 heroPos;
 
     public Rectangle BoundingBox { get; set; }
 
-    public Companion(KeyboardInputReader input, Texture2D texture)
+    public Companion(Texture2D texture)
     {
-        this.input = input;
         _texture = texture;
         Position = new Vector2(100, 400);
         BoundingBox = new Rectangle((int)Position.X, (int)Position.Y, (int)(SPRITE_WIDTH * scale), (int)(SPRITE_HEIGHT * scale));
@@ -46,32 +45,7 @@ public class Companion : IGameObject, ICollidable, IMovable
     public void Update(List<IGameObject> collisionObjects, GameTime gameTime)
     {
         var hero = collisionObjects.Find(obj => obj is Hero) as Hero;
-        var heroPos = hero != null ? hero.BoundingBox.Center.ToVector2() + new Vector2(0f, -32f) : Vector2.Zero;
-
-        var direction = input.ReadBirdInput();
-        if (direction.Length() > 0)
-        {
-            Move(direction);
-        }
-        else if (Vector2.Distance(heroPos, Position) > 20f)
-        {
-            direction = heroPos - Position;
-            direction.Normalize();
-            Move(direction);
-        }
-        else
-        {
-            Speed *= 0.5f;
-        }
-
-        if (direction.X > 0)
-        {
-            spriteFx = SpriteEffects.FlipHorizontally;
-        }
-        else if (direction.X < 0)
-        {
-            spriteFx = SpriteEffects.None;
-        }
+        heroPos = hero != null ? hero.BoundingBox.Center.ToVector2() + new Vector2(0f, -32f) : Vector2.Zero;
 
         _animation.Update(gameTime);
     }
@@ -87,6 +61,20 @@ public class Companion : IGameObject, ICollidable, IMovable
                 Speed = Vector2.Normalize(Speed) * MAX_SPEED;
             }
         }
+        else if (Vector2.Distance(heroPos, Position) > 20f)
+        {
+            direction = heroPos - Position;
+            direction.Normalize();
+            Speed += direction * Acceleration;
+            if (Speed.Length() > MAX_SPEED)
+            {
+                Speed = Vector2.Normalize(Speed) * MAX_SPEED;
+            }
+        }
+        else
+        {
+            Speed *= 0.5f;
+        }
 
         Position += Speed;
         BoundingBox = new Rectangle(
@@ -95,6 +83,15 @@ public class Companion : IGameObject, ICollidable, IMovable
             BoundingBox.Width,
             BoundingBox.Height
         );
+
+        if (direction.X > 0)
+        {
+            spriteFx = SpriteEffects.FlipHorizontally;
+        }
+        else if (direction.X < 0)
+        {
+            spriteFx = SpriteEffects.None;
+        }
     }
 
     public void Draw(SpriteBatch spriteBatch)

@@ -19,7 +19,7 @@ namespace PirateAdventures
     public class TiledMap
     {
         private TmxMap _map;
-       
+
         public List<IGameObject> CollisionObjects { get; private set; } = new List<IGameObject>();
         public int Width { get; private set; }
         public int Height { get; private set; }
@@ -106,7 +106,7 @@ namespace PirateAdventures
             }
         }
 
-        public List<IGameObject> CreateGameObjects(KeyboardInputReader kir)
+        public List<IGameObject> CreateGameObjects()
         {
             var gameObjects = new List<IGameObject>();
 

@@ -11,12 +11,12 @@ using PirateAdventures.Settings;
 
 namespace PirateAdventures.Input
 {
-    public class KeyboardInputReader : IInputReader
+    public class HeroInputReader : IInputReader
     {
         private readonly InputSettings inputSettings;
-        public bool AttackPressed => Core.Input.Keyboard.WasKeyDown(inputSettings.KeyBindings[EGameAction.Attack]);
+        public bool IsAttackPressed => Core.Input.Keyboard.WasKeyDown(inputSettings.KeyBindings[EGameAction.Attack]);
 
-        public KeyboardInputReader(InputSettings inputSettings)
+        public HeroInputReader(InputSettings inputSettings)
         {
             this.inputSettings = inputSettings;
         }
@@ -31,24 +31,6 @@ namespace PirateAdventures.Input
                 direction.X += 1;
             if (Core.Input.Keyboard.IsKeyDown(inputSettings.KeyBindings[EGameAction.Jump]))
                 direction.Y -= 1;
-
-            //direction.Normalize();
-
-            return direction;
-        }
-
-        public Vector2 ReadBirdInput()
-        {
-            var direction = Vector2.Zero;
-
-            if (Core.Input.Keyboard.IsKeyDown(inputSettings.KeyBindings[EGameAction.BirdLeft]))
-                direction.X = -1;
-            if (Core.Input.Keyboard.IsKeyDown(inputSettings.KeyBindings[EGameAction.BirdRight]))
-                direction.X = 1;
-            if (Core.Input.Keyboard.IsKeyDown(inputSettings.KeyBindings[EGameAction.BirdUp]))
-                direction.Y = -1;
-            if (Core.Input.Keyboard.IsKeyDown(inputSettings.KeyBindings[EGameAction.BirdDown]))
-                direction.Y = 1;
 
             return direction;
         }

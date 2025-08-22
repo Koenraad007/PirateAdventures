@@ -23,9 +23,7 @@ public class WindowGuy : IEnemy
     }
     private Vector2 _pos = Vector2.Zero;
     public Rectangle BoundingBox { get; set; }
-    public int EnemyState { get; set; } = 0;
-    public int EnemyType { get; set; } = 2;
-
+    private WindowState state = WindowState.Idle;
     private double mSecondCtr = 0;
     private bool dynamiteThrown = false;
     private List<Bomb> bombs = new();
@@ -49,7 +47,7 @@ public class WindowGuy : IEnemy
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        if (EnemyState == 0)
+        if (state == WindowState.Idle)
         {
             _staticSprite.Scale = new Vector2(.5f, .5f);
             _staticSprite.Draw(spriteBatch, Position);
@@ -77,18 +75,18 @@ public class WindowGuy : IEnemy
         if (hero.BoundingBox.Center.X > Position.X && hero.BoundingBox.Center.X < Position.X + SPRITE_WIDTH * scale)
         {
             System.Console.WriteLine("Same X coords");
-            EnemyState = 1;
+            state = WindowState.Attacking;
         }
 
-        switch (EnemyState)
+        switch (state)
         {
-            case 0:
+            case WindowState.Idle:
                 break;
-            case 1:
+            case WindowState.Attacking:
                 _attackAnimation.Update(gameTime);
                 if (_attackAnimation.CurrentFrame <= 0)
                 {
-                    EnemyState = 0;
+                    state = WindowState.Idle;
                     hasAttacked = false;
                     break;
                 }
@@ -104,4 +102,10 @@ public class WindowGuy : IEnemy
                 break;
         }
     }
+}
+
+public enum WindowState
+{
+    Idle,
+    Attacking
 }

@@ -18,8 +18,7 @@ namespace PirateAdventures.Factories
 
         public IGameObject CreateGameObject(string objectType, Vector2 position)
         {
-            KeyboardInputReader kir = new KeyboardInputReader(SettingsManager.LoadSettings());
-            return new Hero(kir, TextureManager.Instance.GetTextureAtlas("heroAtlas"))
+            return new Hero(TextureManager.Instance.GetTextureAtlas("heroAtlas"))
             {
                 Position = new Vector2(position.X, position.Y - Hero.SPRITE_HEIGHT)
             };

@@ -8,8 +8,6 @@ namespace PirateAdventures.Interfaces
 {
     public interface IEnemy : IGameObject
     {
-        public int EnemyState { get; set; }
-        public int EnemyType { get; set; }
         public event Action<IEnemy, int, Vector2> Attack;
     }
 }

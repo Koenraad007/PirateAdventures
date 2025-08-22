@@ -34,9 +34,6 @@ public class Bomb : IEnemy, ICollidable, IMovable
         set => Position = value + new Vector2(SPRITE_WIDTH / 2, SPRITE_HEIGHT / 2);
     }
     public Rectangle BoundingBox { get; set; }
-    public int EnemyState { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public int EnemyType { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
     private int currentState = 1, prevState = 1;
     public Vector2 Speed { get; set; } = Vector2.Zero;
     public Vector2 Acceleration { get; set; } = new Vector2(0, .3f);

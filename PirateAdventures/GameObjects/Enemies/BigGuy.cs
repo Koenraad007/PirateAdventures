@@ -21,9 +21,7 @@ namespace PirateAdventures.GameObjects.Enemies
         private readonly TextureAtlas ta;
         private AnimatedSprite currentAnimation;
         private int prevFrame = 0;
-        public int EnemyState { get; set; } = 0;    // 0=idle,1=running,2=attack
         private BigGuyState currentState, prevState = BigGuyState.Idle;
-        public int EnemyType { get; set; } = 0;
         public bool Passable { get; set; } = false;
         private Vector2 _pos = Vector2.Zero;
         public Vector2 Position
@@ -71,7 +69,6 @@ namespace PirateAdventures.GameObjects.Enemies
 
             if (hero.BoundingBox.Intersects(BoundingBox))
             {
-                EnemyState = 2;
                 currentState = BigGuyState.Attacking;
                 if (hero.Position.X < _pos.X + SPRITE_WIDTH * scale / 2) spriteEffects = SpriteEffects.FlipHorizontally;
                 else spriteEffects = SpriteEffects.None;
@@ -80,7 +77,6 @@ namespace PirateAdventures.GameObjects.Enemies
                 Math.Abs(hero.BoundingBox.Center.X - BoundingBox.Center.X) > 20 &&
                 Math.Abs(hero.BoundingBox.Center.Y - BoundingBox.Center.Y) < 20)
             {
-                EnemyState = 1;
                 currentState = BigGuyState.Running;
 
                 direction = (hero.BoundingBox.Center - BoundingBox.Center).ToVector2();
@@ -93,7 +89,6 @@ namespace PirateAdventures.GameObjects.Enemies
             }
             else
             {
-                EnemyState = 0;
                 currentState = BigGuyState.Idle;
             }
 

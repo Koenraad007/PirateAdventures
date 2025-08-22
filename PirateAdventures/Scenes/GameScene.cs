@@ -33,6 +33,7 @@ namespace PirateAdventures.Scenes
         private Camera _camera;
         private GameObjectManager _gameObjectManager;
         private UIManager _uiManager;
+        private GameObjectInputManager _inputManager;
 
         public GameScene()
         { }
@@ -51,6 +52,13 @@ namespace PirateAdventures.Scenes
             _gameObjectManager = new GameObjectManager(_gameObjects);
 
             _uiManager = new UIManager(font);
+
+            _inputManager = new GameObjectInputManager();
+            var inputSettings = SettingsManager.LoadSettings();
+            var hero = _gameObjects.OfType<Hero>().FirstOrDefault();
+            var companion = _gameObjects.OfType<Companion>().FirstOrDefault();
+            _inputManager.AddInputReader(hero, new HeroInputReader(inputSettings));
+            _inputManager.AddInputReader(companion, new CompanionInputReader(inputSettings));
         }
 
         public override void LoadContent()
@@ -64,9 +72,7 @@ namespace PirateAdventures.Scenes
 
         private void InitializeGameObjects()
         {
-            KeyboardInputReader kir = new KeyboardInputReader(_inputSettings);
-
-            _gameObjects = _tiledMap.CreateGameObjects(kir);
+            _gameObjects = _tiledMap.CreateGameObjects();
 
             _blocks = _tiledMap.CollisionObjects;
             _gameObjects.AddRange(_blocks);
@@ -113,6 +119,8 @@ namespace PirateAdventures.Scenes
             }
 
             _uiManager.Update(_isGameOver, _isLevelComplete);
+
+            _inputManager.Update(gameTime);
 
             base.Update(gameTime);
         }
