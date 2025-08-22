@@ -25,10 +25,7 @@ namespace PirateAdventures.Scenes
         private List<IGameObject> _gameObjects;
         private List<IGameObject> _blocks;
         private TiledMap _tiledMap;
-        private Vector2 cameraOffset = Vector2.Zero;
-        private const int CAMERA_MARGIN_X = 600, CAMERA_MARGIN_Y = 200;
         private InputSettings _inputSettings;
-        private float _cameraZoom = 2f;
         private Rectangle _playAgainSrcRect;
         private bool _isGameOver = false, _isLevelComplete = false;
         private SpriteFont font;
@@ -37,6 +34,7 @@ namespace PirateAdventures.Scenes
         private List<IGameObject> toAdd = new List<IGameObject>();
         public int Score { get; set; } = 0;
         private int skullCollected = 0;
+        private Camera _camera;
 
         public GameScene(string levelPath)
         {
@@ -52,6 +50,8 @@ namespace PirateAdventures.Scenes
             _blocks = new List<IGameObject>();
 
             _playAgainSrcRect = new Rectangle(144, 32, 16, 16);
+
+            _camera = new Camera(Core.GraphicsDevice);
 
             InitializeGameObjects();
         }
@@ -102,7 +102,9 @@ namespace PirateAdventures.Scenes
 
         public override void Update(GameTime gameTime)
         {
-            UpdateCamera();
+            // Update the camera
+            Hero hero = _gameObjects.OfType<Hero>().FirstOrDefault();
+            if (hero != null) _camera.Follow(hero, _tiledMap.Width, _tiledMap.Height);
 
             if (_isGameOver || _isLevelComplete)
             {
@@ -212,40 +214,11 @@ namespace PirateAdventures.Scenes
             toAdd.Add(new Bullet(position, direction, speed));
         }
 
-        private void UpdateCamera()
-        {
-            Hero _hero = _gameObjects.OfType<Hero>().FirstOrDefault();
-
-            int screenWidth = Core.GraphicsDevice.Viewport.Width;
-            int screenHeight = Core.GraphicsDevice.Viewport.Height;
-
-            float viewWidth = screenWidth / _cameraZoom;
-            float viewHeight = screenHeight / _cameraZoom;
-            float marginX = (screenWidth * 0.5f) / _cameraZoom;
-            float marginY = (screenHeight * 0.5f) / _cameraZoom;
-
-            // calculate where the hero should be displayed on the screen
-            float heroDisplayX = _hero.Position.X - cameraOffset.X;
-            float heroDisplayY = _hero.Position.Y - cameraOffset.Y;
-
-            // horizontal scrolling
-            if (heroDisplayX < marginX) cameraOffset.X = _hero.Position.X - marginX;
-            else if (heroDisplayX > viewWidth - marginX) cameraOffset.X = _hero.Position.X - (viewWidth - marginX);
-
-            // vertical scrolling
-            if (heroDisplayY < marginY) cameraOffset.Y = _hero.Position.Y - marginY + 32f;
-            else if (heroDisplayY > viewHeight - marginY) cameraOffset.Y = _hero.Position.Y - (viewHeight - marginY) + 32f;
-
-            cameraOffset.X = MathHelper.Clamp(cameraOffset.X, 0, _tiledMap.Width - viewWidth);
-            cameraOffset.Y = MathHelper.Clamp(cameraOffset.Y, 0, _tiledMap.Height - viewHeight);
-        }
-
         public override void Draw(GameTime gameTime)
         {
             Core.GraphicsDevice.Clear(new Color(146, 169, 206));
 
-            var transform = Matrix.CreateTranslation(-cameraOffset.X, -cameraOffset.Y, 0) *
-                Matrix.CreateScale(_cameraZoom, _cameraZoom, 1);
+            var transform = _camera.GetViewMatrix();
 
             Core.SpriteBatch.Begin(
                     samplerState: SamplerState.PointClamp,
