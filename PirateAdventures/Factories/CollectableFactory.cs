@@ -30,7 +30,7 @@ namespace PirateAdventures.Factories
 
             return new Collectable(
                 TextureManager.Instance.GetTextureAtlas("collectablesAtlas"),
-                new Vector2(position.X, position.Y - Collectable.SPRITE_HEIGHT),
+                new Vector2(position.X - Collectable.SPRITE_WIDTH / 2, position.Y - Collectable.SPRITE_HEIGHT),
                 collectableType
             );
         }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="200" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="35">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="200" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="108">
  <tileset firstgid="1" source="Tileset32.tsx"/>
  <layer id="4" name="BG" width="200" height="20">
   <data encoding="csv">
@@ -83,61 +83,196 @@
   <object id="13" name="skull" x="672" y="512">
    <point/>
   </object>
-  <object id="14" name="big" x="800" y="384">
-   <point/>
-  </object>
   <object id="15" name="companion" x="160" y="448">
    <point/>
   </object>
-  <object id="16" name="shoot" x="544" y="416">
+  <object id="35" name="silver" x="320" y="512">
    <point/>
   </object>
-  <object id="18" name="silver" x="162" y="223">
+  <object id="36" name="silver" x="352" y="512">
    <point/>
   </object>
-  <object id="19" name="silver" x="216" y="174">
+  <object id="37" name="silver" x="384" y="512">
    <point/>
   </object>
-  <object id="20" name="silver" x="252" y="167">
+  <object id="38" name="silver" x="416" y="512">
    <point/>
   </object>
-  <object id="21" name="silver" x="287" y="169">
+  <object id="41" name="silver" x="548" y="391">
    <point/>
   </object>
-  <object id="22" name="silver" x="320" y="177">
+  <object id="44" name="silver" x="577" y="366">
    <point/>
   </object>
-  <object id="23" name="silver" x="344" y="235">
+  <object id="45" name="silver" x="609" y="359">
    <point/>
   </object>
-  <object id="24" name="silver" x="337" y="188">
+  <object id="46" name="gold" x="642" y="363">
    <point/>
   </object>
-  <object id="25" name="silver" x="351" y="210">
+  <object id="47" name="skull" x="1056" y="192">
    <point/>
   </object>
-  <object id="26" name="silver" x="322" y="250">
+  <object id="48" name="gold" x="1152" y="256">
    <point/>
   </object>
-  <object id="27" name="silver" x="295" y="266">
+  <object id="49" name="gold" x="1231" y="319">
    <point/>
   </object>
-  <object id="28" name="silver" x="268" y="273">
+  <object id="50" name="silver" x="1152" y="384">
    <point/>
   </object>
-  <object id="29" name="silver" x="233" y="273">
+  <object id="51" name="big" x="2368" y="512">
    <point/>
   </object>
-  <object id="30" name="silver" x="201" y="263">
+  <object id="52" name="silver" x="1555" y="395">
    <point/>
   </object>
-  <object id="31" name="silver" x="176" y="250">
+  <object id="53" name="silver" x="1584" y="370">
    <point/>
   </object>
-  <object id="32" name="silver" x="188" y="197">
+  <object id="54" name="silver" x="1616" y="363">
    <point/>
   </object>
-  <object id="34" name="endpoint" x="352" y="512">
+  <object id="55" name="gold" x="1649" y="367">
+   <point/>
+  </object>
+  <object id="56" name="silver" x="1788" y="300">
+   <point/>
+  </object>
+  <object id="57" name="silver" x="1817" y="275">
+   <point/>
+  </object>
+  <object id="58" name="silver" x="1849" y="268">
+   <point/>
+  </object>
+  <object id="59" name="gold" x="1882" y="272">
+   <point/>
+  </object>
+  <object id="60" name="gold" x="2388" y="126">
+   <point/>
+  </object>
+  <object id="61" name="gold" x="2421" y="127">
+   <point/>
+  </object>
+  <object id="62" name="skull" x="2624" y="96">
+   <point/>
+  </object>
+  <object id="63" name="silver" x="2197" y="126">
+   <point/>
+  </object>
+  <object id="64" name="big" x="2880" y="512">
+   <point/>
+  </object>
+  <object id="65" name="silver" x="2960" y="444">
+   <point/>
+  </object>
+  <object id="66" name="silver" x="2464" y="448">
+   <point/>
+  </object>
+  <object id="67" name="silver" x="3026" y="381">
+   <point/>
+  </object>
+  <object id="69" name="skull" x="4659" y="382">
+   <point/>
+  </object>
+  <object id="71" name="skull" x="5138" y="383">
+   <point/>
+  </object>
+  <object id="72" name="gold" x="4832" y="384">
+   <point/>
+  </object>
+  <object id="73" name="gold" x="4992" y="384">
+   <point/>
+  </object>
+  <object id="74" name="silver" x="3392" y="224">
+   <point/>
+  </object>
+  <object id="75" name="silver" x="3542.67" y="161.333">
+   <point/>
+  </object>
+  <object id="76" name="silver" x="3574.67" y="161.333">
+   <point/>
+  </object>
+  <object id="79" name="gold" x="3680" y="137.333">
+   <point/>
+  </object>
+  <object id="81" name="gold" x="3722.67" y="133.333">
+   <point/>
+  </object>
+  <object id="82" name="gold" x="3762.67" y="145.333">
+   <point/>
+  </object>
+  <object id="83" name="big" x="4000" y="512">
+   <point/>
+  </object>
+  <object id="85" name="shoot" x="3552" y="288">
+   <point/>
+  </object>
+  <object id="86" name="silver" x="4672" y="608">
+   <point/>
+  </object>
+  <object id="87" name="silver" x="4704" y="608">
+   <point/>
+  </object>
+  <object id="88" name="silver" x="4736" y="608">
+   <point/>
+  </object>
+  <object id="89" name="silver" x="5088" y="608">
+   <point/>
+  </object>
+  <object id="90" name="silver" x="5120" y="608">
+   <point/>
+  </object>
+  <object id="91" name="silver" x="5152" y="608">
+   <point/>
+  </object>
+  <object id="92" name="silver" x="4320" y="352">
+   <point/>
+  </object>
+  <object id="93" name="silver" x="4352" y="320">
+   <point/>
+  </object>
+  <object id="94" name="silver" x="4288" y="320">
+   <point/>
+  </object>
+  <object id="95" name="silver" x="4256" y="288">
+   <point/>
+  </object>
+  <object id="96" name="silver" x="4384" y="288">
+   <point/>
+  </object>
+  <object id="97" name="silver" x="4288" y="256">
+   <point/>
+  </object>
+  <object id="98" name="silver" x="4320" y="224">
+   <point/>
+  </object>
+  <object id="99" name="silver" x="4352" y="256">
+   <point/>
+  </object>
+  <object id="100" name="gold" x="4320" y="288">
+   <point/>
+  </object>
+  <object id="101" name="gold" x="4320" y="256">
+   <point/>
+  </object>
+  <object id="102" name="big" x="5568" y="512">
+   <point/>
+  </object>
+  <object id="103" name="big" x="5920" y="512">
+   <point/>
+  </object>
+  <object id="104" name="silver" x="5278.67" y="337.333">
+   <point/>
+  </object>
+  <object id="105" name="silver" x="5318.67" y="322.667">
+   <point/>
+  </object>
+  <object id="106" name="silver" x="5358.67" y="329.333">
+   <point/>
+  </object>
+  <object id="107" name="silver" x="5388" y="353.333">
    <point/>
   </object>
  </objectgroup>

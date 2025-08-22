@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using PirateAdventures.Commands;
 using PirateAdventures.Interfaces;
 
 namespace PirateAdventures.Managers
@@ -7,10 +8,13 @@ namespace PirateAdventures.Managers
     public class GameObjectInputManager
     {
         private readonly List<(IGameObject gameObject, IInputReader inputReader)> _inputReaders;
+        private readonly Queue<ICommand> _commandQueue;
+
 
         public GameObjectInputManager()
         {
             _inputReaders = new List<(IGameObject, IInputReader)>();
+            _commandQueue = new Queue<ICommand>();
         }
 
         public void AddInputReader(IGameObject gameObject, IInputReader inputReader)
@@ -25,13 +29,19 @@ namespace PirateAdventures.Managers
                 var direction = inputReader.ReadInput();
                 if (gameObject is IMovable movable)
                 {
-                    movable.Move(direction);
+                    _commandQueue.Enqueue(new MoveCommand(movable, direction));
                 }
 
                 if (inputReader.IsAttackPressed && gameObject is IAttackable attackable)
                 {
-                    attackable.Attack();
+                    _commandQueue.Enqueue(new AttackCommand(attackable));
                 }
+            }
+
+            while (_commandQueue.Count > 0)
+            {
+                var command = _commandQueue.Dequeue();
+                command.Execute();
             }
         }
     }

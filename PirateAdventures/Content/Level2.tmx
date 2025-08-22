@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="200" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="6">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="200" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="7">
  <tileset firstgid="1" source="Tileset32.tsx"/>
  <layer id="4" name="BG" width="200" height="20">
   <data encoding="csv">
@@ -78,6 +78,9 @@
    <point/>
   </object>
   <object id="5" name="silver" x="256" y="544">
+   <point/>
+  </object>
+  <object id="6" name="endpoint" x="6272" y="544">
    <point/>
   </object>
  </objectgroup>
